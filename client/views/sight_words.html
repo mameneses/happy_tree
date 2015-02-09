@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-sm-6"></div>
+  <div class="col-sm-2">Student: 
+  <form name="studentFrom">
+    <fieldset class="form-group">
+      <select ng-model="students" class="form-control" ng-options="student for students in students"  title="Students">
+        <option value="">Choose Student</option>
+      </select>
+    </fieldset>
+  </form>
+  </div>
+  <div class="col-sm-2">
+    <div class="alphabet" >Grade: {{sightWords.grade  }}</div>
+  </div>  
+  <div class="col-sm-2">
+    <div class="alphabet" >Sight Words</div>
+  </div>
+</div>
+
+<div class="row">
+  <div ng-repeat="word in sightWords.words">
+    <div ng-click="checkSightWord(word)" class="col-sm-2 img-thumbnail"> 
+      <h3 ng-show="word.correct" class="sight-word-plus">+</h3>
+      <center><h2>{{word.word}}</h2></center>
+    </div>
+  </div>
+  <div class="col-sm-2 btn btn-primary btn-block"><center><h2>Save</h2></center></div>
+  <div class="col-sm-2 btn btn-danger btn-block" ng-click="clear()"><center><h2>Clear</h2></center></div>
+</div>

@@ -1,0 +1,24 @@
+<div ng-click="hideResponse()" ng-show="incorrect" class="incorrect">
+    <h1 class="response">Try Again!</h1>
+  </div>
+  <div ng-click="hideResponse()" ng-show="correct" class="correct">
+    <h1 class="correctAnswer"> {{correctAnswer.sign}} is for {{correctAnswer.word}}</h3>
+    <h1 class="response">Good Job!</h1>
+  </div>
+<div class="row">
+  <div class="col-sm-2"></div> 
+  <div class="col-sm-8">
+    <center><h1 class="letter"> {{primary.sign}} is for ... </h1></center>
+  </div> 
+  <div class="col-sm-2">
+    <div class="alphabet" ng-click="showAnimalAlphabet()">Animal Alphabet</div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-xs-12 tile" ng-repeat="letter in letters" ng-click="checkGuess(letter)">
+      <center ><h1 class="word">{{letter.word | uppercase}}</h1></center>
+      <div >
+        <img class="image"ng-src="{{letter.image}}" />
+      </div>
+  </div>
+</div>
