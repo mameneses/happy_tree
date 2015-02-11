@@ -13,6 +13,10 @@ angular.module('HappyTree', ['ngRoute'])
         templateUrl: 'views/sight_words.html',
         controller: 'SightWordsCtrl'
       })
+      .when('/letters_assesment', {
+        templateUrl: 'views/letters_assesment.html',
+        controller: 'LettersAssesmentCtrl'
+      })
       .otherwise('/');
 
       

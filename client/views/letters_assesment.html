@@ -1,0 +1,31 @@
+<div ng-show="finish" ng-click="hideFinish()" class="finish-screen">
+  <center class="done-text">DONE!</center>
+</div>
+<div class="btn-holder" ng-show="startButton">
+  <button ng-click="startLetterAssesment(1)" class="btn btn-success btn-block">START UPPERCASE LETTER ASSESMENT</button>
+  <button ng-click="startLetterAssesment(2)" class="btn btn-success btn-block">START LOWERCASE LETTER ASSESMENT</button>
+  <button ng-click="startLetterAssesment(3)" class="btn btn-success btn-block">START LETTER SOUND ASSESMENT</button>
+</div>
+<div class="row">
+  <div class="col-sm-10">
+  </div>
+  <div class="col-sm-2">
+    <!-- <div class="btn btn-primary" ng-show="upper" ng-click="switchCase()">Switch to Lower Case</div>
+    <div class="btn btn-primary" ng-show="lower" ng-click="switchCase()">Switch to Upper Case</div> -->
+  </div>
+</div>
+<div class="row" ng-hide="startButton">
+  <div><center><h1 class="comic-sans">{{correctLetter.upper}}</h1></center></div>
+  <div>
+    <center>
+      <div class="letters-board" ng-show="upper" ng-repeat="letter in letterBoard">
+        <div class="col-sm-4 img-thumbnail" ng-click="letterGuess(letter)"><h1 class="comic-sans"><center>{{letter.upper}}</center></h1></div>
+      </div>
+      <div class="letters-board" ng-show="lower" ng-repeat="letter in letterBoard">
+        <div class="col-sm-4 img-thumbnail" ng-click="letterGuess(letter)">
+          <h1 class="comic-sans"><center>{{letter.lower}}</center></h1>
+        </div>
+      </div>
+    </center>
+  </div>
+</div>
