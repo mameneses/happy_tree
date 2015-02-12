@@ -5,6 +5,14 @@ angular.module('HappyTree', ['ngRoute'])
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
+      .when('/signup', {
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl'
+      })
       .when('/animal_alphabet', {
         templateUrl: 'views/animal_alphabet.html',
         controller: 'AnimalAlphabetCtrl'
