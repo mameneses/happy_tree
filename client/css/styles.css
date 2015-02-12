@@ -177,7 +177,10 @@ a:hover {
   min-width:100%;
   background-color:rgba(0,0,0,0.80);
 }
-
+.sound-icon {
+  height:80px;
+  margin:30px auto;
+}
 .stats {
   color: white;
   width:50%;
@@ -281,7 +284,7 @@ a:hover {
   margin:0;
   min-height: 100%;
   min-width:100%;
-  background-color:rgba(0,255,0,0.70);
+  background-color:rgba(0,0,0,0.85);
 }
 
 .btn-holder {
@@ -290,6 +293,11 @@ a:hover {
 }
 
 .done-text {
-  font-size:200px;
-  margin:8% auto;
+  font-size:150px;
+  color: white;
+}
+
+
+.done-gif {
+  margin-top: 50px;
 }
