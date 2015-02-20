@@ -4,6 +4,17 @@
     <div class="panel-body">
       <h4 class="text-center"><i class="ion-person-add"></i> Sign up</h4>
       <form method="post" ng-submit="signup()" name="signupForm">
+
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.firstName.$invalid && signupForm.firstName.$dirty }">
+          <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="firstName" placeholder="First Name" required>
+          <span class="ion-person form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.lastName.$invalid && signupForm.lastName.$dirty }">
+          <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="lastName" placeholder="Last Name" required>
+          <span class="form-control-feedback"></span>
+        </div>
+
         <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.email.$invalid && signupForm.email.$dirty }">
           <input class="form-control input-lg" type="text" id="email" name="email" ng-model="email" placeholder="Email" required>
           <span class="ion-at form-control-feedback"></span>
@@ -13,8 +24,11 @@
           <input class="form-control input-lg" type="password" name="password" ng-model="password" placeholder="Password" required>
           <span class="ion-key form-control-feedback"></span>
         </div>
- 
-        <p class="text-center text-muted"><small>By clicking on Sign up, you agree to <a href="#">terms & conditions</a> and <a href="#">privacy policy</a></small></p>
+
+         <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.school.$invalid && signupForm.school.$dirty }">
+          <input class="form-control input-lg" type="text" id="school" name="school" ng-model="school" placeholder="School" required>
+          <span class="ion-university form-control-feedback"></span>
+        </div>
  
         <button type="submit" class="btn btn-block btn-primary">Sign up</button>
         <br/>

@@ -12,8 +12,10 @@ angular.module('HappyTree')
           angular.forEach(response.data.message, function(message, field) {
             $scope.loginForm[field].$setValidity('server', false);
             $scope.errorMessage[field] = response.data.message[field];
-          });
+             console.log($scope.email)
+              console.log($scope.password)
         });
+      });
     };
 
   });

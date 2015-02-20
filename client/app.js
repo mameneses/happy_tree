@@ -1,5 +1,5 @@
-angular.module('HappyTree', ['ngRoute'])
-  .config(function($routeProvider) {
+angular.module('HappyTree', ['ngRoute', 'satellizer'])
+  .config(function($routeProvider, $authProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/home.html',
@@ -25,7 +25,9 @@ angular.module('HappyTree', ['ngRoute'])
         templateUrl: 'views/letters_assesment.html',
         controller: 'LettersAssesmentCtrl'
       })
-      .otherwise('/');
+      .otherwise('/')
 
-      
+    $authProvider.loginUrl = 'http://localhost:3000/auth/login';
+    $authProvider.signupUrl = 'http://localhost:3000/auth/signup';
+
   });

@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('LettersAssesmentCtrl', function($scope, StudentService) {
+  .controller('LettersAssesmentCtrl', function($scope, $http, $auth, StudentService) {
 
     var letters = [ {
                      upper: "A", 
@@ -175,7 +175,9 @@ angular.module('HappyTree')
       $scope.startButton = true
       $scope.sound = false
       $scope.finish = false
+
       $scope.allStudents = [{ID:0, firstName: "Matias", lastName:"Meneses"},{ID:0, firstName: "Tim", lastName:"Ryan"},{ID:0, firstName: "Sam", lastName:"Lewis"} ]
+      
       $scope.selectedStudent = {}
 
       // $scope.setStudent = function(selectedStudent) {
@@ -273,6 +275,13 @@ angular.module('HappyTree')
 
       $scope.save =  function ( ) {
 
+        $http.get('http://localhost:3000/api/users')
+          .success(function(data) {
+            console.log(data)
+          })
+          .error(function(data) {
+            console.log(data)
+          });
       }
 
 
