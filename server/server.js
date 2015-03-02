@@ -90,19 +90,63 @@ router.route('/users/:user_id')
       });
   });
 
+//////////////////// SAVE STUDENT /////////////////
+
 router.route('/students')
   .post(isAuthenticated, function(req,res) {
-    var student = new Student {
+
+    var student = new Student ({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       currentGrade: req.body.currentGrade,
-      currentTeacher: req.body.currentTeacher
-    }
+      currentTeacherID: req.body.currentTeacherID
+    })
 
     student.save(function(){
-      res.send('New student saved!')
+    
+      Student.find({currentTeacherID: req.body.currentTeacherID}, function(err, students) {
+        if (err)
+          res.send(err);
+        res.json(students)
+      })
     })
   })
+
+//////////////////// Get STUDENTs /////////////////
+router.route('/students')
+  .get(isAuthenticated, function(req,res) {
+    Student.find({currentTeacherID: req.query.currentTeacherID}, function(err, students) {
+      if (err)
+        res.send(err);
+      res.json(students)
+    })
+  });
+
+  //////////////////// update STUDENTs /////////////////
+
+  router.route('/students')
+  .put(isAuthenticated, function(req,res) {
+
+    Student.findOne({_id: req.body._id}, function(err, student) {
+
+      student.firstName = req.body.firstName
+      student.lastName = req.body.lastName
+      student.currentGrade = req.body.currentGrade
+      student.currentTeacherID = req.body.currentTeacherID
+      student.letterAssesmentScores = req.body.letterAssesmentScores
+
+      student.save( function(){
+        Student.find({currentTeacherID: req.body.currentTeacherID}, function(err, students) {
+          if (err)
+            res.send(err);
+          res.json(students)
+        })
+      })
+
+    })
+  });
+
+
 
 
 

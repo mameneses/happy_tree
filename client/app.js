@@ -1,4 +1,4 @@
-angular.module('HappyTree', ['ngRoute', 'satellizer'])
+angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js'])
   .config(function($routeProvider, $authProvider) {
     $routeProvider
       .when('/', {
@@ -24,6 +24,10 @@ angular.module('HappyTree', ['ngRoute', 'satellizer'])
       .when('/letters_assesment', {
         templateUrl: 'views/letters_assesment.html',
         controller: 'LettersAssesmentCtrl'
+      })
+      .when('/students', {
+        templateUrl: 'views/students.html',
+        controller: 'StudentsCtrl'
       })
       .otherwise('/')
 

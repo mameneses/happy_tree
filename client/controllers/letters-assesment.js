@@ -163,6 +163,10 @@ angular.module('HappyTree')
         return o;
       };
 
+      $scope.isAuthenticated = function() {
+      return $auth.isAuthenticated();
+    };
+
       $scope.letterList = shuffle(angular.copy(letters));
       var letterList = $scope.letterList
       $scope.correctLetter = letterList[0]
@@ -176,18 +180,14 @@ angular.module('HappyTree')
       $scope.sound = false
       $scope.finish = false
 
-      $scope.allStudents = [{ID:0, firstName: "Matias", lastName:"Meneses"},{ID:0, firstName: "Tim", lastName:"Ryan"},{ID:0, firstName: "Sam", lastName:"Lewis"} ]
-      
+      $scope.allStudents = StudentService.getAllStudents()
+      console.log($scope.allStudents)
+
       $scope.selectedStudent = {}
 
       // $scope.setStudent = function(selectedStudent) {
       //   studentService.setCurrentStudent(selectedStudent)
       // }
-      
-      // $scope.$on('handleStudentBoradcast', function() {
-      //   $scope.currentStudent = studentService.firstName
-      // })
-
 
       var filterByUpper = function (letterObject) {
         return letterObject.upper != $scope.correctLetter.upper
@@ -213,9 +213,9 @@ angular.module('HappyTree')
 
       $scope.recordAnswer = function (guess) {
         if (guess.upper == $scope.correctLetter.upper) {
-          $scope.correctAnswers.push(guess)
+          $scope.correctAnswers.push(guess.upper)
         } else {
-          $scope.incorrectAnswers.push(guess)
+          $scope.incorrectAnswers.push(guess.upper)
         }
       }
 
@@ -230,7 +230,6 @@ angular.module('HappyTree')
       }
 
       $scope.letterGuess = function (guessedLetter) {
-        console.log($scope.correctLetter)
         $scope.recordAnswer(guessedLetter)
         $scope.changeCorrectLetter()
         $scope.makeNewBoard()
@@ -245,6 +244,7 @@ angular.module('HappyTree')
         $scope.startButton = true
         $scope.upper = false
         $scope.lower = false
+        $scope.sound = false
       }
 
       $scope.startLetterAssesment = function (type) {
@@ -257,7 +257,7 @@ angular.module('HappyTree')
           $scope.lower =true 
         } else {
           $scope.sound = true
-          $scope.lower =true
+          $scope.lower = true
         }
         $scope.playCorrectAudio()
 
@@ -273,15 +273,25 @@ angular.module('HappyTree')
         $scope.finish = false
       }
 
-      $scope.save =  function ( ) {
+      $scope.save =  function () {
+        var assesmentType = ""
+        if ($scope.upper) {
+          assesmentType = "upper"
+        } else if ($scope.lower && !$scope.sound) {
+          assesmentType = "lower"
+        } else if ($scope.sound) {
+          assesmentType = "sound"
+        }
 
-        $http.get('http://localhost:3000/api/users')
-          .success(function(data) {
-            console.log(data)
-          })
-          .error(function(data) {
-            console.log(data)
-          });
+        var assesment = {
+          type: assesmentType,
+          date: new Date(),
+          correctCount: $scope.correctAnswers.length.toString(),
+          incorrectCount: $scope.incorrectAnswers.length.toString(),
+          missedLetters: $scope.incorrectAnswers
+        }
+
+        StudentService.saveStudentLetterAssesment(assesment)     
       }
 
 

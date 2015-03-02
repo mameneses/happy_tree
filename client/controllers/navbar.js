@@ -7,5 +7,6 @@ angular.module('HappyTree')
     $scope.logout = function() {
       $auth.logout();
       delete $window.localStorage.currentUser;
+      $window.localStorage.allStudents = [];
     };
   });

@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('SightWordsCtrl', function($scope) {
+  .controller('SightWordsCtrl', function($scope, StudentService) {
 
     var sightWords = [ 
                   { words: [
@@ -54,7 +54,9 @@ angular.module('HappyTree')
         for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
       };
-    $scope.students = [{name:"Bill"},{name:"Sue"},{name:"Tim"}]
+
+    $scope.selectedStudent = {}
+    $scope.allStudents = StudentService.getAllStudents()
     shuffle(sightWords[0].words)
     $scope.sightWords = angular.copy(sightWords[0])
     $scope.correctSightWordCount = 0

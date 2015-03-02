@@ -4,8 +4,8 @@ var schema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   currentGrade: String,
-  currentTeacher: Object,
-  letterAssesmentScores:[{date: Date, correct: Number, missedLetters:[]}]
+  currentTeacherID: String,
+  letterAssesmentScores:[{type: String, date: Date, correctCount: Number, incorrectCount: Number, missedLetters:[]}]
 })
 
 var Student = mongoose.model('Student', schema);

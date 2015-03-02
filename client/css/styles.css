@@ -55,6 +55,12 @@ a:hover {
   width: 315px;
   margin: 10% auto;
 }
+
+.student-panel {
+  width:500px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
  
 .signup-or-separator {
   position: relative;
@@ -247,6 +253,10 @@ a:hover {
   right: 5px;
   top: -20px;
 }
+
+.pointer:hover {
+  cursor:pointer;
+}
  
 .tile:hover {
   cursor: pointer;
@@ -289,7 +299,7 @@ a:hover {
 
 .btn-holder {
   width:50%;
-  margin: 0 auto
+  margin: 0 auto;
 }
 
 .done-text {
@@ -300,4 +310,58 @@ a:hover {
 
 .done-gif {
   margin-top: 50px;
+}
+
+.student-list {
+  margin:0 auto;
+  width: 300px;
+}
+
+.panel {
+  margin-bottom: 50px;
+}
+
+.animal-alphabet-container {
+  width:80%;
+}
+
+.sound-icon-tile {
+  height:50px;
+  margin-bottom: 10px;
+  margin-top:30px;
+}
+
+.letter-assesment-tile {
+  height:175px;
+  width:;
+}
+
+.letter-assesment-lower {
+  text-transform: lowercase;
+}
+
+.letter-assesment-form-control {
+  width:200px;
+}
+
+.student-icons {
+  margin-left: 8px;
+}
+
+.red {
+  color:red;
+}
+
+.edit-color {
+  color:#2196f3;
+}
+
+.green {
+  color:#1FE046;
+}
+
+.stats-panel {
+  width:500px;
+  padding:15px;
+  background-color: white;
 }
