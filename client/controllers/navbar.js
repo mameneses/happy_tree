@@ -4,6 +4,8 @@ angular.module('HappyTree')
       return $auth.isAuthenticated();
     };
 
+    $scope.currentUser = $rootScope.currentUser
+
     $scope.logout = function() {
       $auth.logout();
       delete $window.localStorage.currentUser;

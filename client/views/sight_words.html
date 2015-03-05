@@ -1,31 +1,73 @@
-<div class="row">
-  <div class="col-sm-6"></div>
-  <div class="col-sm-2">Student: 
-  <form name="studentFrom">
-    <fieldset class="form-group">
-      <select ng-model="selectedStudent" class="form-control" ng-options="student as student.firstName for student in allStudents"  title="Students">
-        <option value="">Choose Student</option>
-      </select>
-    </fieldset>
-  </form>
-  </div>
-  <div class="col-sm-2">
-    <div class="alphabet" >Grade: {{sightWords.grade  }}</div>
-  </div>  
-  <div class="col-sm-2">
-    <div class="alphabet" >Sight Words</div>
-  </div>
-</div>
-
-<div class="row">
-  <div ng-repeat="word in sightWords.words">
-    <div ng-click="checkSightWord(word)" class="col-sm-2 col-xs-4 img-thumbnail"> 
-      <h3 ng-show="word.correct" class="sight-word-plus">+</h3>
-      <center><h2>{{word.word}}</h2></center>
+<div ng-show="sightWordsShowing">
+  <div class="row">
+    <div class="col-sm-4"><h3 class="center-text"><i class="ion-leaf green"></i>Sight Words</h3></div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2" ng-show="isAuthenticated()">Student: 
+    <form name="studentFrom">
+      <fieldset class="form-group">
+        <select ng-model="selectedStudent" class="form-control" ng-options="student as student.firstName + ' ' + student.lastName for student in allStudents | orderBy:'firstName'"  title="Students">
+          <option value="">Choose Student</option>
+        </select>
+      </fieldset>
+    </form>
+    </div>
+    <div class="col-sm-2">
+      <div>Sight Word List:</div>
+      <fieldset class="form-group">
+        <select ng-model="sightWords" class="form-control" ng-options="list as list.name for list in allSightWordLists"  title="Sight Word Lists">
+          <option value="">Choose list</option>
+        </select>
+      </fieldset>
+    </div>  
+    <div class="col-sm-2">
+      <center><button ng-click="toggleView()" class="btn btn-success">Create List</button></center>
     </div>
   </div>
+
+  <div class="row">
+    <div ng-repeat="word in sightWords.words">
+      <div ng-click="checkSightWord(word)" class="col-sm-2 col-xs-4 img-thumbnail"> 
+        <h3 ng-show="word.correct" class="sight-word-plus">+</h3>
+        <center><h3>{{word.word}}</h3></center>
+      </div>
+    </div>
+  </div>
+  <div class = "row">
+    <div ng-click="save()" class="col-sm-2 btn btn-success btn-block" ng-show="isAuthenticated()"><center><h2>Save</h2></center></div>
+    <div class="col-sm-2 btn btn-danger btn-block" ng-click="clear()"><center><h2>Clear</h2></center></div>
+  </div>
 </div>
-<div class = "row">
-  <div class="col-sm-2 btn btn-primary btn-block"><center><h2>Save</h2></center></div>
-  <div class="col-sm-2 btn btn-danger btn-block" ng-click="clear()"><center><h2>Clear</h2></center></div>
+<div ng-show="creatListShowing" >
+  <div class="row">
+    <div class="col-sm-10"></div>
+    <div class="col-sm-2">
+      <center><button ng-click="toggleView()" class="btn btn-success">Back to Sight Words</button></center>
+    </div>
+  </div>
+  <div class="center-form panel">
+    <div class="panel-body">
+      <h4 class="text-center"> Custom Sight Word List  <i class="ion-edit green"></i> </h4>
+
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : newListForm.name.$invalid && newListForm.name.$dirty }">
+          <input class="form-control input-lg" type="text" id="name" name="name" ng-model="newList.name" placeholder="List Name" required>
+          <span class="form-control-feedback"></span>
+        </div>
+
+        <div>
+          <ol>
+            <li ng-repeat="word in newList.words"> {{ word.word }} </li>
+          </ol>
+        </div>
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : newListForm.newWord.$invalid && newListForm.newWord.$dirty }">
+          <input class="form-control input-lg" type="text" id="newWord" name="newWord" ng-model="newWord.word" placeholder="Word" required>
+          <span class="form-control-feedback"></span>
+        </div>
+
+        <button ng-click="addWord()" class="btn btn-block green">Add Word</button>
+        <br/>
+
+        <button ng-click="saveList()" class="btn btn-block btn-success">Save List</button>
+        <br/>
+    </div>
+  </div>
 </div>

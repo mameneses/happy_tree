@@ -1,22 +1,35 @@
+<div class="stats-page" ng-show="warningShowing">
+  <div class="panel panel-danger warning-panel">
+    <div class="panel-heading">
+      <h5>Are you sure you want to delete {{currentStudent.firstName}} {{currentStudent.lastName}}?</h5>
+    </div>
+    <div class="panel-body row">
+      <div class="col-xs-6 center-text"><button ng-click="deleteStudent(currentStudent)" class="btn warning-btns">Yes, delete</button></div>
+      <div class="col-xs-6 center-text">
+        <button ng-click="hideDeleteWarning()" class="btn warning-btns">No</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="containter col-sm-6">
     <div class="center-form panel student-panel">
-      <h1 class="text-center">Students <i ng-click="showAddStudent()" ng-hide="addStudentShowing"class="ion-person-add edit-color pointer"></i></h1>
+      <h1 class="text-center"> <i class="ion-leaf green"></i>Students </h1>
       <div class="student-list">
         <ol>
-          <div ng-repeat="student in students">
+          <div ng-repeat="student in students | orderBy:'firstName'">
             <li ng-mouseover="studentHover = true" ng-mouseleave="studentHover = false">
               <h5>{{student.firstName}} {{student.lastName }} 
               <span ng-show="studentHover">
-                <span ng-click="showEditStudent(student)"class="ion-edit student-icons edit-color"></span> 
-                <span ng-click="showStats(student)" class="ion-stats-bars student-icons green"></span> 
-                <span class="ion-minus-circled student-icons red"></span>
+                <span ng-click="showEditStudent(student)"class="ion-edit student-icons green"></span> 
+                <span ng-click="showStats(student)" class="ion-stats-bars student-icons lt-green"></span> 
               </span>
               </h5>
             </li>
           </div>
         </ol>
+          <center><button ng-click="showAddStudent()" ng-hide="addStudentShowing"class="ion-person-add btn-success btn-block pointer"> Add Student</button></center>
       </div>
     </div>
   </div>
@@ -24,7 +37,7 @@
      
       <div ng-show="addStudentShowing" class="center-form panel">
         <div class="panel-body">
-          <h4 class="text-center"><i class="ion-person-add"></i> Add Student</h4>
+          <h4 class="text-center">Add Student <i class="green ion-person-add"></i></h4>
           <form method="post" ng-submit="addStudent(student)" name="addStudentForm">
 
             <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.firstName.$invalid && addStudentForm.firstName.$dirty }">
@@ -42,7 +55,7 @@
               <span class="ion-university form-control-feedback"></span>
             </div>
      
-            <button type="submit" class="btn btn-block btn-primary">Add Student</button>
+            <button type="submit" class="btn btn-block btn-success">Add Student</button>
             <br/>
 
           </form>
@@ -51,7 +64,7 @@
 
       <div ng-show="editStudentShowing" class="center-form panel">
         <div class="panel-body">
-          <h4 class="text-center"><i class="ion-edit"></i> Edit Student</h4>
+          <h4 class="text-center">Edit Student  <i class="ion-edit green"></i> </h4>
           <form method="put" ng-submit="editStudent(currentStudent)" name="editStudentForm">
 
             <div class="form-group has-feedback" ng-class="{ 'has-error' : editStudentForm.firstName.$invalid && editStudentForm.firstName.$dirty }">
@@ -69,20 +82,51 @@
               <span class="ion-university form-control-feedback"></span>
             </div>
      
-            <button type="submit" class="btn btn-block btn-primary">Edit Student</button>
+            <button type="submit" class="btn btn-block btn-success">Edit Student</button>
             <br/>
 
           </form>
+          <button ng-click="showDeleteWarning(currentStudent)" class="btn btn-block btn-danger">Delete Student</button>
         </div>
       </div>
 
       <div class="center-form panel stats-panel" ng-show="statsShowing">
-        <center><h3>Letter Assesment</h3></center>
-        <center><h6> For {{currentStudent.firstName}} {{currentStudent.lastName}}</h6></center>
+        <h3 class="center-text">Assesments</h3>
+        <h6 class="center-text"> For {{currentStudent.firstName}} {{currentStudent.lastName}}</h6>
+        <section class="centered-pills">
+          <ul class="nav nav-pills">
+            <li ng-class="{active: letterAssesmentChartShowing}"><a href="" ng-click="showLetterAssesmentChart()"> Letters</a> </li>
+            <li ng-class="{active: sightWordAssesmentChartShowing}"><a href="" ng-click="sightWordAssesmentChart()"> Sight Words</a> </li> 
+          </ul>
+         
+        </section>
         <canvas id="line" class="chart chart-line" data="data"
           labels="labels" legend="true" series="series"
           click="onClick">
         </canvas> 
+        <div ng-show="letterAssesmentChartShowing">
+          <h4 class="center-text">Capital Assesments</h4>
+          <div>
+            <h6  class="center-text" ng-repeat="score in capitalAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
+          </div>
+          <h4 class="center-text">Lower Assesments</h4>
+          <div>
+            <h6  class="center-text" ng-repeat="score in lowerAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
+          </div>
+          <h4 class="center-text">Sound Assesments</h4>
+          <div>
+            <h6  class="center-text" ng-repeat="score in soundAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
+          </div>
+        </div>
+
+        <div ng-show="sightWordAssesmentChartShowing">
+          <div ng-repeat="assesments in sightWordAssesments">
+            <h4 class="center-text">{{assesments[0].name}}</h4>
+            <div >
+              <h6  ng-repeat="score in assesments" class="center-text" ng-repeat="score in capitalAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
+            </div>
+          </div>
+        </div>
       </div>
      
     </div>

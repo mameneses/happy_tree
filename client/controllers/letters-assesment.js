@@ -164,8 +164,8 @@ angular.module('HappyTree')
       };
 
       $scope.isAuthenticated = function() {
-      return $auth.isAuthenticated();
-    };
+        return $auth.isAuthenticated();
+      };
 
       $scope.letterList = shuffle(angular.copy(letters));
       var letterList = $scope.letterList
@@ -181,13 +181,8 @@ angular.module('HappyTree')
       $scope.finish = false
 
       $scope.allStudents = StudentService.getAllStudents()
-      console.log($scope.allStudents)
 
       $scope.selectedStudent = {}
-
-      // $scope.setStudent = function(selectedStudent) {
-      //   studentService.setCurrentStudent(selectedStudent)
-      // }
 
       var filterByUpper = function (letterObject) {
         return letterObject.upper != $scope.correctLetter.upper
@@ -195,7 +190,6 @@ angular.module('HappyTree')
 
       $scope.makeNewBoard = function () {
         $scope.newBoardLetters = angular.copy($scope.letterList).filter(filterByUpper)
-        console.log($scope.newBoardLetters.length)
         $scope.letterBoard = shuffle($scope.newBoardLetters)
         $scope.letterBoard = $scope.letterBoard.slice(0,8)
         $scope.letterBoard.push($scope.correctLetter)
@@ -213,9 +207,9 @@ angular.module('HappyTree')
 
       $scope.recordAnswer = function (guess) {
         if (guess.upper == $scope.correctLetter.upper) {
-          $scope.correctAnswers.push(guess.upper)
+          $scope.correctAnswers.push($scope.correctLetter.upper)
         } else {
-          $scope.incorrectAnswers.push(guess.upper)
+          $scope.incorrectAnswers.push($scope.correctLetter.upper)
         }
       }
 
@@ -262,6 +256,7 @@ angular.module('HappyTree')
         $scope.playCorrectAudio()
 
       }
+      
       $scope.finishAssesment = function () {
         $scope.playDoneAudio()
         $scope.save()
@@ -291,7 +286,11 @@ angular.module('HappyTree')
           missedLetters: $scope.incorrectAnswers
         }
 
-        StudentService.saveStudentLetterAssesment(assesment)     
+        var student = StudentService.getCurrentStudent()
+
+        student.letterAssesmentScores.push(JSON.stringify(assesment))
+
+        StudentService.updateStudent(student)     
       }
 
 

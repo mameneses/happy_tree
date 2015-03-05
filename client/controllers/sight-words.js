@@ -1,7 +1,7 @@
 angular.module('HappyTree')
-  .controller('SightWordsCtrl', function($scope, StudentService) {
+  .controller('SightWordsCtrl', function($scope, $window, StudentService, UserService, $auth) {
 
-    var sightWords = [ 
+    $scope.defaultSightWordLists = [ 
                   { words: [
                             { word:"a", correct: false }
                           , { word: "and", correct: false }
@@ -46,19 +46,33 @@ angular.module('HappyTree')
 
                           ],
 
-                      grade: "Pre-Primer" 
-                    }
+                      name: "Pre-Primer" 
+                    },
                   ];
+
+    $scope.isAuthenticated = function() {
+        return $auth.isAuthenticated();
+      };
 
     var shuffle = function(o){
         for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
       };
 
+    $scope.currentUser = JSON.parse($window.localStorage.currentUser);
+
+    if ($scope.currentUser.sightWordLists) {
+      $scope.allSightWordLists = $scope.defaultSightWordLists.concat($scope.currentUser.sightWordLists)
+    } else {
+      $scope.allSightWordLists = $scope.defaultSightWordLists
+    }
+
+    $scope.sightWordsShowing = true
+    $scope.creatListShowing = false
+
     $scope.selectedStudent = {}
     $scope.allStudents = StudentService.getAllStudents()
-    shuffle(sightWords[0].words)
-    $scope.sightWords = angular.copy(sightWords[0])
+    $scope.sightWords = angular.copy($scope.allSightWordLists[0])
     $scope.correctSightWordCount = 0
 
     var sightWordIncorrect = function (word) {
@@ -80,6 +94,71 @@ angular.module('HappyTree')
     }
 
     $scope.clear = function () {
-      $scope.sightWords = angular.copy(sightWords[0])
+      $scope.sightWords = angular.copy($scope.allSightWordLists[0])
+      $scope.correctSightWordCount = 0
     }
+
+    $scope.save = function() {
+      var missedWords = []
+      for ( var i = 0; i < $scope.sightWords.words.length; i++) {
+        if ($scope.sightWords.words[i].correct == false) {
+          missedWords.push($scope.sightWords.words[i].word)
+        }
+      }
+
+      var incorrectSightWordCount = missedWords.length
+
+      var assesment = {
+        name: $scope.sightWords.name,
+        date: new Date(),
+        correctCount: $scope.correctSightWordCount.toString(),
+        incorrectCount: incorrectSightWordCount.toString(),
+        missedWords: missedWords
+      }
+
+      $scope.selectedStudent.sightWordAssesmentScores.push(JSON.stringify(assesment))
+
+      console.log($scope.selectedStudent)
+
+      StudentService.updateStudent($scope.selectedStudent)
+
+      $scope.clear()
+
+    }
+
+    $scope.newWord = {word:"", correct:false}
+    $scope.newList = {words:[], name:""}
+
+    $scope.addWord = function() {
+      $scope.newList.words.push($scope.newWord)
+      $scope.newWord = {word:"", correct:false}
+    }
+
+    $scope.toggleView = function (){
+      if ($scope.sightWordsShowing) {
+        $scope.sightWordsShowing = false
+        $scope.creatListShowing = true
+      } else {
+        $scope.sightWordsShowing = true
+        $scope.creatListShowing = false
+      }
+    }
+
+    $scope.saveList = function() {
+      if($scope.currentUser.sightWordLists){
+        $scope.currentUser.sightWordLists.push($scope.newList) 
+      } else {
+        $scope.currentUser.sightWordLists = [$scope.newList]
+      }
+
+      UserService.updateCurrentUser($scope.currentUser)
+
+      $scope.currentUser = JSON.parse($window.localStorage.currentUser);
+
+      console.log($scope.currentUser)
+
+      $scope.newWord = {word:"", correct:false}
+      $scope.newList = {words:[], name:""}
+    }
+
   });

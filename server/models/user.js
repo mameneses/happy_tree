@@ -7,6 +7,7 @@ var schema = new mongoose.Schema({
   lastName: String,
   picture: String,
   school: String,
+  sightWordLists: [],
   accessToken: String
 })
 

@@ -90,6 +90,27 @@ router.route('/users/:user_id')
       });
   });
 
+  router.route('/users')
+  .put(isAuthenticated, function(req, res) { 
+
+    User.findById(req.body._id, function(err, user) {
+
+      user.firstName = req.body.firstName,
+      user.lastName = req.body.lastName,
+      user.picture = req.body.picture,
+      user.school = req.body.school,
+      user.sightWordLists = req.body.sightWordLists
+
+      user.save(function(){
+        User.findById(req.body._id, function(err, newUser) {
+          if (err)
+              res.send(err);
+          res.json(newUser);
+      });
+      }) 
+    })
+  });
+
 //////////////////// SAVE STUDENT /////////////////
 
 router.route('/students')
@@ -134,6 +155,7 @@ router.route('/students')
       student.currentGrade = req.body.currentGrade
       student.currentTeacherID = req.body.currentTeacherID
       student.letterAssesmentScores = req.body.letterAssesmentScores
+      student.sightWordAssesmentScores = req.body.sightWordAssesmentScores
 
       student.save( function(){
         Student.find({currentTeacherID: req.body.currentTeacherID}, function(err, students) {
@@ -146,9 +168,18 @@ router.route('/students')
     })
   });
 
+  ////////////// DELETE STUDENT ///////////////////////////
 
-
-
+  router.route('/students')
+  .delete(isAuthenticated, function(req,res) {
+    Student.remove({_id: req.query._id}).remove(function(err) {
+      Student.find({currentTeacherID: req.query.currentTeacherID}, function(err, students) {
+        if (err)
+          res.send(err);
+        res.json(students)
+      })
+    })
+  });
 
 // ############# LOGIN ROUTE #############
 

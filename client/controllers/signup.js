@@ -1,18 +1,22 @@
 angular.module('HappyTree')
-  .controller('SignupCtrl', function($scope, $auth) {
+  .controller('SignupCtrl', function($scope, $auth, StudentService, $window, $rootScope) {
     $scope.signup = function() {
       var user = {
         firstName: $scope.firstName,
         lastName: $scope.lastName,
         email: $scope.email,
         password: $scope.password,
-        school: $scope.school
+        school: $scope.school,
+        sightWordLists: []
       };
-
-      console.log(user)
  
       // Satellizer
       $auth.signup(user)
+        .then(function(response) {
+          $window.localStorage.currentUser = JSON.stringify(response.data.user);
+          StudentService.getStudentsFromDB()
+          $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+        })
         .catch(function(response) {
           console.log(response.data);
         });
