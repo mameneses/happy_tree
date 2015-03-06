@@ -421,3 +421,20 @@ a:hover {
 .centered-pills ul.nav-pills { display:inline-block; }
 .centered-pills li { display:inline; }
 .centered-pills a { float:left; }
+
+.sight-word-lists {
+  font-size: 20px;
+}
+
+.delete-list-icon {
+  margin-left: 12px;
+}
+
+.delete-word-icon {
+  margin-left: 12px;
+  font-size: 15px;
+}
+
+.sightword-edit-word {
+  font-size: 15px;
+}

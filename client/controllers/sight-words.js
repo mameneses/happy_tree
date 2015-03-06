@@ -67,8 +67,10 @@ angular.module('HappyTree')
       $scope.allSightWordLists = $scope.defaultSightWordLists
     }
 
-    $scope.sightWordsShowing = true
-    $scope.creatListShowing = false
+    $scope.sightWordsShowing = false
+    $scope.createListShowing = true
+    $scope.listHover = false
+    $scope.wordHover = false
 
     $scope.selectedStudent = {}
     $scope.allStudents = StudentService.getAllStudents()
@@ -127,38 +129,73 @@ angular.module('HappyTree')
     }
 
     $scope.newWord = {word:"", correct:false}
-    $scope.newList = {words:[], name:""}
+    $scope.currentList = {words:[], name:""}
 
     $scope.addWord = function() {
-      $scope.newList.words.push($scope.newWord)
+      $scope.currentList.words.push($scope.newWord)
       $scope.newWord = {word:"", correct:false}
     }
 
     $scope.toggleView = function (){
       if ($scope.sightWordsShowing) {
         $scope.sightWordsShowing = false
-        $scope.creatListShowing = true
+        $scope.createListShowing = true
       } else {
         $scope.sightWordsShowing = true
-        $scope.creatListShowing = false
+        $scope.createListShowing = false
+      }
+    }
+
+
+    $scope.setCurrentList = function(list) {
+      $scope.currentList = list
+    }
+
+    $scope.deleteList = function (list) {
+      for ( var i = 0; i < $scope.currentUser.sightWordLists.length; i++) {
+        if ($scope.currentUser.sightWordLists[i].name == list.name) {
+          $scope.currentUser.sightWordLists.splice(i,1)
+        }
+      }
+      UserService.updateCurrentUser($scope.currentUser)
+      setTimeout(function() {$scope.currentUser = JSON.parse($window.localStorage.currentUser);}, 1000);
+    }
+
+     $scope.deleteWord = function (word) {
+      for ( var i = 0; i < $scope.currentList.words.length; i++) {
+        if ($scope.currentList.words[i].word == word) {
+          $scope.currentList.words.splice(i,1)
+        }
       }
     }
 
     $scope.saveList = function() {
+
       if($scope.currentUser.sightWordLists){
-        $scope.currentUser.sightWordLists.push($scope.newList) 
+        var noListMatch = true
+        for ( var i = 0; i < $scope.currentUser.sightWordLists.length; i++) {
+          if ($scope.currentUser.sightWordLists[i].name == $scope.currentList.name) {
+            $scope.currentUser.sightWordLists[i] = $scope.currentList
+            noListMatch = false 
+          }
+        }
+        if (noListMatch) {
+          $scope.currentUser.sightWordLists.push($scope.currentList) 
+        }
       } else {
-        $scope.currentUser.sightWordLists = [$scope.newList]
+        $scope.currentUser.sightWordLists = [$scope.currentList]
       }
 
       UserService.updateCurrentUser($scope.currentUser)
 
-      $scope.currentUser = JSON.parse($window.localStorage.currentUser);
+      setTimeout(function() {$scope.currentUser = JSON.parse($window.localStorage.currentUser);
+                             $scope.allSightWordLists = $scope.defaultSightWordLists.concat($scope.currentUser.sightWordLists)}, 1000);
+      
 
       console.log($scope.currentUser)
 
       $scope.newWord = {word:"", correct:false}
-      $scope.newList = {words:[], name:""}
+      $scope.currentList = {words:[], name:""}
     }
 
   });

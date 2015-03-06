@@ -20,7 +20,7 @@
       </fieldset>
     </div>  
     <div class="col-sm-2">
-      <center><button ng-click="toggleView()" class="btn btn-success">Create List</button></center>
+      <center><button ng-click="toggleView()" class="btn btn-success">Create/Edit List</button></center>
     </div>
   </div>
 
@@ -37,37 +37,58 @@
     <div class="col-sm-2 btn btn-danger btn-block" ng-click="clear()"><center><h2>Clear</h2></center></div>
   </div>
 </div>
-<div ng-show="creatListShowing" >
+<div ng-show="createListShowing" >
   <div class="row">
-    <div class="col-sm-10"></div>
-    <div class="col-sm-2">
+    <div class="col-sm-3 col-sm-offset-9">
       <center><button ng-click="toggleView()" class="btn btn-success">Back to Sight Words</button></center>
     </div>
   </div>
-  <div class="center-form panel">
-    <div class="panel-body">
-      <h4 class="text-center"> Custom Sight Word List  <i class="ion-edit green"></i> </h4>
-
-        <div class="form-group has-feedback" ng-class="{ 'has-error' : newListForm.name.$invalid && newListForm.name.$dirty }">
-          <input class="form-control input-lg" type="text" id="name" name="name" ng-model="newList.name" placeholder="List Name" required>
-          <span class="form-control-feedback"></span>
-        </div>
-
-        <div>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-2">
+      <div class="center-form panel">
+        <div class="panel-body">
+        <h4 class="text-center"> My Sight Word Lists</i> </h4>
           <ol>
-            <li ng-repeat="word in newList.words"> {{ word.word }} </li>
+            <li ng-mouseover="listHover = true" ng-mouseleave="listHover = false" ng-repeat="list in currentUser.sightWordLists" >
+              <a class="sight-word-lists" href="" ng-click="setCurrentList(list)">{{ list.name }}</a>
+              <span ng-show="listHover">
+                <span ng-click="deleteList(list)"class="ion-minus-circled delete-list-icon red pointer"></span> 
+              </span>
+
+            </li>
           </ol>
-        </div>
-        <div class="form-group has-feedback" ng-class="{ 'has-error' : newListForm.newWord.$invalid && newListForm.newWord.$dirty }">
-          <input class="form-control input-lg" type="text" id="newWord" name="newWord" ng-model="newWord.word" placeholder="Word" required>
-          <span class="form-control-feedback"></span>
-        </div>
+        </div>     
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="center-form panel">
+        <div class="panel-body">
+          <h4 class="text-center"> Create/Edit List  <i class="ion-edit green"></i> </h4>
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : currentListForm.name.$invalid && currentListForm.name.$dirty }">
+            <input class="form-control input-lg" type="text" id="name" name="name" ng-model="currentList.name" placeholder="List Name" required>
+            <span class="form-control-feedback"></span>
+          </div>
 
-        <button ng-click="addWord()" class="btn btn-block green">Add Word</button>
-        <br/>
+          <div>
+            <ol>
+              <li ng-mouseover="wordHover = true" ng-mouseleave="wordHover = false" ng-repeat="word in currentList.words" class="sightword-edit-word"> {{ word.word }} 
+                <span ng-show="wordHover">
+                  <span ng-click="deleteWord(word.word)" class="ion-minus-circled delete-word-icon pointer red"></span> 
+                </span>
+              </li>
+            </ol>
+          </div>
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : currentListForm.newWord.$invalid && currentListForm.newWord.$dirty }">
+            <input class="form-control input-lg" type="text" id="newWord" name="newWord" ng-model="newWord.word" placeholder="New Word" ng-enter="addWord()" required>
+            <span class="form-control-feedback"></span>
+          </div>
 
-        <button ng-click="saveList()" class="btn btn-block btn-success">Save List</button>
-        <br/>
+          <button ng-click="addWord()"  class="btn btn-block green">Add Word</button>
+          <br>
+          <button ng-click="saveList()" class="btn btn-block btn-success">Save List</button>
+          <br/>
+        </div>
+      </div>
     </div>
   </div>
 </div>
