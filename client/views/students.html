@@ -15,21 +15,21 @@
 <div class="row">
   <div class="containter col-sm-6">
     <div class="center-form panel student-panel">
-      <h1 class="text-center"> <i class="ion-leaf green"></i>Students </h1>
+      <h1 class="text-center"> <i class="ion-leaf green"></i>Students <button ng-click="showAddStudent()" ng-hide="addStudentShowing"class="ion-person-add green btn-default pointer"> </button></h1>
       <div class="student-list">
         <ol>
           <div ng-repeat="student in students | orderBy:'firstName'">
             <li ng-mouseover="studentHover = true" ng-mouseleave="studentHover = false">
               <h5>{{student.firstName}} {{student.lastName }} 
               <span ng-show="studentHover">
-                <span ng-click="showEditStudent(student)"class="ion-edit student-icons green"></span> 
+                <span ng-click="showEditStudent(student)"class="ion-edit student-icons green"></span>
                 <span ng-click="showStats(student)" class="ion-stats-bars student-icons lt-green"></span> 
               </span>
               </h5>
             </li>
           </div>
         </ol>
-          <center><button ng-click="showAddStudent()" ng-hide="addStudentShowing"class="ion-person-add btn-success btn-block pointer"> Add Student</button></center>
+
       </div>
     </div>
   </div>
@@ -105,26 +105,37 @@
           click="onClick">
         </canvas> 
         <div ng-show="letterAssesmentChartShowing">
-          <h4 class="center-text">Capital Assesments</h4>
-          <div>
-            <h6  class="center-text" ng-repeat="score in capitalAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
-          </div>
-          <h4 class="center-text">Lower Assesments</h4>
-          <div>
-            <h6  class="center-text" ng-repeat="score in lowerAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
-          </div>
-          <h4 class="center-text">Sound Assesments</h4>
-          <div>
-            <h6  class="center-text" ng-repeat="score in soundAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
+          <div ng-repeat="assesments in letterAssesments">
+            <table  ng-if="assesments.length > 0" class="table table-condensed">
+              <tr>
+                <h5 ng-if="assesments.length > 0">{{letterAssesmentTitle(assesments)}}</h5>
+              </tr>
+              <tr>
+                <td>Dates:</td>
+                <td ng-repeat="score in assesments"  class="center-text">{{score.date | date: 'mediumDate'}} </td>
+              </tr>
+              <tr>
+                <td>Correct:</td>
+                <td ng-repeat="score in assesments" ng-class="{red: score.correctCount/26 < .33, yellow: score.correctCount/26 > .33 && score.correctCount/26 < .66, green: score.correctCount/26 >= .66}" class="center-text"> {{score.correctCount / 26 | percentage:0}}</td>
+              </tr>
+            </table>
           </div>
         </div>
 
         <div ng-show="sightWordAssesmentChartShowing">
           <div ng-repeat="assesments in sightWordAssesments">
-            <h4 class="center-text">{{assesments[0].name}}</h4>
-            <div >
-              <h6  ng-repeat="score in assesments" class="center-text" ng-repeat="score in capitalAssesments">{{score.date | date: 'mediumDate'}}  | <span class="lt-green"> {{score.correctCount}}</span> | <span class="red"> {{score.incorrectCount}} </span></h6>
-            </div>
+            <table  ng-if="assesments.length > 0" class="table table-condensed">
+            <tr><h5>{{assesments[0].name}}</h5></tr>
+            <tr>
+                <td>Dates:</td>
+                <td ng-repeat="score in assesments"  class="center-text">{{score.date | date: 'mediumDate'}} </td>
+              </tr>
+              <tr>
+                <td>Correct:</td>
+                <td ng-repeat="score in assesments" ng-class="{red: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) < .33, yellow: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) > .33 && score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) < .66, green: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) >= .66}" class="center-text"> 
+                {{score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) | percentage:0}}</td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

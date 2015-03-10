@@ -369,6 +369,10 @@ a:hover {
   color:rgba(0,180,0,1);
 }
 
+.yellow {
+  color: rgba(250,200,0,1);
+}
+
 .stats-panel {
   width:500px;
   padding:15px;
@@ -438,3 +442,10 @@ a:hover {
 .sightword-edit-word {
   font-size: 15px;
 }
+
+
+/*.letter-assesment-showing {
+  background-image: url("../img/happytree-find-the-letter.gif");
+  background-size: 300px 500px;
+  background-repeat: no-repeat;
+}*/

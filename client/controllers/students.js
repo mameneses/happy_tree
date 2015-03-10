@@ -26,8 +26,13 @@ angular.module('HappyTree')
       $scope.showLetterAssesmentChart()      
     }
 
+    $scope.toPercentage =  function (input, decimals) {
+      return $filter('number')(input * 100, decimals);
+    };
+
     $scope.showLetterAssesmentChart = function() {
 
+      console.log($scope.currentStudent)
       $scope.letterAssesmentChartShowing = true
       $scope.sightWordAssesmentChartShowing = false
 
@@ -37,30 +42,26 @@ angular.module('HappyTree')
         data = [[0],[],[]]
       }  
 
-      $scope.capitalAssesments = []
-      $scope.lowerAssesments = []
-      $scope.soundAssesments = []
-
-      
+      $scope.letterAssesments = [[],[],[]]
 
       for ( var i = 0; i < $scope.currentStudent.letterAssesmentScores.length; i++) {
         var assesment = JSON.parse($scope.currentStudent.letterAssesmentScores[i])
         if (assesment.type == "upper") {
-          $scope.capitalAssesments.push(assesment)
-          data[0].push(parseInt(assesment.correctCount))  
+          $scope.letterAssesments[0].push(assesment)
+          data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))  
         } else if (assesment.type == "lower") {
-          $scope.lowerAssesments.push(assesment)
-          data[1].push(parseInt(assesment.correctCount)) 
+          $scope.letterAssesments[1].push(assesment)
+          data[1].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
         } else if (assesment.type == "sound") {
-          $scope.soundAssesments.push(assesment)
-          data[2].push(parseInt(assesment.correctCount)) 
+          $scope.letterAssesments[2].push(assesment)
+          data[2].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
         }
       }  
 
       var labels = []
 
       if ($scope.currentStudent.letterAssesmentScores.length > 0) {
-        var assesmentCounts = [$scope.capitalAssesments.length, $scope.lowerAssesments.length, $scope.soundAssesments.length]
+        var assesmentCounts = [$scope.letterAssesments[0].length, $scope.letterAssesments[1].length, $scope.letterAssesments[2].length]
         $scope.labelCount = assesmentCounts.sort().reverse()[0]
       } else {
         $scope.labelCount = 1
@@ -71,6 +72,8 @@ angular.module('HappyTree')
         labels.push("Test " + (i+1).toString())
       } 
 
+      console.log($scope.capitalAssesments)
+
       $timeout(function () {
         $scope.series = ['Capital', 'Lowercase', "Sound"];
         $scope.data = data
@@ -78,9 +81,19 @@ angular.module('HappyTree')
       }, 10);
     }
 
-    $scope.sightWordAssesmentChart = function() {
+    $scope.letterAssesmentTitle = function(assesment) {
+      if (assesment[0].type == "upper") {
+        return "Capital Letters"
+      } else if (assesment[0].type == "lower") {
+        return "Lowercase Letters"
+      } else if (assesment[0].type == "sound") {
+        return "Letter Sounds"
+      } else {
+        return " "
+      }
+    }
 
-      console.log($scope.currentStudent)
+    $scope.sightWordAssesmentChart = function() {
 
       $scope.letterAssesmentChartShowing = false
       $scope.sightWordAssesmentChartShowing = true
@@ -109,22 +122,22 @@ angular.module('HappyTree')
         var assesment = JSON.parse($scope.currentStudent.sightWordAssesmentScores[i])
         if (assesment.name == series[0]) {
           $scope.sightWordAssesments[0].push(assesment)
-          data[0].push(parseInt(assesment.correctCount))  
+          data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         } else if (assesment.type == series[1]) {
           $scope.sightWordAssesments[1].push(assesment)
-          data[1].push(parseInt(assesment.correctCount)) 
+          data[1].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         } else if (assesment.type == series[2]) {
           $scope.sightWordAssesments[2].push(assesment)
-          data[2].push(parseInt(assesment.correctCount)) 
+          data[2].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         } else if (assesment.type == series[3]) {
           $scope.sightWordAssesments[3].push(assesment)
-          data[3].push(parseInt(assesment.correctCount)) 
+          data[3].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         } else if (assesment.type == series[4]) {
           $scope.sightWordAssesments[4].push(assesment)
-          data[4].push(parseInt(assesment.correctCount)) 
+          data[4].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         } else if (assesment.type == series[5]) {
           $scope.sightWordAssesments[5].push(assesment)
-          data[5].push(parseInt(assesment.correctCount)) 
+          data[5].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
         }
       }  
 

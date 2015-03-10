@@ -34,4 +34,9 @@ angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js'])
     $authProvider.loginUrl = 'http://localhost:3000/auth/login';
     $authProvider.signupUrl = 'http://localhost:3000/auth/signup';
 
-  });
+  })
+  .filter('percentage', ['$filter', function ($filter) {
+      return function (input, decimals) {
+      return $filter('number')(input * 100, decimals) + '%';
+    };
+  }]);

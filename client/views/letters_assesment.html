@@ -38,27 +38,30 @@
       </div>
     </div>
   </div>
-<div class="row" ng-show="upper || lower">
-  <div class="col-sm-9">
-  </div>
-  <div class="col-sm-3">
-    <h6 ng-show="isAuthenticated()">Assesment for {{selectedStudent.firstName}} {{selectedStudent.lastName}}</h6>
-    <!-- <div class="btn btn-success" ng-show="upper" ng-click="switchCase()">Switch to Lower Case</div>
-    <div class="btn btn-success" ng-show="lower" ng-click="switchCase()">Switch to Upper Case</div> -->
-  </div>
-</div>
-<div class="row" ng-hide="startButton">
-  <div><center><img class="sound-icon"ng-click="playCorrectAudio()" src="img/sound_icon.png"></center></div>
-  <div>
-    <center>
-      <div class="letters-board" ng-show="upper" ng-repeat="letter in letterBoard">
-        <div class="col-sm-4  col-xs-6 img-thumbnail" ng-click="letterGuess(letter)"><h1 class="comic-sans"><center>{{letter.upper}}</center></h1></div>
+  <div class="letter-assesment-showing">
+    <div class="row " ng-show="upper || lower">
+      <div class="col-sm-3 col-sm-offset-9">
+        <h6 ng-show="isAuthenticated()">Assesment for {{selectedStudent.firstName}} {{selectedStudent.lastName}}</h6>
+        <!-- <div class="btn btn-success" ng-show="upper" ng-click="switchCase()">Switch to Lower Case</div>
+        <div class="btn btn-success" ng-show="lower" ng-click="switchCase()">Switch to Upper Case</div> -->
       </div>
-      <div class="letters-board" ng-show="lower" ng-repeat="letter in letterBoard">
-        <div class="col-sm-4 img-thumbnail" ng-click="letterGuess(letter)">
-          <h1 class="comic-sans"><center>{{letter.lower}}</center></h1>
+    </div>
+    <div class="row" ng-hide="startButton">
+
+    <div><center><img class="sound-icon"ng-click="playCorrectAudio()" src="img/sound_icon.png"></center></div>
+
+    <div>
+      <center>
+        <div class="letters-board" ng-show="upper" ng-repeat="letter in letterBoard">
+          <div class="col-sm-4  col-xs-6 img-thumbnail" ng-click="letterGuess(letter)">
+            <h1 class="comic-sans"><center>{{letter.upper}}</center></h1>
+          </div>
         </div>
-      </div>
-    </center>
+        <div class="letters-board" ng-show="lower" ng-repeat="letter in letterBoard">
+          <div class="col-sm-4 img-thumbnail" ng-click="letterGuess(letter)">
+            <h1 class="comic-sans"><center>{{letter.lower}}</center></h1>
+          </div>
+        </div>
+      </center>
+    </div>
   </div>
-</div>
