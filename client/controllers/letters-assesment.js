@@ -1,160 +1,186 @@
 angular.module('HappyTree')
-  .controller('LettersAssesmentCtrl', function($scope, $http, $auth, StudentService) {
+  .controller('LettersAssesmentCtrl', ['$scope', '$http', '$auth', 'StudentService', function($scope, $http, $auth, StudentService) {
 
     var letters = [ {
                      upper: "A", 
                      lower: "a",
-                     find_audio:"audio/a.m4a"
+                     find_audio:"audio/a.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "B", 
                      lower: "b", 
-                     find_audio:"audio/b.m4a"
+                     find_audio:"audio/b.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "C", 
                      lower: "c",
-                     find_audio:"audio/c.m4a"
+                     find_audio:"audio/c.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "D", 
                      lower: "d",
-                     find_audio:"audio/d.m4a"
+                     find_audio:"audio/d.m4a",
+                     sound_audio:" "
                      },
 
                     {
                      upper: "E", 
                      lower: "e", 
-                     find_audio:"audio/e.m4a"
+                     find_audio:"audio/e.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "F", 
                      lower: "f",
-                     find_audio:"audio/f.m4a"
+                     find_audio:"audio/f.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "G", 
                      lower: "g", 
-                     find_audio:"audio/g.m4a"
+                     find_audio:"audio/g.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "H", 
                      lower: "h", 
-                     find_audio:"audio/h.m4a"
+                     find_audio:"audio/h.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "I", 
                      lower: "i", 
-                     find_audio:"audio/i.m4a"
+                     find_audio:"audio/i.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "J", 
                      lower: "j", 
-                     find_audio:"audio/j.m4a"
+                     find_audio:"audio/j.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "K", 
                      lower: "k", 
-                     find_audio:"audio/k.m4a"
+                     find_audio:"audio/k.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "L", 
                      lower: "l", 
-                     find_audio:"audio/l.m4a"
+                     find_audio:"audio/l.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "M", 
                      lower: "m", 
-                     find_audio:"audio/m.m4a"
+                     find_audio:"audio/m.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "N", 
                      lower: "n", 
-                     find_audio:"audio/n.m4a"
+                     find_audio:"audio/n.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "O", 
                      lower: "o", 
-                     find_audio:"audio/o.m4a"
+                     find_audio:"audio/o.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "P", 
                      lower: "p", 
-                     find_audio:"audio/p.m4a"
+                     find_audio:"audio/p.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "Q", 
                      lower: "q", 
-                     find_audio:"audio/q.m4a"
+                     find_audio:"audio/q.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "R", 
                      lower: "r", 
-                     find_audio:"audio/r.m4a"
+                     find_audio:"audio/r.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "S", 
                      lower: "s", 
-                     find_audio:"audio/s.m4a"
+                     find_audio:"audio/s.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "T", 
                      lower: "t", 
-                     find_audio:"audio/t.m4a"
+                     find_audio:"audio/t.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "U", 
                      lower: "u", 
-                     find_audio:"audio/u.m4a"
+                     find_audio:"audio/u.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "V", 
                      lower: "v", 
-                     find_audio:"audio/v.m4a"
+                     find_audio:"audio/v.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "W", 
                      lower: "w", 
-                     find_audio:"audio/w.m4a"
+                     find_audio:"audio/w.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "X", 
                      lower: "x", 
-                     find_audio:"audio/x.m4a"
+                     find_audio:"audio/x.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "Y", 
                      lower: "y",
-                     find_audio:"audio/y.m4a"
+                     find_audio:"audio/y.m4a",
+                     sound_audio:" "
                      },
 
                      {
                      upper: "Z", 
                      lower: "z", 
-                     find_audio:"audio/z.m4a"
+                     find_audio:"audio/z.m4a",
+                     sound_audio:" "
                      }
                 ];
 
@@ -184,12 +210,12 @@ angular.module('HappyTree')
 
       $scope.selectedStudent = {}
 
-      var filterByUpper = function (letterObject) {
+      var removeCorrectLetter = function (letterObject) {
         return letterObject.upper != $scope.correctLetter.upper
       }
 
       $scope.makeNewBoard = function () {
-        $scope.newBoardLetters = angular.copy($scope.letterList).filter(filterByUpper)
+        $scope.newBoardLetters = angular.copy($scope.letterList).filter(removeCorrectLetter)
         $scope.letterBoard = shuffle($scope.newBoardLetters)
         $scope.letterBoard = $scope.letterBoard.slice(0,8)
         $scope.letterBoard.push($scope.correctLetter)
@@ -293,8 +319,6 @@ angular.module('HappyTree')
         StudentService.updateStudent(student)     
       }
 
-
-
-  });
+  }]);
 
 

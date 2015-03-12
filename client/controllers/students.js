@@ -22,7 +22,6 @@ angular.module('HappyTree')
       $scope.hideAll()
       $scope.statsShowing = true
       $scope.currentStudent = student
-
       $scope.showLetterAssesmentChart()      
     }
 
@@ -32,7 +31,6 @@ angular.module('HappyTree')
 
     $scope.showLetterAssesmentChart = function() {
 
-      console.log($scope.currentStudent)
       $scope.letterAssesmentChartShowing = true
       $scope.sightWordAssesmentChartShowing = false
 
@@ -44,8 +42,11 @@ angular.module('HappyTree')
 
       $scope.letterAssesments = [[],[],[]]
 
-      for ( var i = 0; i < $scope.currentStudent.letterAssesmentScores.length; i++) {
-        var assesment = JSON.parse($scope.currentStudent.letterAssesmentScores[i])
+      var letterForLoopLength = $scope.currentStudent.letterAssesmentScores.length 
+      var letterForLoopScores = $scope.currentStudent.letterAssesmentScores
+
+      for ( var i = 0; i < letterForLoopLength; i++) {
+        var assesment = JSON.parse(letterForLoopScores[i])
         if (assesment.type == "upper") {
           $scope.letterAssesments[0].push(assesment)
           data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))  
@@ -67,12 +68,9 @@ angular.module('HappyTree')
         $scope.labelCount = 1
       }
 
-
       for ( var i = 0; i < $scope.labelCount; i++) {
         labels.push("Test " + (i+1).toString())
       } 
-
-      console.log($scope.capitalAssesments)
 
       $timeout(function () {
         $scope.series = ['Capital', 'Lowercase', "Sound"];
@@ -114,12 +112,15 @@ angular.module('HappyTree')
 
         var onlyUnique = function (value, index, self) { 
           return self.indexOf(value) === index;
-        }
+        };
 
-        series = series.filter(onlyUnique)
+        series = series.filter(onlyUnique);
 
-      for ( var i = 0; i < $scope.currentStudent.sightWordAssesmentScores.length; i++) {
-        var assesment = JSON.parse($scope.currentStudent.sightWordAssesmentScores[i])
+      var sightWordForLoopLength = $scope.currentStudent.sightWordAssesmentScores.length;
+      var sightWordForLoopScores = $scope.currentStudent.sightWordAssesmentScores
+
+      for ( var i = 0; i < sightWordForLoopLength; i++) {
+        var assesment = JSON.parse(sightWordForLoopScores[i])
         if (assesment.name == series[0]) {
           $scope.sightWordAssesments[0].push(assesment)
           data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))

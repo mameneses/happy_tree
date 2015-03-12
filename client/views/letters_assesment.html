@@ -48,17 +48,17 @@
     </div>
     <div class="row" ng-hide="startButton">
 
-    <div><center><img class="sound-icon"ng-click="playCorrectAudio()" src="img/sound_icon.png"></center></div>
+    <div><center><img class="sound-icon pointer"ng-click="playCorrectAudio()" src="img/sound_icon.png"></center></div>
 
     <div>
       <center>
         <div class="letters-board" ng-show="upper" ng-repeat="letter in letterBoard">
-          <div class="col-sm-4  col-xs-6 img-thumbnail" ng-click="letterGuess(letter)">
+          <div class="col-sm-4  col-xs-6 img-thumbnail pointer" ng-click="letterGuess(letter)">
             <h1 class="comic-sans"><center>{{letter.upper}}</center></h1>
           </div>
         </div>
         <div class="letters-board" ng-show="lower" ng-repeat="letter in letterBoard">
-          <div class="col-sm-4 img-thumbnail" ng-click="letterGuess(letter)">
+          <div class="col-sm-4 img-thumbnail pointer" ng-click="letterGuess(letter)">
             <h1 class="comic-sans"><center>{{letter.lower}}</center></h1>
           </div>
         </div>
