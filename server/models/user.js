@@ -8,6 +8,8 @@ var schema = new mongoose.Schema({
   picture: String,
   school: String,
   sightWordLists: [],
+  recentAssesments: {letter:[], sightWords:[]},
+  progressTracker: {letter:{completed:[],pending:[],master:[]},sightWords:{completed:[],pending:[]},master:[]},
   accessToken: String
 })
 

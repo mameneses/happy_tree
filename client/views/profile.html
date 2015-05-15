@@ -1,0 +1,87 @@
+<div class="stats-page" ng-show="deleteWarningShowing">
+  <div class="panel panel-danger warning-panel">
+    <div class="panel-heading">
+      <h5>Are you sure you want to delete your account?</h5>
+    </div>
+    <div class="panel-body row">
+      <div class="col-xs-6 center-text"><button ng-click="deleteUser(currentUser)" class="btn warning-btns">Yes, delete</button></div>
+      <div class="col-xs-6 center-text">
+        <button ng-click="hideDeleteWarning()" class="btn warning-btns">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <div class="center-form panel">
+      <div class="panel-body">
+        <h4 class="text-center">Profile </h4>
+          <div class="form-group">
+            <h5 class="text-center">{{currentUser.email}}</h5>
+          </div>
+        <form method="put" ng-submit="editUser(currentUser)" name="editUserForm">
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.firstName.$invalid && editUserForm.firstName.$dirty }">
+            <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="currentUser.firstName" placeholder="First Name" required>
+            <span class="ion-person form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.firstName.$dirty" ng-messages="editUserForm.firstName.$error">
+              <div ng-message="required">First Name</div>
+              <div ng-message="server">{{errorMessage.firstName}}</div>
+            </div>
+          </div>
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.lastName.$invalid && editUserForm.lastName.$dirty }">
+            <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="currentUser.lastName" placeholder="Last Name" required>
+            <span class="form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.lastName.$dirty" ng-messages="editUserForm.lastName.$error">
+              <div ng-message="required">Last Name</div>
+              <div ng-message="server">{{errorMessage.lastName}}</div>
+            </div>
+          </div>
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.school.$invalid && editUserForm.school.$dirty }">
+            <input class="form-control input-lg" type="text" id="school" name="school" ng-model="currentUser.school" placeholder="School" required>
+            <span class="ion-university form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.school.$dirty" ng-messages="editUserForm.school.$error">
+              <div ng-message="required">Please fill in your school</div>
+              <div ng-message="server">{{errorMessage.school}}</div>
+            </div>
+          </div>
+
+          <div>Fill below to change password.</div>
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.password.$invalid && editUserForm.password.$dirty }">
+            <input class="form-control input-lg" type="password" name="password" ng-model="currentUser.password" placeholder="Current Password" ng-required="currentUser.newPassword1 || currentUser.newPassword2">
+            <span class="ion-key form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.password.$dirty" ng-messages="editUserForm.password.$error">
+              <div ng-message="required">Please fill in your current password</div>
+              <div ng-message="server">{{errorMessage.password}}</div>
+            </div>
+          </div>
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.newPassword1.$invalid && editUserForm.newPassword1.$dirty }">
+            <input class="form-control input-lg" type="password" name="newPassword1" ng-model="currentUser.newPassword1" placeholder="New Password" ng-required="currentUser.newPassword2 || currentUser.password">
+            <span class="ion-key form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.newPassword1.$dirty" ng-messages="editUserForm.newPassword1.$error">
+              <div ng-message="required">Please fill in your new password</div>
+              <div ng-message="server">{{errorMessage.newPassword1}}</div>
+            </div>
+          </div>
+
+          <div class="form-group has-feedback" ng-class="{ 'has-error' : editUserForm.newPassword2.$invalid && editUserForm.newPassword2.$dirty }">
+            <input class="form-control input-lg" type="password" name="newPassword2" ng-model="currentUser.newPassword2" placeholder="Confirm New Password" ng-required="currentUser.newPassword1 || currentUser.password">
+            <span class="ion-key form-control-feedback"></span>
+            <div class="help-block" ng-if="editUserForm.newPassword2.$dirty" ng-messages="editUserForm.newPassword2.$error">
+              <div ng-message="required">Please confirm in your new password</div>
+              <div ng-message="server">{{errorMessage.newPassword2}}</div>
+            </div>
+          </div>
+   
+          <button type="submit" class="btn btn-block btn-success">Update Profile</button>
+          <br/>
+
+        </form>
+        <button ng-click="showDeleteWarning()" class="btn btn-block btn-danger">Delete Profiile</button>
+      </div>
+    </div>
+</div>
+

@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('SignupCtrl', function($scope, $auth, StudentService, $window, $rootScope) {
+  .controller('SignupCtrl', ['$scope', '$auth', 'StudentService', '$window', '$rootScope', function($scope, $auth, StudentService, $window, $rootScope) {
     $scope.signup = function() {
       var user = {
         firstName: $scope.firstName,
@@ -22,4 +22,4 @@ angular.module('HappyTree')
         });
     }; 
 
-  });
+  }]);

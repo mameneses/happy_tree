@@ -1,15 +1,19 @@
 angular.module('HappyTree')
-  .controller('StudentsCtrl', ['$scope', '$rootScope', '$window', '$auth', 'StudentService', '$timeout', '$filter', function($scope, $rootScope, $window, $auth, StudentService, $timeout, $filter) {
-    
-    if ($window.localStorage.allStudents.length == 0) {
-      $scope.students = []
-    } else {
-      $scope.students = JSON.parse($window.localStorage.allStudents)
+  .controller('StudentsCtrl', ['$scope', '$rootScope', '$window', '$auth', 'UserService', 'StudentService', 'AssesmentService','$timeout', '$filter', '$parse', function($scope, $rootScope, $window, $auth, UserService, StudentService, AssesmentService, $timeout, $filter, $parse) {
+
+    $scope.students = []
+
+    $scope.setStudents = function() {
+      $scope.students = StudentService.getAllStudents()
     }
+
+    $scope.setStudents()
     
     $scope.grades = [{name: "Pre-Kindergarten"}, {name: "Kindergarten"}, {name: "1st"}]
     $scope.student = {}
     $scope.currentStudent = {}
+    $scope.currentStudentAssesments = {}
+    $scope.currentScore = {}
 
     $scope.statsShowing = false
     $scope.addStudentShowing = true
@@ -22,7 +26,13 @@ angular.module('HappyTree')
       $scope.hideAll()
       $scope.statsShowing = true
       $scope.currentStudent = student
+      $scope.currentStudentAssesments = AssesmentService.getStudentAssesments(student)
       $scope.showLetterAssesmentChart()      
+    }
+
+    $scope.setCurrentStudentAssesments = function(student) {
+      $scope.currentStudentAssesments = {}
+
     }
 
     $scope.toPercentage =  function (input, decimals) {
@@ -30,30 +40,28 @@ angular.module('HappyTree')
     };
 
     $scope.showLetterAssesmentChart = function() {
-
       $scope.letterAssesmentChartShowing = true
       $scope.sightWordAssesmentChartShowing = false
 
       var data = [[],[],[]]
 
-      if ($scope.currentStudent.letterAssesmentScores.length <= 0) {
+      var studentLetterAssesments = $scope.currentStudentAssesments.letter
+
+      if (studentLetterAssesments.length  <= 0) {
         data = [[0],[],[]]
       }  
 
       $scope.letterAssesments = [[],[],[]]
 
-      var letterForLoopLength = $scope.currentStudent.letterAssesmentScores.length 
-      var letterForLoopScores = $scope.currentStudent.letterAssesmentScores
-
-      for ( var i = 0; i < letterForLoopLength; i++) {
-        var assesment = JSON.parse(letterForLoopScores[i])
-        if (assesment.type == "upper") {
+      for ( var i = 0; i < studentLetterAssesments.length; i++) {
+        var assesment = studentLetterAssesments[i]
+        if (assesment.name == "Uppercase") {
           $scope.letterAssesments[0].push(assesment)
           data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))  
-        } else if (assesment.type == "lower") {
+        } else if (assesment.name == "Lowercase") {
           $scope.letterAssesments[1].push(assesment)
           data[1].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
-        } else if (assesment.type == "sound") {
+        } else if (assesment.name == "Sound") {
           $scope.letterAssesments[2].push(assesment)
           data[2].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
         }
@@ -61,7 +69,7 @@ angular.module('HappyTree')
 
       var labels = []
 
-      if ($scope.currentStudent.letterAssesmentScores.length > 0) {
+      if (studentLetterAssesments.length > 0) {
         var assesmentCounts = [$scope.letterAssesments[0].length, $scope.letterAssesments[1].length, $scope.letterAssesments[2].length]
         $scope.labelCount = assesmentCounts.sort().reverse()[0]
       } else {
@@ -80,72 +88,79 @@ angular.module('HappyTree')
     }
 
     $scope.letterAssesmentTitle = function(assesment) {
-      if (assesment[0].type == "upper") {
+      if (assesment[0].name == "Uppercase") {
         return "Capital Letters"
-      } else if (assesment[0].type == "lower") {
+      } else if (assesment[0].name == "Lowercase") {
         return "Lowercase Letters"
-      } else if (assesment[0].type == "sound") {
+      } else if (assesment[0].name == "Sound") {
         return "Letter Sounds"
       } else {
         return " "
       }
     }
 
+
+    $scope.sightWordSeries = []
+
     $scope.sightWordAssesmentChart = function() {
 
       $scope.letterAssesmentChartShowing = false
       $scope.sightWordAssesmentChartShowing = true
 
-      $scope.sightWordAssesments = [[],[],[]]
+      var studentSightWordAssesments = $scope.currentStudentAssesments.sightWords
 
-        var data = [[],[],[]]
+      $scope.sightWordAssesments = []
 
-        if ($scope.currentStudent.sightWordAssesmentScores.length <= 0) {
-          data = [[0],[],[]]
-        }
-        var series = []
+      var data = []
 
-        for ( var i = 0; i < $scope.currentStudent.sightWordAssesmentScores.length; i++) {
-          var assesment = JSON.parse($scope.currentStudent.sightWordAssesmentScores[i])
-          series.push(assesment.name)
-        }
+      
+      var series = []
 
-        var onlyUnique = function (value, index, self) { 
-          return self.indexOf(value) === index;
-        };
+      var sightWordAssesmentsLength = studentSightWordAssesments.length
+      for ( var i = 0; i < sightWordAssesmentsLength; i++) {
+        var assesment = studentSightWordAssesments[i]
+        series.push(assesment.name)
+      }
 
-        series = series.filter(onlyUnique);
+      var onlyUnique = function (value, index, self) { 
+        return self.indexOf(value) === index;
+      };
 
-      var sightWordForLoopLength = $scope.currentStudent.sightWordAssesmentScores.length;
-      var sightWordForLoopScores = $scope.currentStudent.sightWordAssesmentScores
+      series = series.filter(onlyUnique);
 
-      for ( var i = 0; i < sightWordForLoopLength; i++) {
-        var assesment = JSON.parse(sightWordForLoopScores[i])
-        if (assesment.name == series[0]) {
-          $scope.sightWordAssesments[0].push(assesment)
-          data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
-        } else if (assesment.type == series[1]) {
-          $scope.sightWordAssesments[1].push(assesment)
-          data[1].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
-        } else if (assesment.type == series[2]) {
-          $scope.sightWordAssesments[2].push(assesment)
-          data[2].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
-        } else if (assesment.type == series[3]) {
-          $scope.sightWordAssesments[3].push(assesment)
-          data[3].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
-        } else if (assesment.type == series[4]) {
-          $scope.sightWordAssesments[4].push(assesment)
-          data[4].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
-        } else if (assesment.type == series[5]) {
-          $scope.sightWordAssesments[5].push(assesment)
-          data[5].push($scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0))
+      $scope.sightWordSeries = series
+
+      for (var i = 0; i < series.length; i++) {
+        data.push([])
+        $scope.sightWordAssesments.push([])
+      }
+
+      if (sightWordAssesmentsLength <= 0) {
+        data = [[0]]
+      }
+
+      var seriesLength = series.length
+
+      for ( var i = 0; i < sightWordAssesmentsLength; i++) {
+        var assesment = studentSightWordAssesments[i]
+        var percentageScore = $scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0)
+        // add score to proper data input
+        for ( var j = 0; j< seriesLength; j++ ) {
+          if (assesment.name == series[j]) {
+            $scope.sightWordAssesments[j].push(assesment)
+            data[j].push(percentageScore)
+          }
         }
       }  
 
       var labels = []
       var labelCount = 0
-      if ($scope.currentStudent.sightWordAssesmentScores.length > 0) {
-        var assesmentCounts = [$scope.sightWordAssesments[0].length, $scope.sightWordAssesments[1].length, $scope.sightWordAssesments[2].length]
+
+      if ($scope.sightWordAssesments.length > 0) {
+        var assesmentCounts = []
+        for ( var i = 0; i < $scope.sightWordAssesments.length; i++) {
+          assesmentCounts.push($scope.sightWordAssesments[i].length)
+        }
         var labelCount = assesmentCounts.sort().reverse()[0]
       } else {
         labelCount = 1
@@ -177,8 +192,11 @@ angular.module('HappyTree')
     $scope.editStudent = function (student) {
       StudentService.updateStudent(student)
       $scope.editStudentForm.$setPristine();
-      setTimeout($scope.setStudents,500)
     } 
+    
+    $scope.$on('studentUpdated', function(event,msg) {
+      $scope.setStudents()
+    });
 
     $scope.hideAll = function(){
       $scope.statsShowing = false
@@ -187,13 +205,8 @@ angular.module('HappyTree')
       $scope.showingWarning = false
     }
 
-    $scope.setStudents = function() {
-      $scope.students = StudentService.getAllStudents()
-      $scope.$apply();
-    }
 
     $scope.addStudent = function (student) {
-      var student = student
       var currentUser = JSON.parse($window.localStorage.currentUser)
       student.currentTeacherID = currentUser._id
       StudentService.addStudent(student)
@@ -201,10 +214,11 @@ angular.module('HappyTree')
       //clear form
       $scope.student = {}
       $scope.addStudentForm.$setPristine();
-
-      setTimeout($scope.setStudents,500)
-
     }
+
+    $scope.$on('studentAdded', function(event,msg) {
+      $scope.setStudents()
+    });
 
     $scope.showDeleteWarning = function () {
       $scope.warningShowing = true
@@ -220,7 +234,81 @@ angular.module('HappyTree')
       $scope.editStudentShowing = false
       $scope.addStudentShowing = true
       $scope.hideDeleteWarning()
-      setTimeout($scope.setStudents,500)
     }
 
+    $scope.$on('studentDeleted', function(event,msg) {
+      $scope.setStudents()
+    });
+
+    $scope.getScoreColorClass = function(score) {
+      var scorePercentage = score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount))
+      if ( scorePercentage < .33) {
+        return "red"
+      } else if  (scorePercentage > .33 && scorePercentage < .66) {
+        return "yellow"
+      } else if (scorePercentage >= .66) {
+        return "green" 
+      }
+    }
+
+    $scope.toggleMissedLetters = function(score) {
+      console.log(score)
+
+      var missedLetterView = 'missed' + score.name
+      
+      if (score.name == 'Uppercase') {
+        $scope.missedUppercaseList = score.missed.sort().join(" ")
+      }
+      if (score.name == 'Lowercase') {
+        $scope.missedLowercaseList  = score.missed.sort().join(" ")
+      }
+      if (score.name == 'Sound') {
+        $scope.missedSoundList  = score.missed.sort().join(" ")
+      }
+
+      if($scope[missedLetterView] == false || $scope[missedLetterView] == undefined) {
+        $scope[missedLetterView] = true
+      } 
+
+    }
+
+    $scope.missedWordsLists = []
+    
+    for (var i = 0; i < $scope.sightWordSeries.length; i++) {
+      var listName = $scope.sightWordSeries[i]
+      $scope[listName] = {name: listName, missedWords: []}
+      $scope.missedWordsLists.push($scope[listName])
+    }
+
+    $scope.showMissedWord = function(score) {
+
+
+      var scoreName = 'missed' + score.name
+
+      for (var i = 0; i < $scope.missedWordsLists.length; i++) {
+
+        if (score.name == $scope.missedWordsLists[i].name) {
+          var name = $scope.sightWordSeries[i] 
+          $scope.missedWordsLists[i].missedWords = score.missedWords
+        }
+      };
+
+      $scope[scoreName] = true
+
+      console.log($scope[scoreName])
+    }
+
+    $scope.hideMissedLetters = function(name) {
+      if (name == 'Uppercase') {
+        $scope.missedUppercase = false
+      }
+      if (name == 'Lowercase') {
+        $scope.missedLowercase = false
+      }
+      if (name == 'Sound') {
+        $scope.missedSound  = false
+      }
+    }
   }]);
+
+

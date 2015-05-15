@@ -1,28 +1,97 @@
 <div class="container">
   <div class="jumbotron">
-    <h1 class="center-text green"><i class="ion-leaf green"></i>Tools</h1>
-    <div class="row">
-      <div class="col-sm-4 col-xs-12 btn home-tile-letter-assesment">
-        <a href="#/letters_assesment" class= "img-rounded">
-          <div class="home-tile">
-            <h4 class="home-titles"> Letter Assesment</h4> 
+    <div class="container">
+      <div ng-if="!isAuthenticated()">
+        <h1 class="center-text green">Welcome to <i class="ion-leaf green"></i>HappyTree</h1>
+        <a href="#/tools"><h3 class="center-text green">Tools for Teachers</h3></a>
+        <div class="row">
+          <p></p>
+        </div>
+        <div class="row">
+          <div class="col-sm-8">
+            <h5> We make tools to help make assesments easier and faster, so you can get back to teaching.</h5>
           </div>
-        </a>
+          <div class="col-sm-4 home-start-panel container">
+            <h4>Start Today:</h4>
+            <ol>
+              <li><h5><a href="#/signup">Sign Up!</a></h5></li>
+              <li><h5> Add your students. </h5></li>
+              <li><h5>Start your assesments. </h5> </li>
+            </ol>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-4 col-xs-12 btn home-tile-sight-words">
-        <a href="#/sight_words">
-          <div class="home-tile img-rounded">
-            <h4 class="home-titles"> Sight Words</h4>
+
+      <div ng-if="isAuthenticated()">
+        <h1 class="center-text green"> <i class="ion-leaf green"></i>Dashboard</h1>
+        <div class="row">
+          <div class="col-sm-6">
+            <h5 class="center-text"> Recent Letter Assesments </h5> 
+            <table class="table table-fixed">
+              <thead>
+                <tr>
+                  <th class="col-xs-2 center-text">Date</th>
+                  <th class="col-xs-4 center-text">Student</th>
+                  <th class="col-xs-4 center-text">Name</th>
+                  <th class="col-xs-2 center-text">Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <td ng-if="letterAssesments.length < 1" class="col-xs-12 center-text">No Assements Taken</td>
+                <tr ng-repeat="assesment in letterAssesments | orderBy:'-date' | limitTo: 20">
+                  <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
+                  <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
+                  <td class="col-xs-4 center-text">{{assesment.name}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{score(assesment.correctCount, assesment.incorrectCount)}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </a>
-      </div>
-      <div class="col-sm-4  col-xs-12 btn home-tile-animal-alphabet">
-        <a href="#/animal_alphabet">
-          <div class="home-tile img-rounded">
-            <h4 class="home-titles">Animal Alphabet</h4>
+
+          <div class="col-sm-6">
+            <h5 class="center-text">Letter Assesment Progress</h5>
+            <canvas id="doughnut" class="chart chart-doughnut" data="data"
+  labels="labels"></canvas> 
+            
           </div>
-        </a>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-6">
+            <h5 class="center-text">Sight Word Assesment Progress</h5>
+            <canvas id="doughnut" class="chart chart-doughnut" data="sightWordData"
+  labels="labels"></canvas> 
+            
+          </div>
+
+          <div class="col-sm-6">
+            <h5 class="center-text"> Recent Sight Word assesments </h5> 
+            <table class="table table-fixed">
+              <thead>
+              <tr>
+                <th class="col-xs-2 center-text">Date</th>
+                <th class="col-xs-4 center-text">Student</th>
+                <th class="col-xs-4 center-text">Name</th>
+                <th class="col-xs-2 center-text">Score</th>
+              </tr>
+            </thead>
+              <tbody class="home-recent-assesments">
+              <td ng-if="sightWordAssesments.length < 1" class="col-xs-12 center-text">No Assements Taken</td>
+                <tr ng-repeat="assesment in sightWordAssesments.slice().reverse()">
+                  <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
+                  <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
+                  <td class="col-xs-4 center-text">{{assesment.name}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{score(assesment.correctCount, assesment.incorrectCount)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<div>
+  <p class="center-text">Copyright © 2015 | Design & Development by Matias Meneses</p>
 </div>

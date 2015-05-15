@@ -1,7 +1,31 @@
+<div class="prompt-page" ng-show="promptShowing">
+  <div class="panel panel-success prompt-panel">
+    <div class="panel-heading">
+      <h3 class="center-text">Prompt</h3>
+    </div>
+    <div class="panel-body">
+      <ol>
+        <li><h5>Select a student and select a Sight Word List.</h5></li>
+        <li><h5>Point to the word and ask student to say the word.</h5></li>
+        <li><h5>If correct, click the word and move on.</h5></li>
+        <h5>OR</h5>
+        <h5>If the student hesitates for more than 3 second, sounds out the word, or says an incorrect word, move on without clicking.</h5>
+        <h5>If the student identifies less that half the words on a list, consider stopping the assesment.</h5>
+        <li><h5>When finished click "Save"</h5></li>
+      </ol>
+      <div class="center-text">
+        <button ng-click="hidePrompt()" class="btn btn-default ">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div ng-show="sightWordsShowing">
   <div class="row">
-    <div class="col-sm-4"><h3 class="center-text"><i class="ion-leaf green"></i>Sight Words</h3></div>
-    <div class="col-sm-2"></div>
+    <div class="col-sm-3"><h3 class="center-text"><i class="ion-leaf green"></i>Sight Words</h3></div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-2" ng-show="!isAuthenticated()"></div>
     <div class="col-sm-2" ng-show="isAuthenticated()">Student: 
     <form name="studentFrom">
       <fieldset class="form-group">
@@ -20,6 +44,9 @@
       </fieldset>
     </div>  
     <div class="col-sm-2">
+      <center><button ng-click="showPrompt()" class="btn btn-default">Read Prompt</button></center>
+    </div>
+    <div class="col-sm-2">
       <center><button ng-click="toggleView()" class="btn btn-success">Create/Edit List</button></center>
     </div>
   </div>
@@ -34,7 +61,7 @@
   </div>
   <div class = "row">
     <div ng-click="save()" class="col-sm-2 btn btn-success btn-block" ng-show="isAuthenticated()"><center><h2>Save</h2></center></div>
-    <div class="col-sm-2 btn btn-danger btn-block" ng-click="clear()"><center><h2>Clear</h2></center></div>
+    <div class="col-sm-2 btn btn-danger btn-block" ng-click="resetSightWords()"><center><h2>Clear</h2></center></div>
   </div>
 </div>
 <div ng-show="createListShowing" >
@@ -64,31 +91,38 @@
       <div class="center-form panel">
         <div class="panel-body">
           <h4 class="text-center"> Create/Edit List  <i class="ion-edit green"></i> </h4>
-          <div class="form-group has-feedback" ng-class="{ 'has-error' : currentListForm.name.$invalid && currentListForm.name.$dirty }">
-            <input class="form-control input-lg" type="text" id="name" name="name" ng-model="currentList.name" placeholder="List Name" required>
-            <span class="form-control-feedback"></span>
-          </div>
 
-          <div>
-            <ol>
-              <li ng-mouseover="wordHover = true" ng-mouseleave="wordHover = false" ng-repeat="word in currentList.words" class="sightword-edit-word"> {{ word.word }} 
-                <span ng-show="wordHover">
-                  <span ng-click="deleteWord(word.word)" class="ion-minus-circled delete-word-icon pointer red"></span> 
-                </span>
-              </li>
-            </ol>
-          </div>
-          <div class="form-group has-feedback" ng-class="{ 'has-error' : currentListForm.newWord.$invalid && currentListForm.newWord.$dirty }">
-            <input class="form-control input-lg" type="text" id="newWord" name="newWord" ng-model="newWord.word" placeholder="New Word" ng-enter="addWord()" required>
-            <span class="form-control-feedback"></span>
-          </div>
+          <form name="createListForm" ng-submit="saveList()" novalidate>
+            <div class="form-group has-feedback" ng-class="{ 'has-error' : createListForm.name.$invalid && createListForm.name.$dirty }">
+              <input class="form-control input-lg" type="text" id="name" name="name" ng-model="currentList.name" placeholder="List Name" ng-pattern="/^[a-zA-Z0-9]+$/" required>
+              <span class="form-control-feedback"></span>
+              <div class="help-block" ng-if="createListForm.name.$dirty" ng-messages="createListForm.name.$error">
+                <div class="center-text" ng-message="pattern">No spaces or special characters can be used</div>
+              </div>
+            </div>
 
-          <button ng-click="addWord()"  class="btn btn-block green">Add Word</button>
-          <br>
-          <button ng-click="saveList()" class="btn btn-block btn-success">Save List</button>
-          <br/>
+            <div>
+              <ol>
+                <li ng-mouseover="wordHover = true" ng-mouseleave="wordHover = false" ng-repeat="word in currentList.words" class="sightword-edit-word"> {{ word.word }} 
+                  <span ng-show="wordHover">
+                    <span ng-click="deleteWord(word.word)" class="ion-minus-circled delete-word-icon pointer red"></span> 
+                  </span>
+                </li>
+              </ol>
+            </div>
+            <div class="form-group has-feedback" ng-class="{ 'has-error' : createListForm.newWord.$invalid && createListForm.newWord.$dirty }">
+              <input class="form-control input-lg" type="text" id="newWord" name="newWord" ng-model="newWord.word" placeholder="New Word" ng-enter="addWord()">
+              <span class="form-control-feedback"></span>
+            </div>
+
+            <div ng-click="addWord()"  class="btn btn-block btn-default green">Add Word</div>
+            <br>
+            <button type="submit" class="btn btn-block btn-success" ng-disabled="createListForm.$invalid">Save List</button>
+            <br/>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+

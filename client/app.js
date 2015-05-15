@@ -13,6 +13,10 @@ angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js'])
         templateUrl: 'views/signup.html',
         controller: 'SignupCtrl'
       })
+      .when('/tools', {
+        templateUrl: 'views/tools.html',
+        controller: 'ToolsCtrl'
+      })
       .when('/animal_alphabet', {
         templateUrl: 'views/animal_alphabet.html',
         controller: 'AnimalAlphabetCtrl'
@@ -28,6 +32,10 @@ angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js'])
       .when('/students', {
         templateUrl: 'views/students.html',
         controller: 'StudentsCtrl'
+      })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl'
       })
       .otherwise('/')
 

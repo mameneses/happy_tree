@@ -1,6 +1,10 @@
 angular.module('HappyTree')
-  .factory('StudentService', function($http, $window, $auth) {
+  .factory('StudentService', ['$http', '$window', '$auth','$rootScope', function($http, $window, $auth, $rootScope) {
+    var apiAddress = "http://localhost:3000/api/"
+
     var currentStudent = {}
+
+    var allStudents = {}
     
     return {
               setCurrentStudent: function(selectedStudent) { 
@@ -13,28 +17,31 @@ angular.module('HappyTree')
 
               getAllStudents: function () {
                 if ($auth.isAuthenticated()) {
-                  return JSON.parse($window.localStorage.allStudents)
+                  var students = JSON.parse($window.localStorage.students)
+                  return students
                 } else {
                   return []
                 }
               },
 
-              getStudentsFromDB: function () {
-                var currentUser = JSON.parse($window.localStorage.currentUser)
-                $http.get("http://localhost:3000/api/students", {params: {currentTeacherID: currentUser._id}}).
+              getStudentsFromDB: function (user) {
+                
+                $http.get(apiAddress + "students/" + user._id).
                   success(function(data, status, headers, config) {
-                    $window.localStorage.allStudents = JSON.stringify(data)
+                    $window.localStorage.students = JSON.stringify(data)
+                    console.log("students retreived")
+                    $rootScope.$broadcast('studentsGot')
                   }).
                   error(function(data, status, headers, config) {
-
+                    console.log("Student could not be retreived from database")
                   });
-
               },
 
               updateStudent: function (student) {
-                $http.put("http://localhost:3000/api/students", student).
+                $http.put( apiAddress + "students/" + student._id, student).
                   success(function(data, status, headers, config) {
-                    $window.localStorage.allStudents = JSON.stringify(data)
+                    $window.localStorage.students = JSON.stringify(data)
+                    $rootScope.$broadcast('studentUpdated')
                   }).
                   error(function(data, status, headers, config) {
 
@@ -42,9 +49,10 @@ angular.module('HappyTree')
               },
 
               addStudent: function(student) {
-                $http.post("http://localhost:3000/api/students", student).
+                $http.post(apiAddress + "students", student).
                   success(function(data, status, headers, config) {
-                    $window.localStorage.allStudents = JSON.stringify(data)
+                    $window.localStorage.students = JSON.stringify(data)
+                    $rootScope.$broadcast('studentAdded')
                   }).
                   error(function(data, status, headers, config) {
 
@@ -52,10 +60,10 @@ angular.module('HappyTree')
               },
 
               deleteStudent: function(student) {
-                console.log(student)
-                $http.delete("http://localhost:3000/api/students?_id=" + student._id + "&currentTeacherID=" + student.currentTeacherID).
+                $http.delete(apiAddress + "students/" + student._id + "?currentTeacherID=" + student.currentTeacherID).
                   success(function(data, status, headers, config) {
-                    $window.localStorage.allStudents = JSON.stringify(data)
+                    $window.localStorage.students = JSON.stringify(data)
+                    $rootScope.$broadcast('studentDeleted')
                   }).
                   error(function(data, status, headers, config) {
 
@@ -63,4 +71,4 @@ angular.module('HappyTree')
               }
 
             }
-  });
+  }]);

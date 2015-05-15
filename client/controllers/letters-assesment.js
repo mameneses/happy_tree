@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('LettersAssesmentCtrl', ['$scope', '$http', '$auth', 'StudentService', function($scope, $http, $auth, StudentService) {
+  .controller('LettersAssesmentCtrl', ['$scope', '$http', '$auth', 'StudentService', 'UserService','AssesmentService', function($scope, $http, $auth, StudentService, UserService, AssesmentService) {
 
     var letters = [ {
                      upper: "A", 
@@ -210,6 +210,17 @@ angular.module('HappyTree')
 
       $scope.selectedStudent = {}
 
+      $scope.promptShowing = false
+
+      $scope.showPrompt = function() {
+        $scope.promptShowing = true
+        console.log($rootScope.currentUser)
+      }
+
+      $scope.hidePrompt = function() {
+        $scope.promptShowing = false
+      }
+
       var removeCorrectLetter = function (letterObject) {
         return letterObject.upper != $scope.correctLetter.upper
       }
@@ -268,24 +279,34 @@ angular.module('HappyTree')
       }
 
       $scope.startLetterAssesment = function (type) {
-        StudentService.setCurrentStudent($scope.selectedStudent)
-        $scope.resetAssesment()
-        $scope.startButton = false
-        if (type == 1) {
-          $scope.upper = true
-        } else if (type == 2) {
-          $scope.lower =true 
+        if ($scope.selectedStudent.firstName || !$scope.isAuthenticated()) {
+          StudentService.setCurrentStudent($scope.selectedStudent)
+          $scope.resetAssesment()
+          $scope.startButton = false
+          if (type == 1) {
+            $scope.upper = true
+          } else if (type == 2) {
+            $scope.lower =true 
+          } else {
+            $scope.sound = true
+            $scope.lower = true
+          }
+          $scope.playCorrectAudio()
         } else {
-          $scope.sound = true
-          $scope.lower = true
+          alert("Don't forget to choose a student!")
         }
-        $scope.playCorrectAudio()
 
       }
-      
+
+      $scope.isAuthenticated = function() {
+        return $auth.isAuthenticated();
+      }
+
       $scope.finishAssesment = function () {
         $scope.playDoneAudio()
-        $scope.save()
+        if($scope.isAuthenticated() && $scope.selectedStudent.firstName) {
+          $scope.save()
+        }
         $scope.resetAssesment()
         $scope.finish = true
       }
@@ -295,28 +316,29 @@ angular.module('HappyTree')
       }
 
       $scope.save =  function () {
-        var assesmentType = ""
+        var assesmentName = ""
         if ($scope.upper) {
-          assesmentType = "upper"
+          assesmentName = "Uppercase"
         } else if ($scope.lower && !$scope.sound) {
-          assesmentType = "lower"
+          assesmentName = "Lowercase"
         } else if ($scope.sound) {
-          assesmentType = "sound"
+          assesmentName = "Sound"
         }
-
+        var student = StudentService.getCurrentStudent()
+        var teacher = UserService.getCurrentUser()
         var assesment = {
-          type: assesmentType,
+          teacherID: teacher._id,
+          studentID: student._id,
+          studentName: student.firstName + " " + student.lastName,
+          name: assesmentName,
+          type: "Letter",
           date: new Date(),
           correctCount: $scope.correctAnswers.length.toString(),
           incorrectCount: $scope.incorrectAnswers.length.toString(),
-          missedLetters: $scope.incorrectAnswers
+          missed: $scope.incorrectAnswers
         }
 
-        var student = StudentService.getCurrentStudent()
-
-        student.letterAssesmentScores.push(JSON.stringify(assesment))
-
-        StudentService.updateStudent(student)     
+        AssesmentService.save(assesment)    
       }
 
   }]);

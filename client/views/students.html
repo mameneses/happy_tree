@@ -13,27 +13,25 @@
 </div>
 
 <div class="row">
-  <div class="containter col-sm-6">
-    <div class="center-form panel student-panel">
-      <h1 class="text-center"> <i class="ion-leaf green"></i>Students <button ng-click="showAddStudent()" ng-hide="addStudentShowing"class="ion-person-add green btn-default pointer"> </button></h1>
-      <div class="student-list">
-        <ol>
-          <div ng-repeat="student in students | orderBy:'firstName'">
-            <li ng-mouseover="studentHover = true" ng-mouseleave="studentHover = false">
-              <h5>{{student.firstName}} {{student.lastName }} 
-              <span ng-show="studentHover">
-                <span ng-click="showEditStudent(student)"class="ion-edit student-icons green"></span>
-                <span ng-click="showStats(student)" class="ion-stats-bars student-icons lt-green"></span> 
-              </span>
-              </h5>
-            </li>
-          </div>
-        </ol>
-
+  <div class="containter col-sm-4">
+    <div class="center-form panel ">
+      <div class="panel-body">
+        <h3 class="text-center"> <i class="ion-leaf green"></i>Students </h3>
+        <div class="student-list">
+          <ol>
+            <div ng-repeat="student in students | orderBy:'firstName'">
+              <li ng-mouseover="studentHover = true" ng-mouseleave="studentHover = false">
+                <h5 ng-class="(currentStudent == student) ? 'lt-green' : '' "><span ng-click="showStats(student)" class="pointer">{{student.firstName}} {{student.lastName }} </span>
+                </h5>
+              </li>
+            </div>
+          </ol>
+        </div>
+          <button ng-hide="addStudentShowing" ng-click="showAddStudent()" class="btn btn-block btn-success">Add Student</button>
       </div>
     </div>
   </div>
-    <div class="container col-sm-6">
+    <div class="container col-sm-8">
      
       <div ng-show="addStudentShowing" class="center-form panel">
         <div class="panel-body">
@@ -92,7 +90,7 @@
 
       <div class="center-form panel stats-panel" ng-show="statsShowing">
         <h3 class="center-text">Assesments</h3>
-        <h6 class="center-text"> For {{currentStudent.firstName}} {{currentStudent.lastName}}</h6>
+        <h6 class="center-text lt-green pointer" ng-click="showEditStudent(currentStudent)"> Edit {{currentStudent.firstName}} {{currentStudent.lastName}}</h6>
         <section class="centered-pills">
           <ul class="nav nav-pills">
             <li ng-class="{active: letterAssesmentChartShowing}"><a href="" ng-click="showLetterAssesmentChart()"> Letters</a> </li>
@@ -112,13 +110,26 @@
               </tr>
               <tr>
                 <td>Dates:</td>
-                <td ng-repeat="score in assesments"  class="center-text">{{score.date | date: 'shortDate'}} </td>
+                <td ng-repeat="score in assesments" class="center-text">{{score.date | date: 'shortDate'}} </td>
               </tr>
               <tr>
                 <td>Correct:</td>
-                <td ng-repeat="score in assesments" ng-class="{red: score.correctCount/26 < .33, yellow: score.correctCount/26 > .33 && score.correctCount/26 < .66, green: score.correctCount/26 >= .66}" class="center-text"> {{score.correctCount / 26 | percentage:0}}</td>
+                <td ng-repeat="score in assesments" ng-class="getScoreColorClass(score)" ng-click="toggleMissedLetters(score)" class="center-text pointer"> {{score.correctCount / 26 | percentage:0}}</td>
               </tr>
             </table>
+            <div ng-show="{{'missed' + assesments[0].name}}" ng-if="assesments.length > 0"  class="missed-letters row">
+              <h6 class="col-xs-2">Missed Letters:</h6>
+                <h5  class="col-xs-9" ng-if="assesments[0].name == 'Uppercase'"> 
+                  {{missedUppercaseList}}
+                </h5>
+                <h5 class="col-xs-9" ng-if="assesments[0].name == 'Lowercase'"> 
+                  {{missedLowercaseList}} 
+                </h5>
+                <h5 class="col-xs-9" ng-if="assesments[0].name == 'Sound'"> 
+                {{missedSoundList}}
+                </h5>
+              <h5 class="ion-close red pointer col-xs-1" ng-click="hideMissedLetters(assesments[0].name)"></h5>
+            </div>
           </div>
         </div>
 
@@ -132,10 +143,17 @@
               </tr>
               <tr>
                 <td>Correct:</td>
-                <td ng-repeat="score in assesments" ng-class="{red: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) < .33, yellow: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) > .33 && score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) < .66, green: score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) >= .66}" class="center-text"> 
+                <td ng-repeat="score in assesments" ng-class="getScoreColorClass(score)" ng-click="showMissedWord(score)" class="center-text pointer"> 
                 {{score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount)) | percentage:0}}</td>
               </tr>
             </table>
+            <div ng-show="{{'missed' + assesments[0].name}}" ng-if="assesments.length > 0"  class="missed-letters row" ng-repeat="missedObj in missedWordsLists">
+              <h6 class="col-sm-2">Missed Words:</h6>
+                <h5   class="col-sm-9" ng-if="assesments[0].name == missedObj.name"> 
+                  {{missedObj.missedWords}}
+                </h5>
+                <h5 class="ion-close red pointer col-sm-1" ng-click="hideMissedLetters(assesments[0].name)"></h5>
+            </div>
           </div>
         </div>
       </div>

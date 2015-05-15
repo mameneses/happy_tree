@@ -9,18 +9,20 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/angular-chart.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="img/favicon.ico"/>
   </head>
   <body>
    <div ng-controller="NavbarCtrl" class="navbar navbar-default navbar-static-top">
     <div class="container">
       <ul class="nav navbar-nav">
         <a href="#/" class="navbar-brand green"><i class="ion-leaf green"></i> HappyTree</a>
-        <li><a href="#/">Tools</a></li>
+        <li><a href="#/tools">Tools</a></li>
         <li ng-if="isAuthenticated()"><a href="#/students">Students</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li ng-if="!isAuthenticated()"><a href="#/login">Log in</a></li>
         <li ng-if="!isAuthenticated()"><a href="#/signup">Sign up</a></li>
+        <li ng-if="isAuthenticated()"><a href="#/profile">Welcome {{currentUser.firstName}}!</a></li>
         <li ng-if="isAuthenticated()"><a ng-click="logout()" href="">Logout</a></li>
       </ul>
     </div>
@@ -37,14 +39,17 @@
   <script src="directives/on-enter.js"></script>
   <script src="services/user.js"></script>
   <script src="services/student.js"></script>
+  <script src="services/assesment.js"></script>
   <script src="controllers/home.js"></script>
-  <script src="controllers/login.js"></script>
   <script src="controllers/signup.js"></script>
   <script src="controllers/navbar.js"></script>
   <script src="controllers/animal-alphabet.js"></script>
   <script src="controllers/sight-words.js"></script>
   <script src="controllers/letters-assesment.js"></script>
   <script src="controllers/students.js"></script>
-   
+  <script src="controllers/profile.js"></script>
+  <script src="controllers/tools.js"></script>
+  <script src="controllers/login.js"></script>
+
   </body>
 </html>

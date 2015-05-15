@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var User = require('./models/user')
 var Student = require('./models/student')
+var Assesment = require('./models/assesment')
 
 var router = express.Router();
 
@@ -63,7 +64,8 @@ app.use('/api', router)
 
 router.use(function(req, res, next) {
     // do logging
-    console.log('Something is happening.');
+    console.log(req.method + " " + req.url )
+    console.log('*****');
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -81,6 +83,8 @@ router.route('/users')
     })
   });
 
+/////////////////GET USER //////////////////////////
+
 router.route('/users/:user_id')
   .get(isAuthenticated, function(req, res) {
       User.findById(req.params.user_id, function(err, user) {
@@ -88,27 +92,6 @@ router.route('/users/:user_id')
               res.send(err);
           res.json(user);
       });
-  });
-
-  router.route('/users')
-  .put(isAuthenticated, function(req, res) { 
-
-    User.findById(req.body._id, function(err, user) {
-
-      user.firstName = req.body.firstName,
-      user.lastName = req.body.lastName,
-      user.picture = req.body.picture,
-      user.school = req.body.school,
-      user.sightWordLists = req.body.sightWordLists
-
-      user.save(function(){
-        User.findById(req.body._id, function(err, newUser) {
-          if (err)
-              res.send(err);
-          res.json(newUser);
-      });
-      }) 
-    })
   });
 
 //////////////////// SAVE STUDENT /////////////////
@@ -133,22 +116,23 @@ router.route('/students')
     })
   })
 
+
 //////////////////// Get STUDENTs /////////////////
-router.route('/students')
+router.route('/students/:user_id')
   .get(isAuthenticated, function(req,res) {
-    Student.find({currentTeacherID: req.query.currentTeacherID}, function(err, students) {
+    Student.find({currentTeacherID: req.params.user_id}, function(err, students) {
       if (err)
         res.send(err);
       res.json(students)
     })
   });
 
-  //////////////////// update STUDENTs /////////////////
+//////////////////// update STUDENT /////////////////
 
-  router.route('/students')
+router.route('/students/:student_id')
   .put(isAuthenticated, function(req,res) {
 
-    Student.findOne({_id: req.body._id}, function(err, student) {
+    Student.findOne({_id: req.params.student_id}, function(err, student) {
 
       student.firstName = req.body.firstName
       student.lastName = req.body.lastName
@@ -170,9 +154,9 @@ router.route('/students')
 
   ////////////// DELETE STUDENT ///////////////////////////
 
-  router.route('/students')
+router.route('/students/:student_id')
   .delete(isAuthenticated, function(req,res) {
-    Student.remove({_id: req.query._id}).remove(function(err) {
+    Student.remove({_id: req.params.student_id}).remove(function(err) {
       Student.find({currentTeacherID: req.query.currentTeacherID}, function(err, students) {
         if (err)
           res.send(err);
@@ -180,6 +164,71 @@ router.route('/students')
       })
     })
   });
+
+  // ############ UPDATE USER ####################
+
+router.route('/users/:user_id')
+  .put(isAuthenticated, function(req, res) {
+    User.findOne({_id: req.params.user_id}, '+password', function(err, user) {
+      if(!user) {
+        return res.status(401).send({ message: { email: 'Incorrect email' } });
+        console.log("no user")
+      }
+
+      if(req.body.password) {
+
+        bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
+          if (!isMatch) {
+            console.log("incorrect password match")
+            return res.status(401).send({ message: { password: 'Incorrect password' } });
+          } else {
+            user.firstName = req.body.firstName
+            user.lastName = req.body.lastName
+            user.school = req.body.school
+            user.password = req.body.newPassword1
+     
+            bcrypt.genSalt(10, function(err, salt) {
+              bcrypt.hash(user.password, salt, function(err, hash) {
+                user.password = hash;
+         
+                user.save(function() {
+                  user = user.toObject();
+                  delete user.password
+
+                  res.json(user);
+                });
+              });
+            });
+          };
+        });
+      } else {
+        
+        user.firstName = req.body.firstName
+        user.lastName = req.body.lastName
+        user.school = req.body.school
+        user.sightWordLists = req.body.sightWordLists
+        user.recentAssesments = req.body.recentAssesments
+        user.progressTracker = req.body.progressTracker
+
+        user.save(function() {
+                  user = user.toObject();
+                  delete user.password
+                  res.json(user);
+                });
+      }
+    });
+  });
+
+// ################DELETE USER ################
+
+router.route('/users/:user_id')
+  .delete(isAuthenticated, function(req, res) { 
+    User.remove({_id: req.params.user_id}).remove(function(err) { 
+      if (err)
+        res.send(err);
+      res.send({ message: "User was successfully deleted" })
+    })
+  })
 
 // ############# LOGIN ROUTE #############
 
@@ -193,10 +242,10 @@ app.post('/auth/login', function(req, res) {
       if (!isMatch) {
         return res.status(401).send({ message: { password: 'Incorrect password' } });
       }
- 
+
       user = user.toObject();
       delete user.password;
- 
+
       var token = createToken(user);
       res.send({ token: token, user: user });
     });
@@ -224,6 +273,9 @@ app.post('/auth/signup', function(req, res) {
         user.password = hash;
  
         user.save(function() {
+          user = user.toObject();
+          delete user.password;
+
           var token = createToken(user);
           res.send({ token: token, user: user });
         });
@@ -231,8 +283,55 @@ app.post('/auth/signup', function(req, res) {
     });
   });
 });
- 
- 
+
+/////////////////// GET ASSESMENTS ///////////////
+
+router.route('/assesments/:user_id')
+  .get(isAuthenticated, function(req,res) {
+    Assesment.find({teacherID: req.params.user_id}, function(err, assesments) {
+      if (err)
+        res.send(err);
+      res.json(assesments)
+    })
+  });
+///////////////////// SAVE ASSESMENT ///////////////////
+
+router.route('/assesments')
+  .post(isAuthenticated, function(req,res) {
+
+    var newAssesment = new Assesment ({
+      studentName: req.body.studentName,
+      studentID: req.body.studentID,
+      teacherID: req.body.teacherID,
+      name: req.body.name,
+      type: req.body.type,
+      date: req.body.date,
+      correctCount: req.body.correctCount,
+      incorrectCount: req.body.incorrectCount,
+      missed: req.body.missed
+    })
+
+    newAssesment.save(function(){
+    
+      Assesment.find({teacherID: req.body.teacherID}, function(err, assesments) {
+        if (err) { res.send(err); return; };
+        res.json(assesments)
+      })
+    })
+  })
+
+  /////////////////// DELETE ASSEMENT ///////////
+
+  router.route('/assesments/:assesment_id')
+  .delete(isAuthenticated, function(req, res) { 
+    Assesment.remove({_id: req.params.assesment_id}).remove(function(err) { 
+      if (err)
+        res.send(err);
+      res.send({ message: "Assesment was successfully deleted" })
+    })
+  })
+
+
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });

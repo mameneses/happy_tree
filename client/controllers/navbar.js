@@ -1,14 +1,29 @@
 angular.module('HappyTree')
-  .controller('NavbarCtrl', function($scope, $rootScope, $window, $auth) {
+  .controller('NavbarCtrl', ['$scope', '$rootScope', '$window', '$auth', function($scope, $rootScope, $window, $auth) {
     $scope.isAuthenticated = function() {
       return $auth.isAuthenticated();
     };
 
-    $scope.currentUser = $rootScope.currentUser
+    $scope.setCurrentUser = function() {
+      $scope.currentUser = JSON.parse($window.localStorage.currentUser);
+    }
+
+    if($window.localStorage.currentUser) {
+      $scope.setCurrentUser()
+    }
+
+    $scope.$on('userUpdated', function(event,msg) {
+      $scope.setCurrentUser()
+    });
+
+    $scope.$on('userDeleted', function(event,msg) {
+      $scope.logout()
+    })
 
     $scope.logout = function() {
       $auth.logout();
       delete $window.localStorage.currentUser;
-      $window.localStorage.allStudents = [];
+      delete $window.localStorage.assesments;
+      delete $window.localStorage.students;
     };
-  });
+  }]);

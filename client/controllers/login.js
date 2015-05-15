@@ -1,11 +1,12 @@
 angular.module('HappyTree')
-  .controller('LoginCtrl', function($scope, $window, $location, $rootScope, $auth, StudentService) { 
+  .controller('LoginCtrl', ['$scope', '$window', '$location', '$rootScope', '$auth', 'StudentService','AssesmentService', function($scope, $window, $location, $rootScope, $auth, StudentService, AssesmentService) { 
 
     $scope.emailLogin = function() {
       $auth.login({ email: $scope.email, password: $scope.password })
         .then(function(response) {
           $window.localStorage.currentUser = JSON.stringify(response.data.user);
-          StudentService.getStudentsFromDB()
+          StudentService.getStudentsFromDB(response.data.user)
+          AssesmentService.getAssesmentsFromDB()
           $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
         })
         .catch(function(response) {
@@ -17,4 +18,4 @@ angular.module('HappyTree')
       });
     };
 
-  });
+  }]);
