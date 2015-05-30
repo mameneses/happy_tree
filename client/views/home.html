@@ -42,28 +42,11 @@
                   <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
                   <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
                   <td class="col-xs-4 center-text">{{assesment.name}}</td>
-                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{score(assesment.correctCount, assesment.incorrectCount)}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{assesment.percentCorrect + "%"}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-
-          <div class="col-sm-6">
-            <h5 class="center-text">Letter Assesment Progress</h5>
-            <canvas id="doughnut" class="chart chart-doughnut" data="data"
-  labels="labels"></canvas> 
-            
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-sm-6">
-            <h5 class="center-text">Sight Word Assesment Progress</h5>
-            <canvas id="doughnut" class="chart chart-doughnut" data="sightWordData"
-  labels="labels"></canvas> 
-            
-          </div>
-
           <div class="col-sm-6">
             <h5 class="center-text"> Recent Sight Word assesments </h5> 
             <table class="table table-fixed">
@@ -81,12 +64,13 @@
                   <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
                   <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
                   <td class="col-xs-4 center-text">{{assesment.name}}</td>
-                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{score(assesment.correctCount, assesment.incorrectCount)}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{assesment.percentCorrect + "%"}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+        <br>
       </div>
     </div>
   </div>

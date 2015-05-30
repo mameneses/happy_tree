@@ -7,6 +7,7 @@ var schema = new mongoose.Schema({
   name: String,
   type: String,
   date: Date,
+  percentCorrect: String,
   correctCount: String,
   incorrectCount: String,
   missed: []

@@ -15,16 +15,59 @@ angular.module('HappyTree')
     $scope.currentStudentAssesments = {}
     $scope.currentScore = {}
 
-    $scope.statsShowing = false
-    $scope.addStudentShowing = true
+    $scope.classStatsShowing = true
+    $scope.studentStatsShowing = false
     $scope.editStudentShowing = false
     $scope.warningShowing = false
     $scope.letterAssesmentChartShowing = true
     $scope.sightWordAssesmentChartShowing = false
 
+
+    $scope.getClassStats = function() {
+      $scope.assesments = AssesmentService.getAssesments()
+      for (var i = 0; i < $scope.students.length; i++) {
+        $scope.students[i].recentAssesments = {letter:{}, sightWords:{name:" - ",percent:""}}
+        var studentAssesments = AssesmentService.getStudentAssesments($scope.students[i])
+        for (var j = studentAssesments.letter.length - 1; j >= 0; j--) {
+          if (studentAssesments.letter[j].name == "Uppercase") {
+            if ($scope.students[i].recentAssesments.uppercase == undefined) {
+              $scope.students[i].recentAssesments.uppercase = studentAssesments.letter[j].percentCorrect + "%"
+            }
+          }
+          if (studentAssesments.letter[j].name == "Lowercase") {
+            if ($scope.students[i].recentAssesments.lowercase == undefined) {
+              $scope.students[i].recentAssesments.lowercase = studentAssesments.letter[j].percentCorrect + "%"
+            }
+          }
+          if (studentAssesments.letter[j].name == "Sound") {
+            if ($scope.students[i].recentAssesments.sound == undefined) {
+              $scope.students[i].recentAssesments.sound = studentAssesments.letter[j].percentCorrect + "%"
+            }
+          }
+          if ($scope.students[i].recentAssesments.sound && $scope.students[i].recentAssesments.lowercase && $scope.students[i].recentAssesments.uppercase) {
+            break
+          }
+        }
+
+        if (studentAssesments.sightWords.length > 0) {
+          var sightWords = studentAssesments.sightWords
+          $scope.students[i].recentAssesments.sightWords.name = sightWords[sightWords.length-1].name + " - "
+          $scope.students[i].recentAssesments.sightWords.percent = sightWords[sightWords.length-1].percentCorrect + "%"
+        }
+       
+      }
+      
+    }
+
+    $scope.$on('assesmentsRetrieved', function(event,msg) {
+      $scope.getClassStats()
+    });
+    
+
+
     $scope.showStats = function(student) {
       $scope.hideAll()
-      $scope.statsShowing = true
+      $scope.studentStatsShowing = true
       $scope.currentStudent = student
       $scope.currentStudentAssesments = AssesmentService.getStudentAssesments(student)
       $scope.showLetterAssesmentChart()      
@@ -55,15 +98,16 @@ angular.module('HappyTree')
 
       for ( var i = 0; i < studentLetterAssesments.length; i++) {
         var assesment = studentLetterAssesments[i]
+        console.log(assesment)
         if (assesment.name == "Uppercase") {
           $scope.letterAssesments[0].push(assesment)
-          data[0].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))  
+          data[0].push(assesment.percentCorrect)  
         } else if (assesment.name == "Lowercase") {
           $scope.letterAssesments[1].push(assesment)
-          data[1].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
+          data[1].push(assesment.percentCorrect)
         } else if (assesment.name == "Sound") {
           $scope.letterAssesments[2].push(assesment)
-          data[2].push($scope.toPercentage(parseInt(assesment.correctCount)/26, 0))
+          data[2].push(assesment.percentCorrect)
         }
       }  
 
@@ -143,12 +187,12 @@ angular.module('HappyTree')
 
       for ( var i = 0; i < sightWordAssesmentsLength; i++) {
         var assesment = studentSightWordAssesments[i]
-        var percentageScore = $scope.toPercentage(parseInt(assesment.correctCount)/(parseInt(assesment.correctCount) + parseInt(assesment.incorrectCount)), 0)
+        
         // add score to proper data input
         for ( var j = 0; j< seriesLength; j++ ) {
           if (assesment.name == series[j]) {
             $scope.sightWordAssesments[j].push(assesment)
-            data[j].push(percentageScore)
+            data[j].push(assesment.percentCorrect)
           }
         }
       }  
@@ -196,13 +240,19 @@ angular.module('HappyTree')
     
     $scope.$on('studentUpdated', function(event,msg) {
       $scope.setStudents()
+      $scope.getClassStats()
+      alert("Your Student was successfully updated!")
     });
 
     $scope.hideAll = function(){
-      $scope.statsShowing = false
+      $scope.classStatsShowing = false
+      $scope.studentStatsShowing = false
       $scope.addStudentShowing = false
       $scope.editStudentShowing = false
       $scope.showingWarning = false
+      $scope.missedUppercase = false
+      $scope.missedLowercase = false
+      $scope.missedSound  = false
     }
 
 
@@ -218,6 +268,7 @@ angular.module('HappyTree')
 
     $scope.$on('studentAdded', function(event,msg) {
       $scope.setStudents()
+      $scope.getClassStats()
     });
 
     $scope.showDeleteWarning = function () {
@@ -232,22 +283,27 @@ angular.module('HappyTree')
       StudentService.deleteStudent(student)
       $scope.currentStudent = {}
       $scope.editStudentShowing = false
-      $scope.addStudentShowing = true
+      $scope.classStatsShowing = true
       $scope.hideDeleteWarning()
     }
 
     $scope.$on('studentDeleted', function(event,msg) {
       $scope.setStudents()
+      $scope.getClassStats()
     });
 
-    $scope.getScoreColorClass = function(score) {
-      var scorePercentage = score.correctCount / ((1 * score.correctCount) + (1 * score.incorrectCount))
-      if ( scorePercentage < .33) {
-        return "red"
-      } else if  (scorePercentage > .33 && scorePercentage < .66) {
-        return "yellow"
-      } else if (scorePercentage >= .66) {
-        return "green" 
+    $scope.getScoreColorClass = function(percentCorrect) {
+      if (percentCorrect && percentCorrect != " ") {
+        var percentCorrect = parseInt(percentCorrect)
+        if ( percentCorrect < 33) {
+          return "red"
+        } else if  (percentCorrect >= 33 && percentCorrect < 66) {
+          return "yellow"
+        } else if (percentCorrect >= 66) {
+          return "green" 
+        }
+      } else {
+        return " "
       }
     }
 
@@ -282,7 +338,6 @@ angular.module('HappyTree')
 
     $scope.showMissedWord = function(score) {
 
-
       var scoreName = 'missed' + score.name
 
       for (var i = 0; i < $scope.missedWordsLists.length; i++) {
@@ -309,6 +364,13 @@ angular.module('HappyTree')
         $scope.missedSound  = false
       }
     }
+
+    $scope.showClass = function(){
+      $scope.hideAll()
+      $scope.currentStudent = {}
+      $scope.classStatsShowing = true
+    }
+
   }]);
 
 

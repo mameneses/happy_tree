@@ -115,7 +115,7 @@
               <span class="form-control-feedback"></span>
             </div>
 
-            <div ng-click="addWord()"  class="btn btn-block btn-default green">Add Word</div>
+            <div ng-click="addWord()"  ng-disabled="{{newWord.word}}" class="btn btn-block btn-default green">Add Word</div>
             <br>
             <button type="submit" class="btn btn-block btn-success" ng-disabled="createListForm.$invalid">Save List</button>
             <br/>

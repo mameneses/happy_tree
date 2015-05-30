@@ -5,29 +5,29 @@
   Chart.defaults.global.multiTooltipTemplate = '<%if (datasetLabel){%><%=datasetLabel%>: <%}%><%= value %>';
 
   Chart.defaults.global.colours = [
-    { // main green
-      fillColor: 'rgba(0,100,0,0.2)',
-      strokeColor: 'rgba(0,100,0,1)',
-      pointColor: 'rgba(0,100,0,1)',
+    { // orange
+      fillColor: 'rgba(255,128,0,0.2)',
+      strokeColor: 'rgba(255,128,0,1)',
+      pointColor: 'rgba(255,128,0,1)',
       pointStrokeColor: '#fff',
       pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(0,100,0,0.8)'
+      pointHighlightStroke: 'rgba(255,128,0,0.8)'
     },
-    { // light grey
-      fillColor: 'rgba(250,200,0,0.2)',
-      strokeColor: 'rgba(250,200,0,1)',
-      pointColor: 'rgba(250,200,0,1)',
+    { // teal
+      fillColor: 'rgba(0,204,204,0.2)',
+      strokeColor: 'rgba(0,204,204,1)',
+      pointColor: 'rgba(0,204,204,1)',
       pointStrokeColor: '#fff',
       pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(250,250,0,0.8)'
+      pointHighlightStroke: 'rgba(0,204,204,0.8)'
     },
-    { // red
-      fillColor: 'rgba(0,240,0,0.2)',
-      strokeColor: 'rgba(0,240,0,1)',
-      pointColor: 'rgba(0,240,0,1)',
+    { // light blue
+      fillColor: 'rgba(51,153,255,0.2)',
+      strokeColor: 'rgba(51,153,255,1)',
+      pointColor: 'rgba(51,153,255,1)',
       pointStrokeColor: '#fff',
       pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(0,240,0,0.8)'
+      pointHighlightStroke: 'rgba(51,153,255,0.8)'
     },
     { // green
       fillColor: 'rgba(70,191,189,0.2)',

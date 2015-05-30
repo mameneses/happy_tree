@@ -302,7 +302,7 @@ a:hover {
 }
 
 .btn-holder {
-  width:50%;
+  width:60%;
   margin: 0 auto;
 }
 
@@ -322,6 +322,7 @@ a:hover {
 }
 
 .panel {
+  margin-top:45px;
   margin-bottom: 50px;
 }
 
@@ -337,7 +338,6 @@ a:hover {
 
 .letter-assesment-tile {
   height:175px;
-  width:;
 }
 
 .letter-assesment-lower {
@@ -377,7 +377,7 @@ a:hover {
   width:80%;
   padding:15px;
   background-color: white;
-  margin-top:45px;
+  margin-top:36px;
 }
 
 .center-text {
@@ -411,21 +411,6 @@ a:hover {
   background-color:rgba(0,100,0,0.90);
   padding-top:20px;
   padding-bottom: 20px
-}
-
-.home-tile-letter-assesment {
-  background-image: url("../img/letter_assesment.png");
-  background-size:cover;
-}
-
-.home-tile-sight-words {
-  background-image: url("../img/sight_words.png");
-   background-size:cover;
-}
-
-.home-tile-animal-alphabet {
-  background-image: url("../img/animal_alphabet.png");
-   background-size:cover;
 }
 
 .home-start-panel {
@@ -498,6 +483,23 @@ a:hover {
 .table-fixed tbody td, .table-fixed thead > tr> th {
   float: left;
   border-bottom-width: 0;
+}
+
+.add-student-panel {
+  margin-top: 36px;
+}
+
+.edit-student-panel {
+  margin-top: 36px;
+}
+
+.tool-img {
+  width:130px;
+  height:130px;
+}
+
+.tool-tile {
+  height:260px;
 }
 
 /*.letter-assesment-showing {

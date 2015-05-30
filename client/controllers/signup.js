@@ -14,7 +14,7 @@ angular.module('HappyTree')
       $auth.signup(user)
         .then(function(response) {
           $window.localStorage.currentUser = JSON.stringify(response.data.user);
-          StudentService.getStudentsFromDB()
+          StudentService.getStudentsFromDB(response.data.user)
           $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
         })
         .catch(function(response) {

@@ -26,14 +26,6 @@ angular.module('HappyTree')
 
       $scope.currentUser = JSON.parse($window.localStorage.currentUser)
 
-      $scope.completedLetterAssesment = $scope.currentUser.progressTracker.letter.completed.length
-
-      $scope.pendingLetterAssesment = $scope.currentUser.progressTracker.letter.pending.length
-
-      $scope.labels = ["Pending", "Complete"]
-
-      $scope.data = [$scope.pendingLetterAssesment, $scope.completedLetterAssesment]
-      $scope.sightWordData = [10, 24]
     }
 
     $scope.score = function(correct, incorrect) {

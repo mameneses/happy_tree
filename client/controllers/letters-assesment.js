@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('LettersAssesmentCtrl', ['$scope', '$http', '$auth', 'StudentService', 'UserService','AssesmentService', function($scope, $http, $auth, StudentService, UserService, AssesmentService) {
+  .controller('LettersAssesmentCtrl', ['$scope', '$http', '$auth', 'StudentService', 'UserService','AssesmentService', '$filter', function($scope, $http, $auth, StudentService, UserService, AssesmentService, $filter) {
 
     var letters = [ {
                      upper: "A", 
@@ -189,6 +189,12 @@ angular.module('HappyTree')
         return o;
       };
 
+      $scope.toPercentage =  function (input, decimals) {
+        return $filter('number')(input * 100, decimals);
+      };
+
+      console.log(typeof $scope.toPercentage(.5,0))
+
       $scope.isAuthenticated = function() {
         return $auth.isAuthenticated();
       };
@@ -333,6 +339,7 @@ angular.module('HappyTree')
           name: assesmentName,
           type: "Letter",
           date: new Date(),
+          percentCorrect: $scope.toPercentage($scope.correctAnswers.length/26, 0),
           correctCount: $scope.correctAnswers.length.toString(),
           incorrectCount: $scope.incorrectAnswers.length.toString(),
           missed: $scope.incorrectAnswers

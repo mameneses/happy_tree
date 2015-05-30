@@ -306,6 +306,7 @@ router.route('/assesments')
       name: req.body.name,
       type: req.body.type,
       date: req.body.date,
+      percentCorrect: req.body.percentCorrect,
       correctCount: req.body.correctCount,
       incorrectCount: req.body.incorrectCount,
       missed: req.body.missed

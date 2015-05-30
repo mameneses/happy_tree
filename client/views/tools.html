@@ -1,32 +1,39 @@
-<div class="container">
-  <div class="jumbotron">
-    <h1 class="center-text green"><i class="ion-leaf green"></i>Tools</h1>
-    <div class="row">
-      <div class="col-md-4 col-xs-12 btn home-tile-letter-assesment">
-        <a href="#/letters_assesment" class= "img-rounded">
-          <div class="home-tile">
-            <h4 class="home-titles"> Letter Assesment</h4> 
-          <h5 class="home-titles no-caps" > Automated assessments <br> for <br>Capital Letters, <br> Lower Case Letters, <br> & Letter Sounds, <br> A to Z.</h5>
-          </div>
-          
-        </a>
+<br>
+<center> <h1>Tools</h1> </center>
+<br>
+<br>
+      <div class="btn-holder" >
+         <div class="row">
+            <a href="#/letters_assesment">
+              <button class="col-md-4 col-xs-12 btn btn-success tool-tile" ng-mouseover="letterAssesmentDescShowing = true" ng-mouseleave="letterAssesmentDescShowing = false">
+                <h5 ng-hide="letterAssesmentDescShowing">Letter <br>Assesment</h5>
+                <img ng-hide="letterAssesmentDescShowing" class="tool-img img-circle"src="./img/letter_assesment.png">
+                <div ng-show="letterAssesmentDescShowing">
+                  <h5 class="no-caps" > Automated assessments <br> for <br>Capital Letters, <br> Lower Case Letters, <br> & Letter Sounds, <br> A to Z.</h5>
+                </div>
+              </button>
+            </a>
+          <div>
+          <div class="row">
+            <a href="#/sight_words">
+              <button class="col-md-4 col-xs-12 btn btn-success tool-tile" ng-mouseover="sightWordAssesmentDescShowing = true" ng-mouseleave="sightWordAssesmentDescShowing = false">
+                <h5 ng-hide="sightWordAssesmentDescShowing">Sight <br>Words</h5>
+                <img ng-hide="sightWordAssesmentDescShowing" class="tool-img img-circle"src="./img/sight_words.png">
+                <div ng-show="sightWordAssesmentDescShowing">
+                  <h5 class="no-caps"> Create Sight Word lists <br> & track students progress <br> of sight words. </h5>
+                </div>
+              </button>
+            </a>
+          <div>
+          <div class="row">
+            <a href="#/animal_alphabet">
+              <button class="col-md-4 col-xs-12 btn btn-success tool-tile" ng-mouseover="animalDescShowing = true" ng-mouseleave="animalDescShowing = false">
+                <h5 ng-hide="animalDescShowing">Animal <br> Alphabet</h5>
+                <img ng-hide="animalDescShowing" class="tool-img img-circle"src="./img/animal_alphabet.png">
+                <div ng-show="animalDescShowing">
+                  <h5 class="no-caps"> Simple Alphabet Animale<br> recognition game. </h5>
+              </button>
+            </a>
+          <div>
+        </div>
       </div>
-      <div class="col-md-4 col-xs-12 btn home-tile-sight-words">
-        <a href="#/sight_words">
-          <div class="home-tile img-rounded">
-            <h4 class="home-titles"> Sight Words</h4>
-            <h5 class="home-titles no-caps" > Create Sight Word lists <br> & track students progress <br> of sight words. </h5>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4  col-xs-12 btn home-tile-animal-alphabet">
-        <a href="#/animal_alphabet">
-          <div class="home-tile img-rounded">
-            <h4 class="home-titles">Animal Alphabet</h4>
-            <h5 class="home-titles no-caps" > Simple Alphabet Animale<br> recognition game. </h5>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>

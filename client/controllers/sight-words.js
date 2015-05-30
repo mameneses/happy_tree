@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('SightWordsCtrl', ['$scope', '$window', 'StudentService', 'UserService', 'AssesmentService','$auth', '$rootScope', function($scope, $window, StudentService, UserService, AssesmentService, $auth, $rootScope) {
+  .controller('SightWordsCtrl', ['$scope', '$window', 'StudentService', 'UserService', 'AssesmentService','$auth', '$rootScope', '$filter', function($scope, $window, StudentService, UserService, AssesmentService, $auth, $rootScope, $filter) {
 
     $scope.defaultSightWordLists = [ 
                   { name: "PrePrimer", words: [{ word:"a", correct: false }, { word: "and", correct: false }, { word: "away", correct: false }, { word: "big", correct: false }, { word: "blue", correct: false }, { word: "can", correct: false }, { word: "come", correct: false }, { word: "down", correct: false }, { word: "find", correct: false }, { word: "for", correct: false }, { word: "funny", correct: false }, { word: "go", correct: false }, { word: "help", correct: false }, { word: "here", correct: false }, { word: "I", correct: false }, { word: "in", correct: false }, { word: "is", correct: false }, { word: "it", correct: false }, { word: "jump", correct: false }, { word: "little", correct: false }, { word: "look", correct: false }, { word: "make", correct: false }, { word: "me", correct: false }, { word: "my", correct: false }, { word: "not", correct: false }, { word: "one", correct: false }, { word: "play", correct: false }, { word: "red", correct: false }, { word: "run", correct: false }, { word: "said", correct: false }, { word: "see", correct: false }, { word: "the", correct: false }, { word: "three", correct: false }, { word: "to", correct: false }, { word: "two", correct: false }, { word: "up ", correct: false }, { word: "we", correct: false }, { word: "where", correct: false }, { word: "yellow", correct: false }, { word: "you", correct:false }]},
@@ -14,6 +14,10 @@ angular.module('HappyTree')
         for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
       };
+
+    $scope.toPercentage =  function (input, decimals) {
+      return $filter('number')(input * 100, decimals);
+    };
 
     $scope.promptShowing = false
 
@@ -104,6 +108,7 @@ angular.module('HappyTree')
             type: "Sight Words",
             name: $scope.sightWords.name,
             date: new Date(),
+            percentCorrect: $scope.toPercentage($scope.correctSightWordCount/($scope.correctSightWordCount + incorrectSightWordCount), 0),
             correctCount: $scope.correctSightWordCount.toString(),
             incorrectCount: incorrectSightWordCount.toString(),
             missed: missedWords
@@ -122,8 +127,10 @@ angular.module('HappyTree')
     $scope.currentList = {words:[], name:""}
 
     $scope.addWord = function() {
-      $scope.currentList.words.push($scope.newWord)
-      $scope.newWord = {word:"", correct:false}
+      if ($scope.newWord.word) {
+        $scope.currentList.words.push($scope.newWord)
+        $scope.newWord = {word:"", correct:false}
+      }
     }
 
     $scope.toggleView = function (){
