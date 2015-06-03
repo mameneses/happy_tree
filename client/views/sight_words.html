@@ -30,7 +30,7 @@
     <form name="studentFrom">
       <fieldset class="form-group">
         <select ng-model="selectedStudent" class="form-control" ng-options="student as student.firstName + ' ' + student.lastName for student in allStudents | orderBy:'firstName'"  title="Students">
-          <option value="">Choose Student</option>
+          <option value="" disabled selected style='display:none;'>Choose Student</option>
         </select>
       </fieldset>
     </form>
@@ -39,7 +39,7 @@
       <div>Sight Word List:</div>
       <fieldset class="form-group">
         <select ng-model="sightWords" class="form-control" ng-options="list as list.name for list in allSightWordLists"  title="Sight Word Lists">
-          <option value="">Choose list</option>
+          <option value="" disabled selected style='display:none;'>Choose list</option>
         </select>
       </fieldset>
     </div>  

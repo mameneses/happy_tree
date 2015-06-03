@@ -56,11 +56,7 @@ a:hover {
   margin: 10% auto;
 }
 
-.student-panel {
-  width:500px;
-  padding-bottom: 15px;
-  padding-top: 15px;
-}
+
  
 .signup-or-separator {
   position: relative;
@@ -97,7 +93,7 @@ a:hover {
 }
  
 [class^='ion-'] {
-  font-size: 1.2em;
+  font-size: 1em;
 }
  
 .has-feedback .form-control {
@@ -366,7 +362,7 @@ a:hover {
 }
 
 .lt-green {
-  color:rgba(0,180,0,1);
+  color:#4caf50;
 }
 
 .yellow {
@@ -374,7 +370,7 @@ a:hover {
 }
 
 .stats-panel {
-  width:80%;
+  width:90%;
   padding:15px;
   background-color: white;
   margin-top:36px;
@@ -485,8 +481,19 @@ a:hover {
   border-bottom-width: 0;
 }
 
+.class-table{
+  min-height: 260px;
+  width: 100%;
+}
+
 .add-student-panel {
+  margin-top: 8px;
+  margin-bottom: 0px;
+}
+
+.mng-class-panel {
   margin-top: 36px;
+  margin-bottom: 0px;
 }
 
 .edit-student-panel {
@@ -500,6 +507,27 @@ a:hover {
 
 .tool-tile {
   height:260px;
+}
+
+.student-edit-btn {
+  margin-left: 10px;
+}
+
+.student-class-btn {
+  margin: 0px;
+}
+
+.student-panel {
+  margin-top: 8px;
+}
+
+.tbl-crrt {
+  max-height:30px;
+}
+
+.std-choose-class {
+  width: 80%;
+  margin-left: 10%;
 }
 
 /*.letter-assesment-showing {

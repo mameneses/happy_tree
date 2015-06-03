@@ -103,6 +103,7 @@ router.route('/students')
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       currentGrade: req.body.currentGrade,
+      className: req.body.className,
       currentTeacherID: req.body.currentTeacherID
     })
 
@@ -138,6 +139,7 @@ router.route('/students/:student_id')
       student.lastName = req.body.lastName
       student.currentGrade = req.body.currentGrade
       student.currentTeacherID = req.body.currentTeacherID
+      student.className = req.body.className
       student.letterAssesmentScores = req.body.letterAssesmentScores
       student.sightWordAssesmentScores = req.body.sightWordAssesmentScores
 
@@ -209,6 +211,7 @@ router.route('/users/:user_id')
         user.sightWordLists = req.body.sightWordLists
         user.recentAssesments = req.body.recentAssesments
         user.progressTracker = req.body.progressTracker
+        user.classes = req.body.classes
 
         user.save(function() {
                   user = user.toObject();

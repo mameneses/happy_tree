@@ -7,56 +7,126 @@ angular.module('HappyTree')
       $scope.students = StudentService.getAllStudents()
     }
 
+    $scope.$on('userUpdated', function(event,msg) {
+      $scope.currentUser = UserService.getCurrentUser()
+    });
+
+    $scope.currentUser = UserService.getCurrentUser()
+
     $scope.setStudents()
-    
-    $scope.grades = [{name: "Pre-Kindergarten"}, {name: "Kindergarten"}, {name: "1st"}]
+
+    $scope.currentStudents = []
+
+  
+
+    $scope.setCurrentStudents = function() {
+      $scope.currentStudents = []
+      if ($scope.currentClass == "All Students") {
+        $scope.currentStudents = $scope.students
+      } else {
+        for (var i=0; i < $scope.students.length; i++) {
+          if ($scope.students[i].className == $scope.currentClass){
+            $scope.currentStudents.push($scope.students[i])
+          }
+        }
+      }
+      
+      $scope.getClassStats()
+    }  
+
+
+    $scope.newClass = ""
     $scope.student = {}
     $scope.currentStudent = {}
     $scope.currentStudentAssesments = {}
     $scope.currentScore = {}
+    $scope.sortType = "lastName"
+    $scope.sortReverse = false
+    
 
     $scope.classStatsShowing = true
+    $scope.addClassShowing = false
     $scope.studentStatsShowing = false
     $scope.editStudentShowing = false
     $scope.warningShowing = false
     $scope.letterAssesmentChartShowing = true
     $scope.sightWordAssesmentChartShowing = false
 
+    $scope.editBtnShowing = false
+
+    $scope.showAddClass = function() {
+      $scope.addClassShowing = true
+      $scope.hideAddStudent()
+    }
+
+    $scope.hideAddClass = function() {
+      $scope.addClassShowing = false
+    }
+
+    $scope.addClass = function() {
+      if ($scope.currentUser.classes.length > 0) {
+        $scope.currentUser.classes.push($scope.newClass)
+      } else {
+        $scope.currentUser.classes = ["All Students",$scope.newClass]
+      }
+      console.log($scope.currentUser.classes)
+      UserService.updateUser($scope.currentUser)
+
+      $scope.newClass = ""
+      $scope.addClassForm.$setPristine()
+    }
+
+    $scope.deleteClass = function(className) {
+      confirm("Are you sure you want to delete " + className +" ?")
+      for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+        if ($scope.currentUser.classes[i] == className) {
+          $scope.currentUser.classes.splice(i,1)
+        }
+      }
+      UserService.updateUser($scope.currentUser)
+    }
 
     $scope.getClassStats = function() {
       $scope.assesments = AssesmentService.getAssesments()
-      for (var i = 0; i < $scope.students.length; i++) {
-        $scope.students[i].recentAssesments = {letter:{}, sightWords:{name:" - ",percent:""}}
-        var studentAssesments = AssesmentService.getStudentAssesments($scope.students[i])
-        for (var j = studentAssesments.letter.length - 1; j >= 0; j--) {
-          if (studentAssesments.letter[j].name == "Uppercase") {
-            if ($scope.students[i].recentAssesments.uppercase == undefined) {
-              $scope.students[i].recentAssesments.uppercase = studentAssesments.letter[j].percentCorrect + "%"
+      if ($scope.assesments.length > 0) {
+        for (var i = 0; i < $scope.currentStudents.length; i++) {
+          $scope.currentStudents[i].recentAssesments = {letter:{}, sightWords:{name:" - ",percent:""}}
+          var studentAssesments = AssesmentService.getStudentAssesments($scope.currentStudents[i])
+          for (var j = studentAssesments.letter.length - 1; j >= 0; j--) {
+            if (studentAssesments.letter[j].name == "Uppercase") {
+              if ($scope.currentStudents[i].recentAssesments.uppercase == undefined) {
+                $scope.currentStudents[i].recentAssesments.uppercase = parseInt(studentAssesments.letter[j].percentCorrect)
+              }
+            }
+            if (studentAssesments.letter[j].name == "Lowercase") {
+              if ($scope.currentStudents[i].recentAssesments.lowercase == undefined) {
+                $scope.currentStudents[i].recentAssesments.lowercase = parseInt(studentAssesments.letter[j].percentCorrect) 
+              }
+            }
+            if (studentAssesments.letter[j].name == "Sound") {
+              if ($scope.currentStudents[i].recentAssesments.sound == undefined) {
+                $scope.currentStudents[i].recentAssesments.sound = parseInt(studentAssesments.letter[j].percentCorrect) 
+              }
+            }
+            if ($scope.currentStudents[i].recentAssesments.sound && $scope.currentStudents[i].recentAssesments.lowercase && $scope.currentStudents[i].recentAssesments.uppercase) {
+              break
             }
           }
-          if (studentAssesments.letter[j].name == "Lowercase") {
-            if ($scope.students[i].recentAssesments.lowercase == undefined) {
-              $scope.students[i].recentAssesments.lowercase = studentAssesments.letter[j].percentCorrect + "%"
-            }
-          }
-          if (studentAssesments.letter[j].name == "Sound") {
-            if ($scope.students[i].recentAssesments.sound == undefined) {
-              $scope.students[i].recentAssesments.sound = studentAssesments.letter[j].percentCorrect + "%"
-            }
-          }
-          if ($scope.students[i].recentAssesments.sound && $scope.students[i].recentAssesments.lowercase && $scope.students[i].recentAssesments.uppercase) {
-            break
-          }
-        }
 
-        if (studentAssesments.sightWords.length > 0) {
-          var sightWords = studentAssesments.sightWords
-          $scope.students[i].recentAssesments.sightWords.name = sightWords[sightWords.length-1].name + " - "
-          $scope.students[i].recentAssesments.sightWords.percent = sightWords[sightWords.length-1].percentCorrect + "%"
+          if (studentAssesments.sightWords.length > 0) {
+            var sightWords = studentAssesments.sightWords
+            $scope.currentStudents[i].recentAssesments.sightWords.name = sightWords[sightWords.length-1].name + " - "
+            $scope.currentStudents[i].recentAssesments.sightWords.percent = parseInt(sightWords[sightWords.length-1].percentCorrect)
+          }
         }
-       
       }
-      
+    }
+
+    if ($scope.currentUser.classes) {
+      $scope.currentClass = "All Students"
+      $scope.setCurrentStudents()
+    } else {
+      $scope.currentClass = ""
     }
 
     $scope.$on('assesmentsRetrieved', function(event,msg) {
@@ -70,7 +140,11 @@ angular.module('HappyTree')
       $scope.studentStatsShowing = true
       $scope.currentStudent = student
       $scope.currentStudentAssesments = AssesmentService.getStudentAssesments(student)
-      $scope.showLetterAssesmentChart()      
+      if ($scope.letterAssesmentChartShowing == true) {
+        $scope.showLetterAssesmentChart()      
+      } else if ($scope.sightWordAssesmentChartShowing == true) {
+        $scope.sightWordAssesmentChart()
+      }
     }
 
     $scope.setCurrentStudentAssesments = function(student) {
@@ -80,7 +154,7 @@ angular.module('HappyTree')
 
     $scope.toPercentage =  function (input, decimals) {
       return $filter('number')(input * 100, decimals);
-    };
+    }; 
 
     $scope.showLetterAssesmentChart = function() {
       $scope.letterAssesmentChartShowing = true
@@ -98,7 +172,6 @@ angular.module('HappyTree')
 
       for ( var i = 0; i < studentLetterAssesments.length; i++) {
         var assesment = studentLetterAssesments[i]
-        console.log(assesment)
         if (assesment.name == "Uppercase") {
           $scope.letterAssesments[0].push(assesment)
           data[0].push(assesment.percentCorrect)  
@@ -223,9 +296,14 @@ angular.module('HappyTree')
     }
 
     $scope.showAddStudent = function() {
-      $scope.hideAll()
       $scope.addStudentShowing = true
+      $scope.hideAddClass()
     }
+
+    $scope.hideAddStudent = function() {
+      $scope.addStudentShowing = false
+    }
+
 
     $scope.showEditStudent = function (student) {
       $scope.hideAll()
@@ -240,6 +318,7 @@ angular.module('HappyTree')
     
     $scope.$on('studentUpdated', function(event,msg) {
       $scope.setStudents()
+      $scope.setCurrentStudents()
       $scope.getClassStats()
       alert("Your Student was successfully updated!")
     });
@@ -247,7 +326,6 @@ angular.module('HappyTree')
     $scope.hideAll = function(){
       $scope.classStatsShowing = false
       $scope.studentStatsShowing = false
-      $scope.addStudentShowing = false
       $scope.editStudentShowing = false
       $scope.showingWarning = false
       $scope.missedUppercase = false
@@ -258,7 +336,7 @@ angular.module('HappyTree')
 
     $scope.addStudent = function (student) {
       var currentUser = JSON.parse($window.localStorage.currentUser)
-      student.currentTeacherID = currentUser._id
+      student.currentTeacherID = $scope.currentUser._id
       StudentService.addStudent(student)
 
       //clear form
@@ -268,6 +346,7 @@ angular.module('HappyTree')
 
     $scope.$on('studentAdded', function(event,msg) {
       $scope.setStudents()
+      $scope.setCurrentStudents()
       $scope.getClassStats()
     });
 
@@ -289,6 +368,7 @@ angular.module('HappyTree')
 
     $scope.$on('studentDeleted', function(event,msg) {
       $scope.setStudents()
+      $scope.setCurrentStudents()
       $scope.getClassStats()
     });
 
@@ -308,8 +388,6 @@ angular.module('HappyTree')
     }
 
     $scope.toggleMissedLetters = function(score) {
-      console.log(score)
-
       var missedLetterView = 'missed' + score.name
       
       if (score.name == 'Uppercase') {
@@ -350,7 +428,6 @@ angular.module('HappyTree')
 
       $scope[scoreName] = true
 
-      console.log($scope[scoreName])
     }
 
     $scope.hideMissedLetters = function(name) {

@@ -1,4 +1,4 @@
-angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js'])
+angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js', 'ui.calendar'])
   .config(function($routeProvider, $authProvider) {
     $routeProvider
       .when('/', {

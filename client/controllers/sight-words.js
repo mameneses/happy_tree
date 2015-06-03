@@ -22,7 +22,6 @@ angular.module('HappyTree')
     $scope.promptShowing = false
 
     $scope.showPrompt = function() {
-      console.log($rootScope.currentUser)
       $scope.promptShowing = true
     }
 
@@ -101,13 +100,18 @@ angular.module('HappyTree')
 
           var incorrectSightWordCount = missedWords.length
 
+          var timeNow = new Date()
+
+          console.log(timeNow)
+          console.log(timeNow.toLocaleString())
+
           var assesment = {
             teacherID: $scope.currentUser._id,
             studentID: $scope.selectedStudent._id,
             studentName: $scope.selectedStudent.firstName + " " + $scope.selectedStudent.lastName,
             type: "Sight Words",
             name: $scope.sightWords.name,
-            date: new Date(),
+            date: timeNow.toLocaleString(),
             percentCorrect: $scope.toPercentage($scope.correctSightWordCount/($scope.correctSightWordCount + incorrectSightWordCount), 0),
             correctCount: $scope.correctSightWordCount.toString(),
             incorrectCount: incorrectSightWordCount.toString(),

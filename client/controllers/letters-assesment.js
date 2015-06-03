@@ -338,7 +338,7 @@ angular.module('HappyTree')
           studentName: student.firstName + " " + student.lastName,
           name: assesmentName,
           type: "Letter",
-          date: new Date(),
+          date: new Date().toLocaleString(),
           percentCorrect: $scope.toPercentage($scope.correctAnswers.length/26, 0),
           correctCount: $scope.correctAnswers.length.toString(),
           incorrectCount: $scope.incorrectAnswers.length.toString(),

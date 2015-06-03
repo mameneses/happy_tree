@@ -7,6 +7,7 @@ angular.module('HappyTree')
           $window.localStorage.currentUser = JSON.stringify(response.data.user);
           StudentService.getStudentsFromDB(response.data.user)
           AssesmentService.getAssesmentsFromDB()
+          $rootScope.$broadcast('userLoggedIn')
           $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
         })
         .catch(function(response) {

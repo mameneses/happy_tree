@@ -15,14 +15,107 @@
 <div class="container">
   <div class="row">
     <div class="containter col-sm-4">
-      <div class="center-form panel ">
+
+      <div class="center-form panel mng-class-panel">
         <div class="panel-body">
-          <h3 class="text-center pointer" ng-click="showClass()">Students </h3>
+          <div class="row">
+            <div class="col-xs-6">
+              <button ng-click="showAddClass()" class="btn btn-block btn-success">MNG Classes</button>
+            </div>
+            <div class="col-xs-6">
+               <button ng-click="showAddStudent()" class="btn btn-block btn-success">Add Student</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="center-form panel add-student-panel" ng-show="addClassShowing">
+        <div class="panel-body">
+          
+          <div >
+            <div class="row">
+              <div class="col-xs-8 col-xs-offset-2">
+                <h5 class="text-center"><i class="green ion-university"></i>Manage Classes</h5>
+              </div>
+              <div class="col-xs-2">
+                <h5 class="ion-close red pointer" ng-click="hideAddClass()"></h5>
+              </div>  
+            
+            </div>
+            <div>
+              <ol>
+                <li ng-repeat="class in currentUser.classes" ng-if="class != 'All Students'" ng-mouseover="deleteClassShowing = true" ng-mouseleave="deleteClassShowing = false"> 
+                  <h6>{{class  + "  "}}<span class="ion-minus-circled red" ng-show="deleteClassShowing" ng-click="deleteClass(class)"></span></h6>
+                </li>
+              </ol>
+            </div>
+            <form method="post" ng-submit="addClass()" name="addClassForm">
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addClassForm.newClass.$invalid && addStudentForm.newClass.$dirty }">
+                <input class="form-control input-lg" type="text" id="newClass" name="newClass" ng-model="newClass" placeholder="New Class" required>
+                <span class="ion-easel form-control-feedback"></span>
+              </div>
+       
+              <button type="submit" class="btn btn-block btn-success">Add Class</button>
+              <br/>
+
+            </form>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="center-form panel add-student-panel" ng-show="addStudentShowing">
+        <div class="panel-body">
+          <div >
+            <div class="row">
+              <div class="col-xs-8 col-xs-offset-2">
+                <h5 class="text-center"><i class="green ion-person-add"></i>Add Student</h5>
+              </div>
+              <div class="col-xs-2">
+                <h6 class="ion-close red pointer" ng-click="hideAddStudent()"></h6>
+              </div>
+            </div>
+            <form method="post" ng-submit="addStudent(student)" name="addStudentForm">
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.firstName.$invalid && addStudentForm.firstName.$dirty }">
+                <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="student.firstName" placeholder="First Name" required>
+                <span class="ion-person form-control-feedback"></span>
+              </div>
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.lastName.$invalid && addStudentForm.lastName.$dirty }">
+                <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="student.lastName" placeholder="Last Name" required>
+                <span class="form-control-feedback"></span>
+              </div>
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.className.$invalid && addStudentForm.className.$dirty }">
+                <select class="form-control input-lg" type="text" id="className" name="className" ng-model="student.className" ng-options="class as class for class in currentUser.classes | filter:'!All Students'"required><option value="" disabled selected style='display:none;'> Choose Class </option></select>
+                <span class="ion-university form-control-feedback"></span>
+              </div>
+       
+              <button type="submit" class="btn btn-block btn-success">Add Student</button>
+              <br/>
+
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    
+      <div class="center-form panel student-panel">
+        <div class="panel-body">
+        <center><button class="btn btn-default btn-block pointer" ng-click="showClass()"><h3 class="text-center student-class-btn no-caps" >Students </h3></button></center>
+          <div>
+            <select class="form-control input-lg pointer std-choose-class" type="text" id="currentClass" name="currentClass" ng-model="currentClass" ng-options="class as class for class in currentUser.classes" ng-change="setCurrentStudents()">
+              <option value="" disabled selected style='display:none;'> Choose Current Class </option>
+            </select>
+          </div>
+          
           <div class="student-list">
             <ol>
-              <div ng-repeat="student in students | orderBy:'firstName'">
-                <li ng-mouseover="studentHover = true" ng-mouseleave="studentHover = false">
-                  <h5 ng-class="(currentStudent == student) ? 'lt-green' : '' "><span ng-click="showStats(student)" class="pointer">{{student.firstName}} {{student.lastName }} </span>
+              <div ng-repeat="student in currentStudents | orderBy:'firstName'">
+                <li ng-mouseover="editBtnShowing = true" ng-mouseleave="editBtnShowing = false">
+                  <h5 ng-class="(currentStudent == student) ? 'lt-green' : '' "><span ng-click="showStats(student)" class="pointer" >{{student.firstName}} {{student.lastName }} </span> <span class="lt-green student-edit-btn ion-edit pointer" ng-show="editBtnShowing" ng-click="showEditStudent(student)"> </span>
                   </h5>
                 </li>
               </div>
@@ -30,55 +123,49 @@
           </div>
         </div>
       </div>
-      <div class="center-form panel add-student-panel">
-        <div class="panel-body">
-          <h4 class="text-center">Add Student <i class="green ion-person-add"></i></h4>
-          <form method="post" ng-submit="addStudent(student)" name="addStudentForm">
-
-            <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.firstName.$invalid && addStudentForm.firstName.$dirty }">
-              <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="student.firstName" placeholder="First Name" required>
-              <span class="ion-person form-control-feedback"></span>
-            </div>
-
-            <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.lastName.$invalid && addStudentForm.lastName.$dirty }">
-              <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="student.lastName" placeholder="Last Name" required>
-              <span class="form-control-feedback"></span>
-            </div>
-
-             <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.grade.$invalid && addStudentForm.grade.$dirty }">
-              <select class="form-control input-lg" type="text" id="grade" name="grade" ng-model="student.grade" ng-options="grade.name as grade.name for grade in grades"required><option value=""> Choose Grade </option></select>
-              <span class="ion-university form-control-feedback"></span>
-            </div>
-     
-            <button type="submit" class="btn btn-block btn-success">Add Student</button>
-            <br/>
-
-          </form>
-        </div>
-      </div>
     </div>
       <div class="container col-sm-8">
 
         <div class="center-form panel stats-panel" ng-show="classStatsShowing">
-          <h3 class="center-text">Recent Class Stats</h3>
-          <table class="table table-fixed">
+          <h3 class="center-text">{{currentClass}}</h3>
+          <h5 class="center-text">Most Recent Assesments</h5>
+          <table class="table">
               <thead>
                 <tr>
-                  <th class="col-xs-3 center-text">Student</th>
-                  <th class="col-xs-2 center-text">Uppercase</th>
-                  <th class="col-xs-2 center-text">Lowercase</th>
-                  <th class="col-xs-2 center-text">Sound</th>
-                  <th class="col-xs-3 center-text">Sight Words</th>
+                  <th class="col-xs-3 center-text pointer" ng-click="sortType = 'lastName'; sortReverse = !sortReverse">Student
+                    <span ng-show="sortType == 'lastName' && !sortReverse" class="ion-arrow-up-b"></span>
+                    <span ng-show="sortType == 'lastName' && sortReverse" class="ion-arrow-down-b"></span>
+                  </th>
+                  <th class="col-xs-2 center-text pointer" ng-click="sortType = 'recentAssesments.uppercase'; sortReverse = !sortReverse">Upper
+                    <span ng-show="sortType == 'recentAssesments.uppercase' && !sortReverse" class="ion-arrow-up-b tbl-crrt"></span>
+                    <span ng-show="sortType == 'recentAssesments.uppercase' && sortReverse" class="ion-arrow-down-b tbl-crrt"></span>
+                  </th>
+                  <th class="col-xs-2 center-text pointer" ng-click="sortType = 'recentAssesments.lowercase'; sortReverse = !sortReverse">Lower
+                    <span ng-show="sortType == 'recentAssesments.lowercase' && !sortReverse" class="ion-arrow-up-b tbl-crrt"></span>
+                    <span ng-show="sortType == 'recentAssesments.lowercase' && sortReverse" class="ion-arrow-down-b tbl-crrt"></span>
+                  </th>
+                  <th class="col-xs-2 center-text pointer" ng-click="sortType = 'recentAssesments.sound' ; sortReverse = !sortReverse">
+                    Sound
+                    <span ng-show="sortType == 'recentAssesments.sound' && !sortReverse" class="ion-arrow-up-b tbl-crrt"></span>
+                    <span ng-show="sortType == 'recentAssesments.sound' && sortReverse" class="ion-arrow-down-b tbl-crrt"></span>
+                  </th>
+                  <th class="col-xs-3 center-text pointer" ng-click="sortType = 'recentAssesments.sightWords.percent' ; sortReverse = !sortReverse">
+                    Sight Words
+                    <span ng-show="sortType == 'recentAssesments.sightWords.percent' && !sortReverse" class="ion-arrow-up-b tbl-crrt"></span>
+                    <span ng-show="sortType == 'recentAssesments.sightWords.percent' && sortReverse" class="ion-arrow-down-b tbl-crrt"></span>
+                  </th>
                 </tr>
               </thead>
-              <tbody>
-                  <td ng-if="letterAssesments.length < 1" class="col-xs-12 center-text">No Assements Taken</td>
-                <tr ng-repeat="student in students | orderBy:'firstName' ">
+              <tbody class="class-table">
+                  <tr ng-if="currentStudents.length < 1">
+                    <td  class="center-text">No Students Added</td>
+                  </tr>
+                <tr ng-repeat="student in currentStudents | orderBy: sortType : sortReverse ">
                   <td class="col-xs-3 center-text">{{student.firstName + " " + student.lastName}}</td>
-                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.uppercase)">{{student.recentAssesments.uppercase}}</td>
-                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.lowercase)">{{student.recentAssesments.lowercase}}</td>
-                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.sound)">{{student.recentAssesments.sound}}</td>
-                  <td class="col-xs-3 center-text" >{{student.recentAssesments.sightWords.name }}<span ng-class="getScoreColorClass(student.recentAssesments.sightWords.percent)">{{ student.recentAssesments.sightWords.percent}}</span> </td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.uppercase)">{{student.recentAssesments.uppercase}}{{student.recentAssesments.uppercase ? "%":" "}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.lowercase)">{{student.recentAssesments.lowercase}}{{student.recentAssesments.lowercase ? "%":" "}}</td>
+                  <td class="col-xs-2 center-text" ng-class="getScoreColorClass(student.recentAssesments.sound)">{{student.recentAssesments.sound}}{{student.recentAssesments.sound ? "%":" "}} </td>
+                  <td class="col-xs-3 center-text" >{{student.recentAssesments.sightWords.name }}<span ng-class="getScoreColorClass(student.recentAssesments.sightWords.percent)">{{ student.recentAssesments.sightWords.percent}}{{student.recentAssesments.sightWords.percent ? "%":" "}}</span> </td>
                 </tr>
               </tbody>
             </table>
@@ -106,8 +193,8 @@
                 <span class="form-control-feedback"></span>
               </div>
 
-               <div class="form-group has-feedback" ng-class="{ 'has-error' : editStudentForm.grade.$invalid && editStudentForm.grade.$dirty }">
-                <select class="form-control input-lg" type="text" id="grade" name="grade" ng-model="currentStudent.grade" ng-options="grade.name as grade.name for grade in grades"required><option value=""> Choose Grade </option></select>
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : editStudentForm.className.$invalid && editStudentForm.className.$dirty }">
+                <select class="form-control input-lg" type="text" id="className" name="className" ng-model="currentStudent.className" ng-options="class as class for class in currentUser.classes.slice().reverse() | filter:'!All Students'"required><option value="" disabled selected style='display:none;'> Choose Class </option></select>
                 <span class="ion-university form-control-feedback"></span>
               </div>
        
@@ -120,8 +207,9 @@
         </div>
 
         <div class="center-form panel stats-panel" ng-show="studentStatsShowing">
-          <h3 class="center-text">Assesments</h3>
-          <h6 class="center-text lt-green pointer" ng-click="showEditStudent(currentStudent)"> Edit {{currentStudent.firstName}} {{currentStudent.lastName}}</h6>
+          <h3 class="center-text">{{currentStudent.firstName}} {{currentStudent.lastName}}'s Assesments</h3>
+          <h6 class="center-text">Class: {{currentStudent.className}}</h6>
+
           <section class="centered-pills">
             <ul class="nav nav-pills">
               <li ng-class="{active: letterAssesmentChartShowing}"><a href="" ng-click="showLetterAssesmentChart()"> Letters</a> </li>

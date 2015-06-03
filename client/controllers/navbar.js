@@ -16,6 +16,10 @@ angular.module('HappyTree')
       $scope.setCurrentUser()
     });
 
+    $scope.$on('userLoggedIn', function(event,msg) {
+      $scope.setCurrentUser()
+    });
+
     $scope.$on('userDeleted', function(event,msg) {
       $scope.logout()
     })

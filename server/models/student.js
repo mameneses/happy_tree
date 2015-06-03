@@ -4,6 +4,7 @@ var schema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   currentGrade: String,
+  className: String,
   currentTeacherID: String,
   letterAssesmentScores:[String],
   sightWordAssesmentScores:[String]

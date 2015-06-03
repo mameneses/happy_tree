@@ -17,7 +17,12 @@ angular.module('HappyTree')
 
       getAssesments: function() {
 
-        var allAssesments = JSON.parse($window.localStorage.assesments)
+        if ($window.localStorage.assesments) {
+          var allAssesments = JSON.parse($window.localStorage.assesments)
+         
+        } else {
+          var allAssesments = []
+        }
         return allAssesments
       },
 
@@ -32,7 +37,6 @@ angular.module('HappyTree')
             sortedAssesments.sightWords.push(currentAssesments[i])
           }
         }
-
         return sortedAssesments
 
       },
