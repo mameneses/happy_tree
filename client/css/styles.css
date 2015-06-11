@@ -179,6 +179,7 @@ a:hover {
   position:fixed;
   z-index: 1;
   margin:0;
+  margin-top:-25px;
   min-height: 100%;
   min-width:100%;
   background-color:rgba(0,0,0,0.80);
@@ -257,6 +258,10 @@ a:hover {
 .pointer:hover {
   cursor:pointer;
 }
+
+.no-pointer:hover {
+  cursor:none;
+}
  
 .tile:hover {
   cursor: pointer;
@@ -266,8 +271,8 @@ a:hover {
   cursor: pointer;
 }
 
-.stats-page:hover{
-  cursor: pointer;
+.large {
+  font-size: 30px;
 }
 
 .incorrect:hover{
@@ -298,7 +303,7 @@ a:hover {
 }
 
 .btn-holder {
-  width:60%;
+  width:70%;
   margin: 0 auto;
 }
 
@@ -366,7 +371,11 @@ a:hover {
 }
 
 .yellow {
-  color: rgba(250,200,0,1);
+  color: #999900;
+}
+
+.white {
+  color: white;
 }
 
 .stats-panel {
@@ -396,9 +405,24 @@ a:hover {
   margin: 0 auto;
 }
 
+.circleDiv {
+    border-radius: 50%;   
+    width: 300px;
+    height: 300px;
+    background: white;
+    border: 3px solid green;
+    margin: 0 auto;
+}
+
 .home-tile {
-  height: 300px;
-  
+  height: 300px; 
+}
+
+.home-title {
+  margin-top:170px;
+  padding-top:80px;
+  font-style:none;
+  color:white;
 }
 
 .home-titles {
@@ -413,11 +437,64 @@ a:hover {
   background-color: rgba(0,125,0, 0.2); 
 }
 
+.home-selected-event {
+  position: absolute;
+  width:230px;
+  z-index: 100; 
+  border-radius: 10px;
+  border: 2px solid #8AC007;
+  background-color: white;
+}
+
 .home-recent-assesments {
   height: 50px;
   overflow: scroll;
 }
+.home-started-img{
+  width:140px;
+  height: 140px;
+  margin:auto;
+  display: block;
+}
 
+.home-feature-img{
+  width:280px;
+  height: 280px;
+  margin:auto;
+  display: block;
+}
+.home-open {
+  background-image: url("../img/students1.jpg"); 
+  background-size: 100%;
+  height: 800px;
+  margin-top: -170px;
+}
+
+.home-tutorial {
+  margin-top: -170px;
+  height: 800px;
+}
+
+@media (max-width: 1108px) {
+    .home-open {
+        background-size: 1108px; /* Force the image to its minimum width */
+    }
+
+    .home-tutorial {
+        background-size: 1108px; /* Force the image to its minimum width */
+    }
+}
+
+.overlay {
+    z-index: 1;
+    width: 100%;
+    height: 800px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.home-features-btn {
+  margin-top: 300px;
+}
 .centered-pills { text-align:center; }
 .centered-pills ul.nav-pills { display:inline-block; }
 .centered-pills li { display:inline; }
@@ -448,6 +525,7 @@ a:hover {
   position:fixed;
   z-index: 1;
   margin:0;
+  margin-top:-25px;
   min-height: 100%;
   min-width:100%;
   background-color:rgba(0,0,0,0.80);
@@ -507,6 +585,7 @@ a:hover {
 
 .tool-tile {
   height:260px;
+  width:100%;
 }
 
 .student-edit-btn {
@@ -530,6 +609,51 @@ a:hover {
   margin-left: 10%;
 }
 
+.nav-company-title {
+  font-size: 20px;
+}
+
+.tracker-close-event {
+  float:right;
+}
+
+@media (max-width: 700px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin: 7.5px -15px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+      border-top: 1px solid black;
+      text-align: center;
+    }
+    .navbar-text {
+        float: none;
+        margin: 15px 0;
+    }
+    /* since 3.1.0 */
+    .navbar-collapse.collapse.in { 
+        display: block!important;
+    }
+    .collapsing {
+        overflow: hidden!important;
+    }
+}
 /*.letter-assesment-showing {
   background-image: url("../img/happytree-find-the-letter.gif");
   background-size: 300px 500px;

@@ -13,16 +13,16 @@
     <div class="panel-body">
       <ol>
         <li>
-          <h5>Explain to student: 
+          <h5>Prompt student: 
             <ul>
               <li>They will be asked to find letters.</li>
-              <li>Once they find the correct letter, click on it ONLY ONCE.</li>
-              <li>If they are not sure of the answer, its okay, take their best guess.</li>
+              <li>Once they find the correct letter, they should click on it ONLY ONCE.</li>
+              <li>If they are not sure of the answer, they should guess.</li>
               <li>When they are done and see fireworks, raise their hand for more assistance.</li>
             </ul>
           </h5>
         </li>
-        <li><h5>Select the correct student. </h5></li>
+        <li><h5>Select the student. </h5></li>
         <li><h5>Click Assesment type to start assement.</h5></li>
         <h5>At the end of the assesment it will automatically save.</h5>
       </ol>
@@ -43,7 +43,7 @@
       <form name="studentForm">
         <fieldset class="form-group">
           <select ng-model="selectedStudent" class="letter-assesment-form-control form-control pointer" ng-options="student as student.firstName + ' ' + student.lastName for student in allStudents | orderBy:'firstName'"  title="Students">
-            <option value=""> ------> Choose Student <------ </option>
+            <option value="" disabled selected style='display:none;'> ------> Choose Student <------ </option>
           </select>
         </fieldset>
       </form>

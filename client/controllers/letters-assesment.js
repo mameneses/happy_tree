@@ -193,8 +193,6 @@ angular.module('HappyTree')
         return $filter('number')(input * 100, decimals);
       };
 
-      console.log(typeof $scope.toPercentage(.5,0))
-
       $scope.isAuthenticated = function() {
         return $auth.isAuthenticated();
       };
@@ -220,7 +218,6 @@ angular.module('HappyTree')
 
       $scope.showPrompt = function() {
         $scope.promptShowing = true
-        console.log($rootScope.currentUser)
       }
 
       $scope.hidePrompt = function() {

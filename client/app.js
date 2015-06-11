@@ -1,4 +1,4 @@
-angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js', 'ui.calendar'])
+angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js', 'ui.calendar','smoothScroll'])
   .config(function($routeProvider, $authProvider) {
     $routeProvider
       .when('/', {
@@ -37,6 +37,11 @@ angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js', 'ui.calendar']
         templateUrl: 'views/profile.html',
         controller: 'ProfileCtrl'
       })
+      .when('/tracker', {
+        templateUrl: 'views/tracker.html',
+        controller: 'TrackerCtrl'
+      })
+
       .otherwise('/')
 
     $authProvider.loginUrl = 'http://localhost:3000/auth/login';

@@ -17,8 +17,6 @@ angular.module('HappyTree')
 
     $scope.currentStudents = []
 
-  
-
     $scope.setCurrentStudents = function() {
       $scope.currentStudents = []
       if ($scope.currentClass == "All Students") {
@@ -30,7 +28,6 @@ angular.module('HappyTree')
           }
         }
       }
-      
       $scope.getClassStats()
     }  
 
@@ -43,9 +40,10 @@ angular.module('HappyTree')
     $scope.sortType = "lastName"
     $scope.sortReverse = false
     
-
+    $scope.mngClassesShowing = true
+    $scope.addStudentShowing = false
     $scope.classStatsShowing = true
-    $scope.addClassShowing = false
+    $scope.mngClassShowing = false
     $scope.studentStatsShowing = false
     $scope.editStudentShowing = false
     $scope.warningShowing = false
@@ -54,13 +52,26 @@ angular.module('HappyTree')
 
     $scope.editBtnShowing = false
 
-    $scope.showAddClass = function() {
-      $scope.addClassShowing = true
-      $scope.hideAddStudent()
+    $scope.showMngClass = function() {
+      $scope.mngClassShowing = true
     }
 
-    $scope.hideAddClass = function() {
-      $scope.addClassShowing = false
+    $scope.showMngClasses = function() {
+      $scope.mngClassesShowing = true
+      $scope.addStudentShowing = false
+    }
+
+    $scope.showAddStudent = function() {
+      $scope.mngClassesShowing = false
+      $scope.addStudentShowing = true
+    }
+
+    $scope.hideMngClass = function() {
+      $scope.mngClassShowing = false
+    }
+
+    $scope.hideEditStudent = function() {
+      $scope.editStudentShowing = false
     }
 
     $scope.addClass = function() {
@@ -77,13 +88,16 @@ angular.module('HappyTree')
     }
 
     $scope.deleteClass = function(className) {
-      confirm("Are you sure you want to delete " + className +" ?")
-      for (var i = 0; i < $scope.currentUser.classes.length; i++) {
-        if ($scope.currentUser.classes[i] == className) {
-          $scope.currentUser.classes.splice(i,1)
+      var confirmed = confirm("Are you sure you want to delete " + className +" ?")
+      if (confirmed == true) {
+        for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+          if ($scope.currentUser.classes[i] == className) {
+            $scope.currentUser.classes.splice(i,1)
+          }
         }
+        UserService.updateUser($scope.currentUser)
       }
-      UserService.updateUser($scope.currentUser)
+      
     }
 
     $scope.getClassStats = function() {
@@ -295,25 +309,14 @@ angular.module('HappyTree')
 
     }
 
-    $scope.showAddStudent = function() {
-      $scope.addStudentShowing = true
-      $scope.hideAddClass()
-    }
-
-    $scope.hideAddStudent = function() {
-      $scope.addStudentShowing = false
-    }
-
-
     $scope.showEditStudent = function (student) {
-      $scope.hideAll()
       $scope.currentStudent = student
       $scope.editStudentShowing = true
     }
 
     $scope.editStudent = function (student) {
       StudentService.updateStudent(student)
-      $scope.editStudentForm.$setPristine();
+      
     } 
     
     $scope.$on('studentUpdated', function(event,msg) {
@@ -321,6 +324,8 @@ angular.module('HappyTree')
       $scope.setCurrentStudents()
       $scope.getClassStats()
       alert("Your Student was successfully updated!")
+      $scope.hideEditStudent()
+      $scope.editStudentForm.$setPristine();
     });
 
     $scope.hideAll = function(){
@@ -359,11 +364,14 @@ angular.module('HappyTree')
     }
 
     $scope.deleteStudent = function (student) {
-      StudentService.deleteStudent(student)
+      var confirmDelete = confirm("Are you sure you want to DELETE " + student.firstName + " " + student.lastName + "?")
+      if (confirmDelete == true) {
+        StudentService.deleteStudent(student)
       $scope.currentStudent = {}
       $scope.editStudentShowing = false
       $scope.classStatsShowing = true
       $scope.hideDeleteWarning()
+      }
     }
 
     $scope.$on('studentDeleted', function(event,msg) {

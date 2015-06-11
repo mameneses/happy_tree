@@ -1,90 +1,98 @@
-<div class="container">
-  <div class="jumbotron">
-    <div class="container">
-      <div ng-if="!isAuthenticated()">
-        <h1 class="center-text green">Welcome to <i class="ion-leaf green"></i>HappyTree</h1>
-        <a href="#/tools"><h3 class="center-text green">Tools for Teachers</h3></a>
-        <div class="row">
-          <p></p>
-        </div>
-        <div class="row">
-          <div class="col-sm-8">
-            <h5> We make tools to help make assesments easier and faster, so you can get back to teaching.</h5>
-          </div>
-          <div class="col-sm-4 home-start-panel container">
-            <h4>Start Today:</h4>
-            <ol>
-              <li><h5><a href="#/signup">Sign Up!</a></h5></li>
-              <li><h5> Add your students. </h5></li>
-              <li><h5>Start your assesments. </h5> </li>
-            </ol>
-          </div>
+<div ng-if="!isAuthenticated()">
+  <div class="home-open ">
+    <div class="overlay">
+      <h1 class="center-text home-title white">Tools for Teachers</h1>
+      <h5 class="center-text white"> We make tools to help make assesments easier and faster, so you can get back to teaching.</h5>
+      <br>
+      <div class="center-text" >
+        <div class="btn btn-success" ng-click="signUp()" >
+          <h3 class="white" >Sign Up!</h3>
         </div>
       </div>
+      <div class="center-text home-features-btn pointer" scroll-to="features">
+        <h4 class="white">Features</h4>
+        <span class="ion-chevron-down white large"></span>
+      </div>
+    </div>
+  </div>
 
-      <div ng-if="isAuthenticated()">
-        <div class="row">
-          <h2 class="center-text"></i>Assesments Tracker</h2>
-          <br>
+  <div id="features" class="home-tutorial">
+    <div class="overlay">
+      <h1 class="center-text home-title white">Features</h1>
+      <div class="row">
+        <div class="col-sm-4">
+          <h3 class="center-text white">Assesments</h3>
+          <h5 class="center-text white">Automated & teacher guided tests that are easily saved and stored. Test your students progress on their letter and sight word recognition.</h5>
+          <img src="../img/home_assesments.png" class="img-circle home-feature-img">
         </div>
+        <div class="col-sm-4">
+          <h3 class="center-text white">Track</h3>
+          <h5 class="center-text white">See which students took their assesments. Check the calendar and past assesments to easily keep a testing schedule.</h5>
+          <img src="../img/home_tracker.png" class="img-circle home-feature-img">
+        </div>
+        <div class="col-sm-4">
+          <h3 class="center-text white">Student Progress</h3>
+          <h5 class="center-text white">Watch students progress to meet goals. See which students need more attention with a simple class comparisons.</h5>
+          <img src="../img/home_student_progress.png" class="img-circle home-feature-img">
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="center-text" >
+        <div class="btn btn-success" ng-click="signUp()" >
+          <h6 class="white" >I'm Ready!</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-if="isAuthenticated()">
+  <div class="container">
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="center-text">Getting Started!</h1>
         <div class="row">
           <div class="col-sm-4">
-            <div class="row">
-                <h5 class="center-text"> Recent Letter Assesments </h5> 
-                <table class="table table-fixed">
-                  <thead>
-                    <tr>
-                      <th class="col-xs-2 center-text">Date</th>
-                      <th class="col-xs-4 center-text">Student</th>
-                      <th class="col-xs-4 center-text">Name</th>
-                      <th class="col-xs-2 center-text">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-if="!letterAssesments">
-                      <td  class="col-xs-12 center-text">No Assements Taken</td>
-                    </tr>
-                      
-                    <tr ng-repeat="assesment in letterAssesments | orderBy:'-date' | limitTo: 20">
-                      <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
-                      <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
-                      <td class="col-xs-4 center-text">{{assesment.name}}</td>
-                      <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{assesment.percentCorrect + "%"}}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <h4 class="center-text">1. Add Class & Students</h4>
+            
+            <div >
+              <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+              <h6 class="center-text ion-chevron-down"></h6>
+              <h6 class="center-text">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
+              <h6 class="center-text ion-chevron-down"></h6>
+              <h6 class="center-text">Create a Class</h6>
+              <h6 class="center-text ion-chevron-down"></h6>
+              <h6 class="center-text">Add Students</h6>
+            </ul>
             </div>
-            <div class="row">
-              <h5 class="center-text"> Recent Sight Word assesments </h5> 
-              <table class="table table-fixed">
-                <thead>
-                <tr>
-                  <th class="col-xs-2 center-text">Date</th>
-                  <th class="col-xs-4 center-text">Student</th>
-                  <th class="col-xs-4 center-text">Name</th>
-                  <th class="col-xs-2 center-text">Score</th>
-                </tr>
-              </thead>
-                <tbody class="home-recent-assesments">
-                  <tr ng-if="!sightWordAssesments">
-                    <td  class="col-xs-12 center-text">No Assements Taken</td>
-                  </tr>
-                  <tr ng-repeat="assesment in sightWordAssesments.slice().reverse()">
-                    <td class="col-xs-2 center-text">{{assesment.date | date: 'shortDate'}}</td>
-                    <td class="col-xs-4 center-text">{{assesment.studentName}}</td>
-                    <td class="col-xs-4 center-text">{{assesment.name}}</td>
-                    <td class="col-xs-2 center-text" ng-class="getScoreColorClass(assesment)">{{assesment.percentCorrect + "%"}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
+            
           </div>
-          <div class="col-sm-8">
-
-            <div ui-calendar="uiConfig.calendar" ng-model="eventSources">
+          <div class="col-sm-4">
+            <h4 class="center-text">2. Assess Students</h4>
+          
+            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTools()">Tools</span></h6>
+            <h6 class="center-text ion-chevron-down"></h6>
+            <h6 class="center-text">Choose an assesment</h6>
+            <h6 class="center-text ion-chevron-down"></h6>
+            <h6 class="center-text">Select a student</h6>
+            <h6 class="center-text ion-chevron-down"></h6>
+            <h6 class="center-text">Start the assesment</h6>
           </div>
+          <div class="col-sm-4">
+            <h4 class="center-text">3.Track Progress</h4>
+         
+            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTracker()">Tracker</span></h6>
+            <h6 class="center-text ion-chevron-down"></h6>
+            <h6 class="center-text">See who took which assesment and when</h6>
+            <h5 class="center-text">OR</h5>
+            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+            <h6 class="center-text ion-chevron-down"></h6>
+            <h6 class="center-text">Compare class scores and individual student progess</h6>
+          </div>
+          
         </div>
+        
       </div>
     </div>
   </div>
