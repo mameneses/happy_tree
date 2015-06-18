@@ -1,38 +1,39 @@
 <div ng-if="!isAuthenticated()">
-  <div class="home-open ">
-    <div class="overlay">
+  <div class="home-open" ng-style="windowHeight">
+    <div class="overlay" ng-style="windowHeight">
       <h1 class="center-text home-title white">Tools for Teachers</h1>
-      <h5 class="center-text white"> We make tools to help make assesments easier and faster, so you can get back to teaching.</h5>
+      <h5 class="center-text white"> Tools to help Pre-Kindergarten and Kindergerten assesments easier and faster, so you can get back to teaching.</h5>
       <br>
       <div class="center-text" >
         <div class="btn btn-success" ng-click="signUp()" >
-          <h3 class="white" >Sign Up!</h3>
+          <h5 class="white" >Sign Up!</h5>
         </div>
       </div>
-      <div class="center-text home-features-btn pointer" scroll-to="features">
-        <h4 class="white">Features</h4>
-        <span class="ion-chevron-down white large"></span>
-      </div>
+      <center>
+        <div class="center-text pointer" ng-style="featureBtnMargin" scroll-to="features">
+          <h4 class="white">Features</h4>
+          <span class="ion-chevron-down white large"></span>
+        </div>
+      </center>
     </div>
   </div>
 
   <div id="features" class="home-tutorial">
-    <div class="overlay">
-      <h1 class="center-text home-title white">Features</h1>
-      <div class="row">
+    <div class="overlay1">
+      <div class="row feature-body">
         <div class="col-sm-4">
           <h3 class="center-text white">Assesments</h3>
-          <h5 class="center-text white">Automated & teacher guided tests that are easily saved and stored. Test your students progress on their letter and sight word recognition.</h5>
+          <h5 class="center-text home-feature-body">Automated & teacher guided tests that are easily saved and stored. Test your students progress on their letter and sight word recognition.</h5>
           <img src="../img/home_assesments.png" class="img-circle home-feature-img">
         </div>
         <div class="col-sm-4">
           <h3 class="center-text white">Track</h3>
-          <h5 class="center-text white">See which students took their assesments. Check the calendar and past assesments to easily keep a testing schedule.</h5>
+          <h5 class="center-text home-feature-body">See which students took their assesments. Check the calendar and past assesments to easily keep a testing schedule.</h5>
           <img src="../img/home_tracker.png" class="img-circle home-feature-img">
         </div>
         <div class="col-sm-4">
           <h3 class="center-text white">Student Progress</h3>
-          <h5 class="center-text white">Watch students progress to meet goals. See which students need more attention with a simple class comparisons.</h5>
+          <h5 class="center-text home-feature-body">Watch students progress to meet goals. See which students need more attention with a simple class comparisons.</h5>
           <img src="../img/home_student_progress.png" class="img-circle home-feature-img">
         </div>
       </div>
@@ -40,7 +41,7 @@
       <br>
       <div class="center-text" >
         <div class="btn btn-success" ng-click="signUp()" >
-          <h6 class="white" >I'm Ready!</h6>
+          <h5 class="white" >I'm Ready!</h5>
         </div>
       </div>
     </div>
@@ -49,52 +50,58 @@
 
 <div ng-if="isAuthenticated()">
   <div class="container">
-    <div class="jumbotron">
-      <div class="container">
+
         <h1 class="center-text">Getting Started!</h1>
         <div class="row">
           <div class="col-sm-4">
-            <h4 class="center-text">1. Add Class & Students</h4>
-            
-            <div >
-              <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
-              <h6 class="center-text ion-chevron-down"></h6>
-              <h6 class="center-text">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
-              <h6 class="center-text ion-chevron-down"></h6>
-              <h6 class="center-text">Create a Class</h6>
-              <h6 class="center-text ion-chevron-down"></h6>
-              <h6 class="center-text">Add Students</h6>
-            </ul>
+
+              <div class="center-form panel">
+                <div class="panel-body">
+                  <h4 class="center-text">1. Add Class & Students</h4>
+                  <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+                  <h6 class="center-text ion-chevron-down"></h6>
+                  <h6 class="center-text">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
+                  <h6 class="center-text ion-chevron-down"></h6>
+                  <h6 class="center-text">Create a Class</h6>
+                  <h6 class="center-text ion-chevron-down"></h6>
+                  <h6 class="center-text">Add Students</h6>
+                </div>
+              </div>
+
+          </div>
+          <div class="col-sm-4">
+            <div class="center-form panel">
+              <div class="panel-body">
+                <h4 class="center-text">2. Assess Students</h4>
+                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTools()">Tools</span></h6>
+                <h6 class="center-text ion-chevron-down"></h6>
+                <h6 class="center-text">Choose an assesment</h6>
+                <h6 class="center-text ion-chevron-down"></h6>
+                <h6 class="center-text">Read propmt</h6>
+                <h6 class="center-text ion-chevron-down"></h6>
+                <h6 class="center-text">Start the assesment</h6>
+                <p class="center-text well"> TIP: Create custom sight word lists at:<br> <strong>Tools</strong> > <strong>Sight Words</strong> > <strong>Create/Edit List</strong></p>
+              </div>
             </div>
-            
           </div>
           <div class="col-sm-4">
-            <h4 class="center-text">2. Assess Students</h4>
-          
-            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTools()">Tools</span></h6>
-            <h6 class="center-text ion-chevron-down"></h6>
-            <h6 class="center-text">Choose an assesment</h6>
-            <h6 class="center-text ion-chevron-down"></h6>
-            <h6 class="center-text">Select a student</h6>
-            <h6 class="center-text ion-chevron-down"></h6>
-            <h6 class="center-text">Start the assesment</h6>
-          </div>
-          <div class="col-sm-4">
-            <h4 class="center-text">3.Track Progress</h4>
-         
-            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTracker()">Tracker</span></h6>
-            <h6 class="center-text ion-chevron-down"></h6>
-            <h6 class="center-text">See who took which assesment and when</h6>
-            <h5 class="center-text">OR</h5>
-            <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
-            <h6 class="center-text ion-chevron-down"></h6>
-            <h6 class="center-text">Compare class scores and individual student progess</h6>
+            <div class="center-form panel">
+              <div class="panel-body">
+                <h4 class="center-text">3.Track Progress</h4>
+             
+                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTracker()">Tracker</span></h6>
+                <h6 class="center-text ion-chevron-down"></h6>
+                <h6 class="center-text">See who took which assesment and when</h6>
+                <h5 class="center-text">OR</h5>
+                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+                <h6 class="center-text ion-chevron-down"></h6>
+                <h6 class="center-text">Compare class scores and individual student progess</h6>
+              </div>
+            </div>
           </div>
           
         </div>
-        
-      </div>
-    </div>
+      
   </div>
 </div>
 

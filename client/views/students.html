@@ -48,6 +48,32 @@
   </div>
 </div>
 
+<div class="stats-page" ng-show="editClassShowing" >
+  <br>
+  <div class="row">
+    <div class="col-xs-2 col-xs-offset-10" ng-click="editClassShowing = false"><h1 class="ion-close red pointer large"></h1></div>
+  </div>
+  <br>
+  <div class="center-form panel edit-class-panel">
+    <div class="panel-body">
+      <h4 class="text-center">Edit Class  <i class="ion-edit green"></i> </h4>
+      <h6 class="center-text">Current: <strong>{{oldClassName}}</strong></h6>
+      <form method="put" ng-submit="editClassName(editedClassName)" name="editClassNameForm">
+
+        <div class="form-group has-feedback" ng-class="{ 'has-error' : editClassNameForm.className.$invalid && editClassNameForm.className.$dirty }">
+          <input class="form-control input-lg" type="text" id="className" name="className" ng-model="editedClassName" placeholder="New Class Name" required>
+          <span class="ion-person form-control-feedback"></span>
+        </div>
+ 
+        <button type="submit" class="btn btn-block btn-success">Edit Class</button>
+        <br/>
+
+      </form>
+      <button ng-click="deleteClass(oldClassName)" class="btn btn-block btn-danger">Delete Class</button>
+    </div>
+  </div>
+</div>
+
 <div class="stats-page" ng-show="mngClassShowing">
   <br>
   <div class="row">
@@ -55,30 +81,18 @@
   </div>
    
   <div class="row">
-    <div class="col-xs-12" ng-show="mngClassesShowing">
+    <div class="col-xs-12">
       <div class="center-form panel add-student-panel">
         <div class="panel-body">
-          <section class="centered-pills">
-            <ul class="nav nav-pills">
-              <li ng-class="{active: mngClassesShowing}"><a href="" ng-click="showMngClasses()"> Manage Classes</a> </li>
-              <li ng-class="{active: addStudentShowing}"><a href="" ng-click="showAddStudent()"> Add Student</a> </li> 
-            </ul>
-          </section>
+          
           <div >
             <div class="row">
               <div class="col-xs-8 col-xs-offset-2">
-                <h5 class="text-center"><i class="green ion-university"></i>Manage Classes</h5>
+                <h5 class="text-center"><i class="green ion-university"></i>Add Class</h5>
               </div>
             </div>
-            <div>
-              <ol>
-                <li ng-repeat="class in currentUser.classes" ng-if="class != 'All Students'" ng-mouseover="deleteClassShowing = true" ng-mouseleave="deleteClassShowing = false"> 
-                  <h6>{{class  + "  "}}<span class="ion-minus-circled red pointer" ng-show="deleteClassShowing" ng-click="deleteClass(class)"></span></h6>
-                </li>
-              </ol>
-            </div>
-            <form method="post" ng-submit="addClass()" name="addClassForm">
 
+            <form method="post" ng-submit="addClass()" name="addClassForm">
               <div class="form-group has-feedback" ng-class="{ 'has-error' : addClassForm.newClass.$invalid && addStudentForm.newClass.$dirty }">
                 <input class="form-control input-lg" type="text" id="newClass" name="newClass" ng-model="newClass" placeholder="New Class Name" required>
                 <span class="ion-easel form-control-feedback"></span>
@@ -94,39 +108,36 @@
       </div>
       
     </div>
-    <div class="col-xs-12" ng-show="addStudentShowing">
+  </div>
+</div>
+
+<div class="stats-page" ng-show="addStudentShowing">
+    <br>
+    <div class="row">
+      <div class="col-xs-2 col-xs-offset-10" ng-click="addStudentShowing = false"><h1  class="ion-close red pointer large"></h1></div>
+    </div>
+
+    <div class="col-xs-12" >
       <div class="center-form panel add-student-panel">
         <div class="panel-body">
-          <section class="centered-pills">
-            <ul class="nav nav-pills">
-              <li ng-class="{active: mngClassesShowing}"><a href="" ng-click="showMngClasses()"> Manage Classes</a> </li>
-              <li ng-class="{active: addStudentShowing}"><a href="" ng-click="showAddStudent()"> Add Student</a> </li> 
-            </ul>
-          </section>
           <div>
             <div class="row">
               <div class="col-xs-8 col-xs-offset-2">
-                <h5 class="text-center"><i class="green ion-person-add"></i>Add Student</h5>
+                <h5 class="text-center"><i class="green ion-person-add"></i>Add Student </h5>
+                <h6 class="text-center">to</h6>
+                <h6 class="text-center">{{currentClass}}</h6>
               </div>
             </div>
             <form method="post" ng-submit="addStudent(student)" name="addStudentForm">
 
               <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.firstName.$invalid && addStudentForm.firstName.$dirty }">
-                <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="student.firstName" placeholder="First Name" required>
+                <input class="form-control input-lg" type="text" id="addFirstName" name="firstName" ng-model="student.firstName" placeholder="First Name" required>
                 <span class="ion-person form-control-feedback"></span>
               </div>
 
               <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.lastName.$invalid && addStudentForm.lastName.$dirty }">
                 <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="student.lastName" placeholder="Last Name" required>
                 <span class="form-control-feedback"></span>
-              </div>
-
-              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.className.$invalid && addStudentForm.className.$dirty }">
-                <select class="form-control input-lg" type="text" id="className" name="className" ng-model="student.className" ng-options="class as class for class in currentUser.classes | filter:'!All Students'"required>
-                  <option ng-if="currentUser.classes.length == 1 || currentUser.classes.length == 0" value="" disabled selected style='display:none;'> You must Add a Class </option>
-                  <option ng-if="currentUser.classes.length != 1" value="" disabled selected style='display:none;'> Choose Class </option>
-                </select>
-                <span class="ion-university form-control-feedback"></span>
               </div>
        
               <button type="submit" class="btn btn-block btn-success">Add Student</button>
@@ -143,28 +154,37 @@
 
 <div class="container">
   <div class="row">
-    <div class="containter col-sm-4">
+    <div class="containter col-md-4"> 
+      
 
-      <div class="center-form panel mng-class-panel">
+      <div class="center-form panel mng-class-panel" ng-show="allClassesShowing">
         <div class="panel-body">
           <div class="row">
-            <div class="col-xs-9">
-              <button class="btn btn-default btn-block pointer" ng-click="showClass()"><h5 class="text-center student-class-btn no-caps" >Class Stats </h5></button>
+            <div class="col-xs-8">
+              <h3 class="center-text">Classes</h3>
             </div>
-            <div class="col-xs-3">
-               <button ng-click="showMngClass()" class="btn btn-block btn-success"><span class="ion-plus"></span></button>
+            <div class="col-xs-4">
+              <button ng-click="showMngClass()" class="btn btn-block btn-success add-btn" data-toggle="tooltip" title="Add Class"><span class="ion-plus"></span></button>
             </div>
           </div>
+          <ol>
+            <li ng-repeat="class in currentUser.classes" ng-mouseover="deleteClassShowing = true" ng-mouseleave="deleteClassShowing = false">
+              <h5 ><span class="pointer" ng-click="goToClass(class)">{{class}}</span> <span class="lt-green student-edit-btn ion-edit pointer" ng-show="deleteClassShowing" ng-click="showEditClass(class)"></span></h5>
+            </li>
+            <li class="pointer" ng-click="goToClass('All Students')"><h5>All Students</h5></li>
+          </ol>
         </div>
       </div>
-    
-      <div class="center-form panel student-panel">
+      <h5 class="center-text pointer" ng-hide="allClassesShowing" ng-click="showAllClasses()"><span class="ion-arrow-left-b lt-green"></span> All Classes</h5>
+      <div class="center-form panel student-panel" ng-hide="allClassesShowing">
         <div class="panel-body">
-        <center><h3 class="text-center student-class-btn no-caps" >Students </h3></center>
-          <div>
-            <select class="form-control input-lg pointer std-choose-class" type="text" id="currentClass" name="currentClass" ng-model="currentClass" ng-options="class as class for class in currentUser.classes" ng-change="setCurrentStudents()">
-              <option value="" disabled selected style='display:none;'> Choose Current Class </option>
-            </select>
+          <div class="row">
+            <div class="col-xs-8">
+              <h3 class="center-text">Students</h3>
+            </div>
+            <div class="col-xs-4">
+               <button ng-hide="currentClass == 'All Students'"ng-click="showAddStudent()" class="btn btn-block btn-success add-btn" data-toggle="tooltip" title="Add Students"><span class="ion-plus"></span></button>
+            </div>
           </div>
           
           <div class="student-list">
@@ -177,10 +197,11 @@
               </div>
             </ol>
           </div>
+          <div class="btn btn-defualt btn-block" ng-click="showClass()">Class Comparison</div>
         </div>
       </div>
     </div>
-      <div class="container col-sm-8">
+      <div class="container col-md-8">
 
         <div class="center-form panel stats-panel" ng-show="classStatsShowing">
           <h3 class="center-text">{{currentClass}}</h3>

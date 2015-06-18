@@ -41,7 +41,10 @@ angular.module('HappyTree', ['ngRoute', 'satellizer', 'chart.js', 'ui.calendar',
         templateUrl: 'views/tracker.html',
         controller: 'TrackerCtrl'
       })
-
+      .when('/welcome', {
+        templateUrl: 'views/onboard.html',
+        controller: 'OnboardCtrl'
+      })
       .otherwise('/')
 
     $authProvider.loginUrl = 'http://localhost:3000/auth/login';

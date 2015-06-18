@@ -23,7 +23,7 @@ angular.module('HappyTree')
 
     $scope.uiConfig = {
       calendar:{
-        height: 880,
+        height: 700,
         editable: false,
         timezone: "local",
         header:{

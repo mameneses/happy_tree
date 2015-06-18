@@ -55,8 +55,6 @@ a:hover {
   width: 315px;
   margin: 10% auto;
 }
-
-
  
 .signup-or-separator {
   position: relative;
@@ -382,7 +380,7 @@ a:hover {
   width:90%;
   padding:15px;
   background-color: white;
-  margin-top:36px;
+  margin-top:44px;
 }
 
 .center-text {
@@ -442,8 +440,22 @@ a:hover {
   width:230px;
   z-index: 100; 
   border-radius: 10px;
-  border: 2px solid #8AC007;
+  border-top-left-radius:0px;
+  border: 2px solid rgba(0,100,0,1);
   background-color: white;
+}
+
+.event-arrow {
+  position:absolute;
+  width: 0;
+  height: 0;
+  left:0px;
+  border-top: 25px solid rgba(0,100,0,1);
+  border-right: 25px solid transparent;
+}
+
+.grey {
+  color:#c0c0c0;
 }
 
 .home-recent-assesments {
@@ -471,7 +483,6 @@ a:hover {
 }
 
 .home-tutorial {
-  margin-top: -170px;
   height: 800px;
 }
 
@@ -490,6 +501,14 @@ a:hover {
     width: 100%;
     height: 800px;
     background: rgba(0, 0, 0, 0.5);
+}
+
+.overlay1 {
+    z-index: 1;
+    padding-top:100px;
+    width: 100%;
+    height: 800px;
+    background: rgba(0, 0, 0, 0.7);
 }
 
 .home-features-btn {
@@ -570,7 +589,7 @@ a:hover {
 }
 
 .mng-class-panel {
-  margin-top: 36px;
+  margin-top: 44px;
   margin-bottom: 0px;
 }
 
@@ -654,6 +673,31 @@ a:hover {
         overflow: hidden!important;
     }
 }
+
+.feature-body {
+}
+
+.home-feature-body {
+  margin-bottom: 40px;
+  color: #d8d8d8;
+}
+
+.add-btn {
+  margin-top:11.5px;
+}
+
+.onboard-container {
+  margin-top: 70px;
+}
+
+.onboard-tool-img {
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+  display: block;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
+}
+
 /*.letter-assesment-showing {
   background-image: url("../img/happytree-find-the-letter.gif");
   background-size: 300px 500px;

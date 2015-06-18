@@ -33,6 +33,7 @@ angular.module('HappyTree')
 
 
     $scope.newClass = ""
+    $scope.editedClassName = ""
     $scope.student = {}
     $scope.currentStudent = {}
     $scope.currentStudentAssesments = {}
@@ -40,6 +41,7 @@ angular.module('HappyTree')
     $scope.sortType = "lastName"
     $scope.sortReverse = false
     
+    $scope.allClassesShowing = true
     $scope.mngClassesShowing = true
     $scope.addStudentShowing = false
     $scope.classStatsShowing = true
@@ -49,8 +51,15 @@ angular.module('HappyTree')
     $scope.warningShowing = false
     $scope.letterAssesmentChartShowing = true
     $scope.sightWordAssesmentChartShowing = false
+    $scope.editClassShowing = false
+    $scope.edittingClassName = false
 
     $scope.editBtnShowing = false
+
+    $scope.showEditClass = function(clickedClass){
+      $scope.oldClassName = clickedClass
+      $scope.editClassShowing = true
+    }
 
     $scope.showMngClass = function() {
       $scope.mngClassShowing = true
@@ -62,7 +71,6 @@ angular.module('HappyTree')
     }
 
     $scope.showAddStudent = function() {
-      $scope.mngClassesShowing = false
       $scope.addStudentShowing = true
     }
 
@@ -74,21 +82,49 @@ angular.module('HappyTree')
       $scope.editStudentShowing = false
     }
 
-    $scope.addClass = function() {
-      if ($scope.currentUser.classes.length > 0) {
-        $scope.currentUser.classes.push($scope.newClass)
-      } else {
-        $scope.currentUser.classes = ["All Students",$scope.newClass]
-      }
-      console.log($scope.currentUser.classes)
-      UserService.updateUser($scope.currentUser)
+    $scope.showAllClasses = function(){
+      $scope.allClassesShowing = true
+      $scope.currentClass = "All Students"
+      $scope.setCurrentStudents()
+      $scope.hideAll()
+      $scope.currentStudent = {}
+      $scope.classStatsShowing = true
+    }
 
-      $scope.newClass = ""
-      $scope.addClassForm.$setPristine()
+    $scope.goToClass = function(selectedClass) {
+      $scope.currentClass = selectedClass
+      $scope.setCurrentStudents()
+      $scope.allClassesShowing = false
+    }
+
+    $scope.addClass = function() {
+      if ($scope.newClass == "All Students") {
+        alert("Your class name can not me 'All Students'.")
+      } else {
+        if ($scope.currentUser.classes.length > 0) {
+          var match = false
+          for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+            if ($scope.currentUser.classes[i] == $scope.newClass) {
+              match = true
+            }
+          }
+          if (match == true){
+            alert("There is already a class with the name " + $scope.newClass + ". Please choose another name.")
+          } else {
+            $scope.currentUser.classes.push($scope.newClass)
+            UserService.updateUser($scope.currentUser)
+          }
+        } else {
+          $scope.currentUser.classes = [$scope.newClass]
+          UserService.updateUser($scope.currentUser)
+        }
+        $scope.newClass = ""
+        $scope.addClassForm.$setPristine()
+      }
     }
 
     $scope.deleteClass = function(className) {
-      var confirmed = confirm("Are you sure you want to delete " + className +" ?")
+      var confirmed = confirm("Are you sure you want to delete " + className +"?")
       if (confirmed == true) {
         for (var i = 0; i < $scope.currentUser.classes.length; i++) {
           if ($scope.currentUser.classes[i] == className) {
@@ -96,6 +132,7 @@ angular.module('HappyTree')
           }
         }
         UserService.updateUser($scope.currentUser)
+        $scope.showAllClasses()
       }
       
     }
@@ -147,6 +184,7 @@ angular.module('HappyTree')
       $scope.getClassStats()
     });
     
+    $('[data-toggle="tooltip"]').tooltip(); 
 
 
     $scope.showStats = function(student) {
@@ -315,17 +353,19 @@ angular.module('HappyTree')
     }
 
     $scope.editStudent = function (student) {
+      $scope.edittingClass = false
       StudentService.updateStudent(student)
-      
     } 
     
     $scope.$on('studentUpdated', function(event,msg) {
       $scope.setStudents()
       $scope.setCurrentStudents()
       $scope.getClassStats()
-      alert("Your Student was successfully updated!")
       $scope.hideEditStudent()
       $scope.editStudentForm.$setPristine();
+      if ($scope.edittingClassName == false) {
+        alert("Your Student was successfully updated!")
+      }
     });
 
     $scope.hideAll = function(){
@@ -336,17 +376,20 @@ angular.module('HappyTree')
       $scope.missedUppercase = false
       $scope.missedLowercase = false
       $scope.missedSound  = false
+      $scope.editClassShowing = false
     }
 
 
     $scope.addStudent = function (student) {
       var currentUser = JSON.parse($window.localStorage.currentUser)
       student.currentTeacherID = $scope.currentUser._id
+      student.className = $scope.currentClass
       StudentService.addStudent(student)
-
+      console.log(student)
       //clear form
       $scope.student = {}
       $scope.addStudentForm.$setPristine();
+      $("#addFirstName").focus()
     }
 
     $scope.$on('studentAdded', function(event,msg) {
@@ -450,10 +493,47 @@ angular.module('HappyTree')
       }
     }
 
-    $scope.showClass = function(){
+    $scope.showClass = function(clickedClass){
       $scope.hideAll()
       $scope.currentStudent = {}
       $scope.classStatsShowing = true
+    }
+
+    $scope.editClassName = function(newName) {
+      $scope.edittingClassName = true
+      var classMatch = false
+      for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+        if ($scope.currentUser.classes[i] == newName) {
+          classMatch = true
+        }
+      }
+
+      if ( classMatch == true) {
+        alert("There is already a class with the name " + newName + ". Please choose another name.")
+        $scope.editedClassName = ""
+      } else {
+        for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+          if ($scope.currentUser.classes[i] == $scope.oldClassName) {
+            $scope.currentUser.classes[i] = newName
+          }
+        }
+        UserService.updateUser($scope.currentUser)
+
+        for (var i = 0; i < $scope.students.length; i++) {
+          if ($scope.students[i].className == $scope.oldClassName) {
+            $scope.students[i].className = newName
+            $scope.editStudent($scope.students[i])
+          }
+        }
+        $scope.oldClassName = newName
+        $scope.setStudents()
+        $scope.setCurrentStudents()
+        $scope.getClassStats()
+
+        $scope.editedClassName = ""
+        $scope.editClassNameForm.$setPristine();
+      }
+
     }
 
   }]);

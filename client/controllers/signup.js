@@ -1,5 +1,5 @@
 angular.module('HappyTree')
-  .controller('SignupCtrl', ['$scope', '$auth', 'StudentService', '$window', '$rootScope', function($scope, $auth, StudentService, $window, $rootScope) {
+  .controller('SignupCtrl', ['$scope', '$auth', 'StudentService', '$window', '$rootScope','$location', function($scope, $auth, StudentService, $window, $rootScope, $location) {
     $scope.signup = function() {
       var user = {
         firstName: $scope.firstName,
@@ -16,6 +16,7 @@ angular.module('HappyTree')
           $window.localStorage.currentUser = JSON.stringify(response.data.user);
           StudentService.getStudentsFromDB(response.data.user)
           $rootScope.currentUser = JSON.parse($window.localStorage.currentUser);
+          $location.path("/welcome")
         })
         .catch(function(response) {
           console.log(response.data);

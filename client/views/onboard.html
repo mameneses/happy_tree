@@ -1,0 +1,129 @@
+<div class="container-fluid">
+  <div class="container">
+    <div class="jumbotron onboard-container col-md-8 col-md-offset-2">
+      <div class="progress">
+        <div class="progress-bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" ng-style="progressBarWidth" style="min-width:5%;">
+          <span>{{step}}</span>
+        </div>
+      </div>
+      <div ng-show="step1">
+        <div class="center-text">
+          <h3>Welcome to HappyTree!</h3>
+          <h5>Start by giving your class a name</h5>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-sm-offset-3">
+            <form method="post" ng-submit="addClass()" name="addClassForm">
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addClassForm.newClass.$invalid && addStudentForm.newClass.$dirty }">
+                <input class="form-control input-lg" type="text" id="newClass" name="newClass" ng-model="newClass" placeholder="Ex: Kindergarten 2015-16" required>
+                <span class="ion-easel form-control-feedback"></span>
+              </div>
+       
+              <button type="submit" class="btn btn-block btn-success">Create Class</button>
+              <br/>
+
+            </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 btn btn-default" ng-click="goHome()">skip</div>     
+        </div>
+      </div>
+
+      <div ng-show="step2">  
+        <div class="row">
+          <div class="col-sm-6 ">
+            <div >
+              <h4 class="center-text">Your class:</h4>
+              <h6 class="center-text" ng-if="classStudents.length < 1">no students added</h6>
+              <ol>
+                <li ng-repeat="student in classStudents">
+                  <h5>{{student.firstName}} {{student.lastName}}</h5> 
+                </li>
+              </ol>
+              
+            </div>
+          </div>
+          <div class="col-sm-6 ">
+            <h5 class="center-text">Add students to your class</h5>
+            <form method="post" ng-submit="addStudent(student)" name="addStudentForm">
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.firstName.$invalid && addStudentForm.firstName.$dirty }">
+                <input class="form-control input-lg" type="text" id="firstName" name="firstName" ng-model="student.firstName" placeholder="First Name" required>
+                <span class="ion-person form-control-feedback"></span>
+              </div>
+
+              <div class="form-group has-feedback" ng-class="{ 'has-error' : addStudentForm.lastName.$invalid && addStudentForm.lastName.$dirty }">
+                <input class="form-control input-lg" type="text" id="lastName" name="lastName" ng-model="student.lastName" placeholder="Last Name" required>
+                <span class="form-control-feedback"></span>
+              </div>
+           
+              <button type="submit" class="btn btn-block btn-success">Add Student</button>
+              <br/>
+            </form>
+          </div>
+              <p class="center-text">You can always add more students or edit your class in the <strong class="pointer" ng-click="goToStudents()">Students</strong> tab.</p>
+        </div>
+          <div class="row">
+            <div class="col-xs-2 btn btn-default" ng-click="goHome()">skip</div>
+            <div class="col-xs-2 col-xs-offset-8 btn btn-default" ng-click="goToStep3()"> Next </div>        
+          </div>
+      </div>
+
+      <div ng-show="step3">
+        <div class="row">
+          <h4 class="center-text">Assements</h4>
+          <div class="col-sm-5">
+            <img src="../img/home_assesments.png" class="img-rounded  onboard-tool-img">
+          </div>
+          <div class="col-sm-7">
+          <ul>
+            <li><p>Use the <strong class="pointer" ng-click="goToTools()">Tools</strong> tab to do Letter and Sight Word Assesments.</p></li>
+            <li><p>Make custom Sight Word lists under Sight Words.</p></li>
+            <li><p>Letter Assesment scores are automaticaly saved .</p></li>
+          </ul>
+          </div>
+          
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-xs-2 btn btn-default" ng-click="goHome()">skip</div>
+          <div class="col-xs-2 col-xs-offset-8 btn btn-default" ng-click="goToStep4()"> Next </div>        
+        </div>
+      </div>
+
+      <div ng-show="step4">
+      <h4 class="center-text">Progress</h4>
+      <div class="row">
+        <div class="col-sm-5">
+          <img src="../img/home_tracker.png" class="img-rounded onboard-tool-img">
+        </div>
+        <div class="col-sm-7">
+          <ul>
+            <li><p>Use the <strong class="pointer" ng-click="goToTracker()">Tracker</strong> tab to see recent assesments and a calender of all the completed assesments. </p></li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-7">
+          <ul>
+            <li><p>Evaluate student progress in the <strong class="pointer" ng-click="goToStudents()">Students</strong> tab.</p></li>
+            <li><p> Click on the scores to see the missed answers for that assesment.</p></li>
+          </ul>
+        </div>
+        <div class="col-sm-5">
+          <img src="../img/home_student_progress.png" class="img-rounded onboard-tool-img">
+        </div>
+        
+      </div>
+      <br>
+        <div class="row">
+          <div class="col-xs-2 col-xs-offset-10 btn btn-default" ng-click="goHome()"> Done!</div>        
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+</div>

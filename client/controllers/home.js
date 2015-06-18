@@ -21,4 +21,30 @@ angular.module('HappyTree')
       $location.path("/tracker")
     }
 
+    $scope.setHeight = function() {
+
+      var windowInt = $window.innerHeight
+      var windowHeight = windowInt.toString() + "px"
+
+      $scope.windowHeight = {"height":windowHeight }
+      
+    }
+
+    $scope.setFeatureBtnHeight = function() {
+      if ($window.innerWidth < 475) {
+        var margin = $window.innerHeight - 530
+        var featMargin = margin.toString() + "px"
+
+        $scope.featureBtnMargin = {"margin-top": featMargin}
+      } else {
+        var margin = $window.innerHeight - 450
+        var featMargin = margin.toString() + "px"
+
+        $scope.featureBtnMargin = {"margin-top": featMargin}
+      }
+    }
+
+    $scope.setHeight()
+    $scope.setFeatureBtnHeight()
+
   }] );

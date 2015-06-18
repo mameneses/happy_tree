@@ -1,7 +1,7 @@
 <div ng-if="isAuthenticated()">
 <div ng-if="selectedEvent" ng-show="eventSelected" class="home-selected-event container" ng-style="coords">
   
-  <h6>{{selectedEvent.date | date : 'medium'}} <span class="ion-close red pointer tracker-close-event" ng-click="closeEvent()"></span></h6>
+  <span class="event-arrow"></span><h6>{{selectedEvent.date | date : 'medium'}} <span class="ion-close grey pointer tracker-close-event" ng-click="closeEvent()"></span></h6>
   <h6><strong>{{selectedEvent.student}}</strong></h6>
   <h6>{{selectedEvent.assesment}}</h6>
   <h6>Correct: <span ng-class="getScoreColorClass(selectedEvent.score)">{{selectedEvent.score}}%</span></h6>
