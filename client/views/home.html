@@ -49,59 +49,80 @@
 </div>
 
 <div ng-if="isAuthenticated()">
-  <div class="container">
+  <div class="home-open-in">
+    <div class="overlay2">
+      <div class="container">
 
-        <h1 class="center-text">Getting Started!</h1>
+        <h1 class="center-text white">WELCOME</h1>
+
+        <h3 class="center-text white how-to"> HOW TO</h3>
         <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-3">
 
-              <div class="center-form panel">
-                <div class="panel-body">
-                  <h4 class="center-text">1. Add Class & Students</h4>
-                  <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
-                  <h6 class="center-text ion-chevron-down"></h6>
-                  <h6 class="center-text">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
-                  <h6 class="center-text ion-chevron-down"></h6>
-                  <h6 class="center-text">Create a Class</h6>
-                  <h6 class="center-text ion-chevron-down"></h6>
-                  <h6 class="center-text">Add Students</h6>
+              <div class="">
+                <div class="pointer how-btn" ng-click="showHowPanel('add-class')"> Add a Class </div>
+                <div class="how-container" id="add-class">
+                  <h6 class="center-text white">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+                  <h6 class="center-text white ion-chevron-down"></h6>
+                  <h6 class="center-text white">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
+                  <h6 class="center-text white ion-chevron-down"></h6>
+                  <h6 class="center-text white">Create a Class</h6>
                 </div>
               </div>
 
           </div>
-          <div class="col-sm-4">
-            <div class="center-form panel">
-              <div class="panel-body">
-                <h4 class="center-text">2. Assess Students</h4>
-                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTools()">Tools</span></h6>
-                <h6 class="center-text ion-chevron-down"></h6>
-                <h6 class="center-text">Choose an assesment</h6>
-                <h6 class="center-text ion-chevron-down"></h6>
-                <h6 class="center-text">Read propmt</h6>
-                <h6 class="center-text ion-chevron-down"></h6>
-                <h6 class="center-text">Start the assesment</h6>
-                <p class="center-text well"> TIP: Create custom sight word lists at:<br> <strong>Tools</strong> > <strong>Sight Words</strong> > <strong>Create/Edit List</strong></p>
+          <div class="col-sm-3">
+
+              <div class="">
+                  <div class="pointer how-btn" ng-click="showHowPanel('add-student')"> Add a Students</div>
+                <div class="how-container" id="add-student">
+                  <h6 class="center-text white">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+                  <h6 class="center-text white ion-chevron-down"></h6>
+                  <h6 class="center-text white">Select the class you would like to add students to.</h6>
+                  <h6 class="center-text white ion-chevron-down"></h6>
+                  <h6 class="center-text white">Click the <span class="btn btn-success no-pointer" disable><span class="ion-plus"></span></span></h6>
+                  <h6 class="center-text white ion-chevron-down"></h6>
+                  <h6 class="center-text white">Add Students</h6>
+                </div>
+              </div>
+
+          </div>
+          <div class="col-sm-3">
+            <div class="">
+              <div class="pointer how-btn" ng-click="showHowPanel('assess-student')">Assess Students</div>
+              <div class="how-container" id="assess-student">
+                <h6 class="center-text white">Go to <span class="btn btn-default no-caps" ng-click="goToTools()">Tools</span></h6>
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">Choose an assesment</h6>
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">Read propmt</h6>
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">Start the assesment</h6>
+                <p class="center-text white"> TIP: Create custom sight word lists at:<br> <strong>Tools</strong> > <strong>Sight Words</strong> > <strong>Create/Edit List</strong></p>
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
-            <div class="center-form panel">
-              <div class="panel-body">
-                <h4 class="center-text">3.Track Progress</h4>
+          <div class="col-sm-3">
+            <div class="">
+              <div class="pointer how-btn" ng-click="showHowPanel('track-progress')">Track Progress</div>
+              <div class="how-container" id="track-progress">
              
-                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToTracker()">Tracker</span></h6>
-                <h6 class="center-text ion-chevron-down"></h6>
-                <h6 class="center-text">See who took which assesment and when</h6>
-                <h5 class="center-text">OR</h5>
-                <h6 class="center-text">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
-                <h6 class="center-text ion-chevron-down"></h6>
-                <h6 class="center-text">Compare class scores and individual student progess</h6>
+                <h6 class="center-text white">Go to <span class="btn btn-default no-caps" ng-click="goToTracker()">Tracker</span></h6>
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">See who took which assesment and when</h6>
+                <h5 class="center-text white">OR</h5>
+                <h6 class="center-text white">Go to <span class="btn btn-default no-caps" ng-click="goToStudents()">Students</span></h6>
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">See who took which assesment and when</h6>
+
+                <h6 class="center-text white ion-chevron-down"></h6>
+                <h6 class="center-text white">Compare class scores and individual student progess</h6>
               </div>
             </div>
           </div>
-          
         </div>
-      
+      </div>
+    </div>    
   </div>
 </div>
 

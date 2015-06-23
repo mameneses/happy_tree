@@ -20,6 +20,18 @@ angular.module('HappyTree')
       $location.path("/tools")
     }
 
+    $scope.goToTracker = function(){
+      $location.path("/tracker")
+    }
+
+    $scope.goToStudents = function(){
+      $location.path("/students")
+    }
+
+    $scope.isAuthenticated = function() {
+      return $auth.isAuthenticated();
+    };
+
     $scope.addClass = function() {
       if ($scope.newClass == "All Students") {
         alert("Your class name can not me 'All Students'.")

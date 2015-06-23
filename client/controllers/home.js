@@ -30,6 +30,16 @@ angular.module('HappyTree')
       
     }
 
+    $scope.showHowPanel = function(panelName) {
+      var panel = "#" + panelName
+      var showing = $(panel).css('display')
+      if(showing == 'none') {
+        $(panel).slideDown();
+      } else {
+        $(panel).slideUp();
+      }
+    }
+
     $scope.setFeatureBtnHeight = function() {
       if ($window.innerWidth < 475) {
         var margin = $window.innerHeight - 530
