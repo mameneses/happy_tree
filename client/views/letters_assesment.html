@@ -46,7 +46,7 @@
         <form name="classForm">
           <fieldset class="form-group">
             <select ng-model="currentClass" class="letter-assesment-form-control form-control pointer" ng-options="class as  class for class in currentUser.classes | orderBy:'firstName'"  title="Classes" ng-change="setCurrentStudents()">
-              <option value="" disabled selected style='display:none;'> ------> Choose Class <------ </option>
+              <option value="" disabled selected style='display:none;'> -> Choose Class <- </option>
             </select>
           </fieldset>
         </form>
@@ -58,7 +58,7 @@
         <form name="studentForm">
           <fieldset class="form-group">
             <select ng-model="selectedStudent" class="letter-assesment-form-control form-control pointer" ng-options="student as student.firstName + ' ' + student.lastName for student in currentStudents | orderBy:'firstName'"  title="Students">
-              <option value="" disabled selected style='display:none;'> ------> Choose Student <------ </option>
+              <option value="" disabled selected style='display:none;'> -> Choose Student <- </option>
             </select>
           </fieldset>
         </form>

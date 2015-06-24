@@ -385,7 +385,6 @@ angular.module('HappyTree')
       student.currentTeacherID = $scope.currentUser._id
       student.className = $scope.currentClass
       StudentService.addStudent(student)
-      console.log(student)
       //clear form
       $scope.student = {}
       $scope.addStudentForm.$setPristine();
@@ -410,14 +409,15 @@ angular.module('HappyTree')
       var confirmDelete = confirm("Are you sure you want to DELETE " + student.firstName + " " + student.lastName + "?")
       if (confirmDelete == true) {
         StudentService.deleteStudent(student)
-      $scope.currentStudent = {}
-      $scope.editStudentShowing = false
-      $scope.classStatsShowing = true
-      $scope.hideDeleteWarning()
+        $scope.currentStudent = {}
+        $scope.editStudentShowing = false
+        $scope.classStatsShowing = true
+        $scope.hideDeleteWarning()
       }
     }
 
     $scope.$on('studentDeleted', function(event,msg) {
+      AssesmentService.getAssesmentsFromDB()
       $scope.setStudents()
       $scope.setCurrentStudents()
       $scope.getClassStats()

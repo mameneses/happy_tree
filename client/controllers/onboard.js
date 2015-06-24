@@ -7,8 +7,7 @@ angular.module('HappyTree')
     $scope.student = {}
     $scope.form = {}
 
-    // $scope.step1 = true
-    $scope.step3  = true
+    $scope.step1 = true
 
     $scope.$on('userUpdated', function(event,msg) {
       $scope.currentUser = UserService.getCurrentUser()
@@ -80,14 +79,12 @@ angular.module('HappyTree')
     }
 
     $scope.goToStep3 = function() {
-      $scope.progressBarWidth = {"width":"75%"}
       $('#step-3').css('background','#4caf50')
       $scope.step2 = false
       $scope.step3 = true
     }
 
     $scope.goToStep4 = function() {
-      $scope.progressBarWidth = {"width":"100%"}
       $('#step-4').css('background','#4caf50')
       $scope.step3 = false
       $scope.step4 = true
