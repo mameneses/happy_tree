@@ -1,18 +1,19 @@
 angular.module('HappyTree')
   .controller('OnboardCtrl', ['$scope', '$rootScope', '$window', '$auth', 'UserService', 'StudentService', 'AssesmentService','$timeout', '$filter', '$parse','$location', function($scope, $rootScope, $window, $auth, UserService, StudentService, AssesmentService, $timeout, $filter, $parse, $location) {
 
-    $scope.progressBarWidth = {"width":"25%"}
-    $scope.step = "1/4"
     $scope.classStudents = []
     $scope.newClass = ""
     $scope.currentUser = UserService.getCurrentUser()
+    $scope.student = {}
+    $scope.form = {}
+
     $scope.step1 = true
 
     $scope.$on('userUpdated', function(event,msg) {
       $scope.currentUser = UserService.getCurrentUser()
     });
 
-    $scope.goHome = function () {
+    $scope.goHome = function (){
       $location.path("/")
     }
 
@@ -32,24 +33,32 @@ angular.module('HappyTree')
       return $auth.isAuthenticated();
     };
 
-    $scope.addClass = function() {
-      if ($scope.newClass == "All Students") {
-        alert("Your class name can not me 'All Students'.")
+    $scope.addClass = function(addedClass) {
+      if (addedClass == "All Students" || addedClass == null || addedClass == "") {
+        alert("Your class name can not be 'All Students'.") 
       } else {
+
         if ($scope.currentUser.classes.length > 0) {
-          $scope.currentUser.classes.push($scope.newClass)
+          var match = false
+          for (var i = 0; i < $scope.currentUser.classes.length; i++) {
+            if ($scope.currentUser.classes[i] == addedClass) {
+              match = true
+            }
+          }
+          if (match == true) {
+            alert("There is already a class with the name " + addedClass + ". Please choose another name.")
+          } else {
+            $scope.currentUser.classes.push(addedClass)
+            UserService.updateUser($scope.currentUser)
+          }
         } else {
-          $scope.currentUser.classes = [$scope.newClass]
+          $scope.currentUser.classes = [addedClass]
+          UserService.updateUser($scope.currentUser)
         }
-        UserService.updateUser($scope.currentUser)
 
-        $scope.currentClass = $scope.newClass
+        $scope.currentClass = addedClass
 
-        $scope.newClass = ""
-        $scope.addClassForm.$setPristine()
-
-        $scope.progressBarWidth = {"width":"50%"}
-        $scope.step = "2/4"
+        $('#step-2').css('background','#4caf50')
 
         $scope.step1 = false
         $scope.step2 = true
@@ -62,22 +71,23 @@ angular.module('HappyTree')
       student.className = $scope.currentClass
       StudentService.addStudent(student)
       $scope.classStudents.push(student)
+
       //clear form
       $scope.student = {}
-      $scope.addStudentForm.$setPristine();
+      $scope.form.addStudentForm.$setPristine()
       $("#firstName").focus()
     }
 
     $scope.goToStep3 = function() {
       $scope.progressBarWidth = {"width":"75%"}
-      $scope.step = "3/4"
+      $('#step-3').css('background','#4caf50')
       $scope.step2 = false
       $scope.step3 = true
     }
 
     $scope.goToStep4 = function() {
       $scope.progressBarWidth = {"width":"100%"}
-      $scope.step = "4/4"
+      $('#step-4').css('background','#4caf50')
       $scope.step3 = false
       $scope.step4 = true
     }

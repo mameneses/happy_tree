@@ -216,6 +216,24 @@ angular.module('HappyTree')
 
       $scope.promptShowing = false
 
+      if ($scope.isAuthenticated() == true) {
+        $scope.currentUser = UserService.getCurrentUser()
+      } 
+
+      $scope.setCurrentStudents = function() {
+        console.log($scope.currentClass)
+        $scope.currentStudents = []
+        if ($scope.currentClass == "All Students") {
+          $scope.currentStudents = $scope.allStudents
+        } else {
+          for (var i=0; i < $scope.allStudents.length; i++) {
+            if ($scope.allStudents[i].className == $scope.currentClass){
+              $scope.currentStudents.push($scope.allStudents[i])
+            }
+          }
+        }
+      }  
+
       $scope.showPrompt = function() {
         $scope.promptShowing = true
       }

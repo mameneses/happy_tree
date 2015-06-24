@@ -8,12 +8,29 @@ angular.module('HappyTree')
 
     $scope.isAuthenticated = function() {
         return $auth.isAuthenticated();
-      };
+    };
 
     var shuffle = function(o){
         for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
-      };
+    };
+
+    if ($scope.isAuthenticated()) {
+      $scope.allStudents = StudentService.getAllStudents()
+    }
+    
+    $scope.setCurrentStudents = function() {
+      $scope.currentStudents = []
+      if ($scope.currentClass == "All Students") {
+        $scope.currentStudents = $scope.allStudents
+      } else {
+        for (var i=0; i < $scope.allStudents.length; i++) {
+          if ($scope.allStudents[i].className == $scope.currentClass){
+            $scope.currentStudents.push($scope.allStudents[i])
+          }
+        }
+      }
+    }  
 
     $scope.toPercentage =  function (input, decimals) {
       return $filter('number')(input * 100, decimals);
@@ -50,9 +67,6 @@ angular.module('HappyTree')
 
     $scope.selectedStudent = {}
 
-    if ($scope.isAuthenticated()) {
-      $scope.allStudents = StudentService.getAllStudents()
-    }
 
     $scope.sightWords = angular.copy($scope.allSightWordLists[0])
     $scope.correctSightWordCount = 0

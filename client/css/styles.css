@@ -250,7 +250,7 @@ a:hover {
   color: green;
   position:absolute;
   right: 15px;
-  top: -20px;
+  top: -10px;
 }
 
 .pointer:hover {
@@ -485,7 +485,7 @@ a:hover {
 .home-open-in {
   background-image: url("../img/home_tree.jpg"); 
   background-size: 100%;
-  height: 920px;
+  height: 880px;
   margin-top: -50px;
 }
 
@@ -522,7 +522,7 @@ a:hover {
     z-index: 1;
     padding-top:100px;
     width: 100%;
-    height: 920px;
+    height: 880px;
     background: rgba(0, 0, 0, 0.6);
 }
 
@@ -750,6 +750,26 @@ a:hover {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 } 
 
+.onboard-steps {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid #4caf50;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+#step-1{
+  background: #4caf50;
+}
+
+.la-select-container {
+  width: 300px;
+  margin: 0 auto;
+  display: block;
+}
 /*.letter-assesment-showing {
   background-image: url("../img/happytree-find-the-letter.gif");
   background-size: 300px 500px;
