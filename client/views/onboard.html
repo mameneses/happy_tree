@@ -31,6 +31,12 @@
               <h5>4</h5>
             </div>
           </div>
+
+          <div class="col-xs-2">
+            <div class="onboard-steps" id="step-5">
+              <h5>5</h5>
+            </div>
+          </div>
         </div>
 
   
@@ -122,34 +128,44 @@
         </div>
 
         <div ng-show="step4">
-        <h4 class="center-text">Progress</h4>
-        <div class="row">
-          <div class="col-sm-5">
-            <img src="../img/home_tracker.png" class="img-rounded onboard-tool-img">
+          <h4 class="center-text">Track Assemesments</h4>
+          <div class="row">
+            <div class="col-sm-5">
+              <img src="../img/home_tracker.png" class="img-rounded onboard-tool-img">
+            </div>
+            <div class="col-sm-7">
+              <ul>
+                <li><p>Use the <strong class="pointer" ng-click="goToTracker()">Tracker</strong> tab to see recent assesments and a calender of all the completed assesments. </p></li>
+              </ul>
+            </div>
           </div>
-          <div class="col-sm-7">
-            <ul>
-              <li><p>Use the <strong class="pointer" ng-click="goToTracker()">Tracker</strong> tab to see recent assesments and a calender of all the completed assesments. </p></li>
-            </ul>
+          <br>
+          <div class="row">
+            <div class="col-xs-2 btn btn-default" ng-click="goHome()">skip</div>
+            <div class="col-xs-2 col-xs-offset-8 btn btn-default" ng-click="goToStep5()"> Next </div>
           </div>
         </div>
-        <br>
-        <div class="row">
-          <div class="col-sm-7">
-            <ul>
-              <li><p>Evaluate student progress in the <strong class="pointer" ng-click="goToStudents()">Students</strong> tab.</p></li>
-              <li><p> Click on the scores to see the missed answers for that assesment.</p></li>
-            </ul>
+
+        <div ng-show="step5">
+          <h4 class="center-text">Student Progress</h4>
+          <div class="row">
+            <div class="col-sm-7">
+              <ul>
+                <li><p>Evaluate student progress in the <strong class="pointer" ng-click="goToStudents()">Students</strong> tab.</p></li>
+                <li><p> Click on the scores to see the missed answers for that assesment.</p></li>
+              </ul>
+            </div>
+            <div class="col-sm-5">
+              <img src="../img/home_student_progress.png" class="img-rounded onboard-tool-img">
+            </div>
+            
           </div>
-          <div class="col-sm-5">
-            <img src="../img/home_student_progress.png" class="img-rounded onboard-tool-img">
-          </div>
-          
-        </div>
-        <br>
+          <br>
+          <br>
           <div class="row">
             <div class="col-xs-2 col-xs-offset-10 btn btn-default" ng-click="goHome()"> Done!</div>        
           </div>
+
         </div>
       </div>
     </div>

@@ -19,6 +19,9 @@ angular.module('HappyTree')
           $location.path("/welcome")
         })
         .catch(function(response) {
+          if (response.data == null) {
+            alert("We are having issues with our servers. Please try again soon. Thank you for your patience.")
+          }
           console.log(response.data);
         });
     }; 
