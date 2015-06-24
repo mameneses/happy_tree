@@ -158,6 +158,8 @@ router.route('/students/:student_id')
 
 router.route('/students/:student_id')
   .delete(isAuthenticated, function(req,res) {
+    Assesment.find({studentID: req.params.student_id}).remove().exec();
+    
     Student.remove({_id: req.params.student_id}).remove(function(err) {
       Student.find({currentTeacherID: req.query.currentTeacherID}, function(err, students) {
         if (err)
